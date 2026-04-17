@@ -5,10 +5,9 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD não definido}
       POSTGRES_DB: cyberguard
-    ports:
-      - "5432:5432"
+    # Porta 5432 NÃO exposta ao host — banco acessível só internamente pelo app
     volumes:
       - cyberguard-pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -27,12 +26,13 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/cyberguard
-      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me-in-production-ABCDEFGH12345678}
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD não definido}@db:5432/cyberguard
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET não definido}
       NEXT_PUBLIC_APP_NAME: CyberGuard
       NODE_ENV: production
     ports:
-      - "3000:3000"
+      # Bind somente à interface Tailscale — não expõe à internet pública
+      - "${BIND_HOST:-127.0.0.1}:80:3000"
     command: sh -c "node node_modules/prisma/build/index.js db push --accept-data-loss && node server.js"
 
 volumes:
