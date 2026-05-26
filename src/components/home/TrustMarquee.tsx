@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 const ITEMS = [
   "Phishing",
   "Engenharia Social",
@@ -13,7 +17,13 @@ const ITEMS = [
 
 export function TrustMarquee() {
   return (
-    <section className="border-y border-surface-border bg-surface py-8 overflow-hidden">
+    <motion.section
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.7 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="border-y border-surface-border bg-surface py-8 overflow-hidden"
+    >
       <div className="flex whitespace-nowrap animate-marquee">
         {[...ITEMS, ...ITEMS].map((item, i) => (
           <div
@@ -25,6 +35,6 @@ export function TrustMarquee() {
           </div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 }

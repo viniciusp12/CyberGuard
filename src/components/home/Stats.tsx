@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 const STATS = [
   {
     value: "82%",
@@ -21,11 +25,43 @@ const STATS = [
   },
 ];
 
+const headingVariant = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+const gridVariant = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1, delayChildren: 0.15 },
+  },
+};
+
+const cellVariant = {
+  hidden: { opacity: 0, y: 32, filter: "blur(6px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
 export function Stats() {
   return (
     <section className="py-24 md:py-32 border-y border-surface-border bg-surface">
       <div className="container-page">
-        <div className="max-w-3xl mb-16">
+        <motion.div
+          className="max-w-3xl mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5, margin: "-80px 0px" }}
+          variants={headingVariant}
+        >
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent mb-4">
             — O problema em números
           </p>
@@ -33,12 +69,19 @@ export function Stats() {
             A ameaça é real, silenciosa <br />
             e cada vez mais sofisticada
           </h2>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-surface-border rounded-2xl overflow-hidden border border-surface-border">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-surface-border rounded-2xl overflow-hidden border border-surface-border"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3, margin: "-80px 0px" }}
+          variants={gridVariant}
+        >
           {STATS.map((stat) => (
-            <div
+            <motion.div
               key={stat.label}
+              variants={cellVariant}
               className="bg-surface p-8 md:p-10 hover:bg-surface-elevated transition-colors"
             >
               <p className="font-display text-5xl md:text-6xl font-semibold text-accent tracking-tighter">
@@ -50,9 +93,9 @@ export function Stats() {
               <p className="mt-6 font-mono text-[10px] uppercase tracking-wider text-foreground/40">
                 Fonte: {stat.source}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
