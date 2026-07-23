@@ -23,3 +23,8 @@ yarn-error.log*
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# jogo — arquivos pesados que não vão pro git
+Jogo.zip
+*.psd
+Jogo/.godot/

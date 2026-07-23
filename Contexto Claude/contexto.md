@@ -257,5 +257,115 @@ E fazer rebuild: `docker compose down && docker compose up -d`
 - O formulário de contato é **ilustrativo** — sem integração backend ainda
 - Auth usa JWT (`JWT_SECRET` via env)
 - Banco PostgreSQL via Prisma — porta 5432 **não exposta** ao host no Docker
-- `.next/` pode ficar em cache desatualizado — deletar se mudanças não aparecerem: `Remove-Item -Recurse -Force .next`
-- Terminal do usuário é **PowerShell** — usar sintaxe PS (`Remove-Item` em vez de `rm -rf`)
+- `.next/` pode ficar em cache desatualizado — deletar se mudanças não aparecerem
+- **Sistema operacional:** o dev usa **Linux e Windows** (dual). Atualmente desenvolvendo no **Linux** (`/home/vini/...`). Sempre documentar comandos para **ambos**:
+
+| Tarefa | Linux (bash) | Windows (PowerShell) |
+|---|---|---|
+| Apagar `.next` | `rm -rf .next` | `Remove-Item -Recurse -Force .next` |
+| Rodar dev | `npm run dev` | `npm run dev` |
+
+---
+
+## 🎮 Jogo CyberGuard (Godot) — pasta `Jogo/`
+
+Jogo educativo de conscientização em cibersegurança, complementar ao site. Documento de design completo em PDF: `Jogo/GameDesignDocument.pdf`.
+
+### Decisões travadas
+
+| Item | Decisão |
+|---|---|
+| Engine | **Godot 4.x** · 2D · GDScript |
+| Perspectiva | Top-down |
+| Arte | **Pixel art** (ref: Soulbound, Core Keeper, Stardew) — assets prontos + IA |
+| Gênero | Action-puzzle **híbrido** (explora em tempo real, boss = puzzle temático) |
+| Estrutura | Hub central → jogador escolhe qual boss enfrentar (metroidvania: alguns exigem itens de outros) |
+| Bosses | 5 setores: **Worm (tutorial) → Ransomware → Spyware → Adware → Phisher** |
+| Educação | História + lore pós-batalha + **sistema de consequência** (recompensa que tenta o jogador; ex: item-phishing renasce o boss se clicar errado) |
+| Sistemas RPG | Vida + Mana (justificam itens coletáveis pelo mapa) |
+| Plataforma | Dev local; export **web (HTML5)** embutido no site depois (export Godot 4 web exige headers COOP/COEP) |
+| Integração site | XP/quem zerou/ranking — **futuro, não prioridade** |
+| 1ª demo | Tutorial Worm completo + hub com 5 portais (4 bloqueados) |
+
+### NPCs / Lore chave (inegociáveis do Vini)
+- **Professor NPC** que leva o jogador ao "Mundo Virtual"
+- **Mistério / pistas** sobre a origem da infecção
+
+### Roadmap por fases
+- **Fase 0** — Fundamentos: boneco anda top-down, colisão, câmera
+- **Fase 1** — Tutorial Worm jogável (mini-game + vida/mana + lore + item) → 1ª demo
+- **Fase 2** — Hub + 5 portais + transição de cena
+- **Fase 3** — 1º boss real (Ransomware) + save de progresso
+- **Fase 4+** — demais bosses, sistema de consequência, gating metroidvania, conteúdo educativo
+- **Final** — export web + integração com o site
+
+### Contexto do dev (importante)
+- **Solo**, nunca usou Godot/GDScript → guiar passo-a-passo, didático
+- ~2h/dia de disponibilidade
+- Prazo: ~outubro, com apresentações de progresso ao longo do ano
+
+### 🔧 Instalação do Godot (versão usada: **4.6.3 stable**, build padrão GDScript)
+
+**Linux (feito no dev atual — Ubuntu 26.04):**
+```bash
+# Baixar o binário oficial (single executable)
+cd /tmp
+curl -sL -o godot.zip "https://github.com/godotengine/godot/releases/download/4.6.3-stable/Godot_v4.6.3-stable_linux.x86_64.zip"
+unzip godot.zip
+mkdir -p ~/.local/bin
+mv Godot_v4.6.3-stable_linux.x86_64 ~/.local/bin/godot4
+chmod +x ~/.local/bin/godot4
+# ~/.local/bin já está no PATH via ~/.zshrc → chamar com: godot4
+```
+- Atalho no menu de apps: `~/.local/share/applications/godot4.desktop`
+- Abrir editor pela linha de comando: `godot4 --editor --path /caminho/Jogo`
+
+**Windows:**
+1. Baixar em https://godotengine.org/download/windows → **Godot Engine 4.6.3** (NÃO a versão .NET/Mono — usamos GDScript puro)
+2. É um `.exe` portátil (não tem instalador) → extrair o zip e dar duplo-clique no `Godot_v4.6.3-stable_win64.exe`
+3. Sugestão: colocar o `.exe` numa pasta fixa (ex: `C:\Godot\`) e criar atalho na área de trabalho
+
+> ⚠️ Mesma versão (4.6.3) nos dois SOs para evitar incompatibilidade de arquivos de projeto.
+
+### 📁 Estrutura do projeto Godot (`Jogo/`)
+```
+Jogo/
+├── project.godot          ← config do projeto (Godot reescreve ao salvar — normal)
+├── icon.svg               ← ícone do app (escudo roxo "C")
+├── .gitignore             ← ignora .godot/ (cache gerado, não versionar)
+├── scenes/
+│   ├── main.tscn          ← cena principal: sala com paredes + Player (main_scene)
+│   └── player.tscn        ← Player: CharacterBody2D + Polygon2D + Collision + Camera2D
+└── scripts/
+    └── player.gd          ← movimento top-down (Input.get_vector + move_and_slide)
+```
+**Config do projeto:** resolução base 640×360, janela 1280×720, renderer `gl_compatibility` (melhor p/ web), filtro de textura Nearest (pixel art nítida).
+
+### ✅ Status do desenvolvimento do jogo
+- **Fase 0 — Fundamentos:** ✅ projeto criado, personagem anda top-down (SETAS + WASD) e colide com paredes. Câmera segue o player.
+- **Personagem (arte real):** ✅ substituído o placeholder pelo **CraftPix Swordsman lvl1** (pack `craftpix-net-180537...`). Sheets usados: `art/swordsman_walk.png` (384×256, 6 frames/dir) e `art/swordsman_idle.png` (768×256, 12 frames/dir) — versões *with_shadow*.
+  - Grade: frame **64×64**, ordem das linhas **row0=down, row1=left, row2=right, row3=up**.
+  - `player_frames.tres` gerado por script com 8 animações: `walk_down/left/right/up` (speed 10) + `idle_down/left/right/up` (speed 8). `player.gd` toca `idle_<facing>` quando parado.
+  - Colisão ajustada para os pés: `RectangleShape2D` 14×10 em `(0, 10)`.
+  - **Lembrete de licença:** assets CraftPix freebie — não redistribuir em git público; manter `art/craftpix-net-*` fora de repositório aberto.
+- **Primeiro setor (sala-tutorial):** ✅ chão preto liso substituído por uma **sala com tileset real** (dungeon pack `craftpix-net-169442`). Tileset `art/dungeon_tiles.png` (16×16), floor=atlas (1,10), wall=atlas (1,3).
+  - `scenes/dungeon_tileset.tres` — recurso `TileSet` com a fonte de atlas e **colisão por tile** na parede (physics_layer_0). Andar = floor, parede = bloqueia.
+  - `scenes/main.tscn` — sala 30×18 tiles com 2 `TileMapLayer` (Floor + Walls) e o Player no centro (240,144).
+  - **Como a sala foi gerada:** `tools/build_room.gd` (script `SceneTree`) preenche os tiles via `set_cell()` e o Godot salva o `tile_map_data` no formato (PackedByteArray) correto da versão. Rodar de novo: `godot4 --headless --path . --script res://tools/build_room.gd`. Editável também direto no editor (pintando tiles).
+- **NPC Professor + diálogo:** ✅ primeiro NPC interativo no jogo.
+  - **Sprite:** `art/professor.png` (Mage1 do guild hall, frames 64×52). `scenes/professor_frames.tres` = `idle` com **1 frame só (parado)** — o resto da sheet é animação de "conjurar", que não combina com o tema. Limpei o "seam" de 1px entre frames.
+  - **Narrativa = tecnologia, não magia:** as falas usam "digitalizado / conexão estabelecida / infecção", sem feitiço. (O sprite de mago é só visual provisório do mentor.)
+  - **`scenes/professor.tscn`** — `StaticBody2D` (bloqueia passagem) + `AnimatedSprite2D` + `Area2D` (raio 28 detecta o player) + `Label` "[E] falar" que aparece quando o player chega perto. Falas editáveis no Inspetor (`@export lines`).
+  - **`scripts/professor.gd`** — detecta player pela tag de grupo `"player"`; ao apertar interagir, chama `Dialogue.start(lines, "Professor")`.
+  - **Sistema de diálogo reutilizável:** `scenes/dialogue_box.tscn` + `scripts/dialogue_box.gd`, registrado como **autoload `Dialogue`** (`project.godot`). API: `Dialogue.start([...], "Nome")`, `Dialogue.is_open()`. Caixa no rodapé (CanvasLayer), avança/fecha com a ação **`interact`**.
+  - **Input novo:** ação **`interact`** = E / Espaço / Enter (adicionada no Input Map).
+  - **Player:** agora entra no grupo `"player"` no `_ready()` (pra NPCs detectarem).
+- **Porta / transição entre cenas:** ✅ player anda até a porta e aperta **E** para trocar de cena (Saguão ↔ Setor de Suporte).
+  - **`scripts/door.gd`** — `Area2D` reutilizável. Exports no Inspetor: `target_scene` (`@export_file("*.tscn")`) e `prompt_text`. Quando o player está perto (detecção por grupo `"player"`) e o diálogo está fechado, ao apertar `interact` chama `get_tree().change_scene_to_file(target_scene)`. Como é por tecla (não por toque), **não** fica trocando de cena em loop.
+  - **`scenes/door.tscn`** — `Area2D` "Door" + `Sprite2D` (arte `art/door.png`) + `Trigger` (`CollisionShape2D`, `CircleShape2D` raio 24) + `Prompt` `Label`. O sprite usa **offset (0,0)** (a origem do nó = centro da porta), então a posição do nó na cena é onde a porta aparece.
+  - **Arte:** `art/door.png` — porta em arco recortada do dungeon pack, **32×29 px** (~2 tiles de largura). Recorte final do atlas: `crop((80,302,112,336))` e trim das linhas transparentes embaixo.
+  - **Posicionamento (encaixar na parede):** porta tem 32 de largura = 2 tiles; centralizar em x múltiplo de 16 cobre 2 colunas certinho.
+    - `main.tscn` → `DoorToSupport` em **(240,270)** na parede de baixo, `target_scene = setor_suporte.tscn`.
+    - `setor_suporte.tscn` → `DoorBack` em **(192,16)** na parede de cima, `target_scene = main.tscn`.
+  - ⚠️ Ainda **não** tem "spawn point": ao voltar pro Saguão o player nasce na posição fixa inicial (240,144), não ao lado da porta. (Melhoria futura.)
+- **Próximo:** decorar a sala (objetos/tochas/rachaduras do dungeon pack), primeiro inimigo (Worm) ou puzzle, coletáveis (cristais HP/mana), HUD de HP/mana.
