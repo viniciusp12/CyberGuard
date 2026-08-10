@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Compensa a navbar fixa quando o usuário chega por âncora. */
+  scroll-padding-top: 5.5rem;
+}
+
+html,
+body {
+  background: #16181b;
+  color: #e8e6e2;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: #e8a33d;
+  color: #16181b;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #16181b;
+}
+::-webkit-scrollbar-thumb {
+  background: #2e333a;
+  border: 3px solid #16181b;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3d444d;
+}
+
+/* Foco sempre visível e sempre com o mesmo desenho, em qualquer elemento.
+   Âmbar sobre chumbo tem contraste 8.2:1, bem acima do 3:1 que a WCAG pede
+   para indicador de foco. */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid #e8a33d;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@layer base {
+  /* Nunca deixar o texto quebrar a leitura por falta de contraste em
+     placeholders — o padrão do navegador é baixo demais. */
+  ::placeholder {
+    color: #858c95;
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-10;
+  }
+
+  .container-read {
+    @apply mx-auto w-full max-w-3xl px-5 sm:px-8;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Rótulo de campo de laudo: mono, caixa alta, tracking aberto.
+     Usado só em metadado — nunca em frase que alguém precise ler. */
+  .label-field {
+    @apply font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-ink-3;
+  }
+
+  /* Régua fina que separa blocos do laudo sem virar caixa. */
+  .rule {
+    @apply h-px w-full bg-line;
+  }
+
+  /* Link visível para pular a navegação, exigido para navegação por teclado. */
+  .skip-link {
+    @apply absolute left-4 top-4 z-[100] -translate-y-24 rounded-sm bg-signal-amber px-4 py-3
+           font-mono text-sm text-page transition-transform focus:translate-y-0;
+  }
+}
+
+/* Verbete do glossário alcançado por âncora (/glossario#https).
+   Sem isso, quem clica num termo no meio de um texto cai no meio de uma lista
+   longa sem saber qual das entradas era o alvo. */
+.verbete:target {
+  border-left: 2px solid #e8a33d;
+  padding-left: 1.25rem;
+}
+
+/* Revelação por máscara: o bloco não some e reaparece, ele é descoberto.
+   Aplicada por JS/Framer Motion via variantes; aqui fica só o caso CSS puro,
+   usado pela cascata do hero, que dispara no carregamento. */
+@keyframes mask-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.4;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.mask-in {
+  animation: mask-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Interruptor geral de movimento.
+   Tudo que anima no site passa por aqui — inclusive o scroll suave e as
+   variantes do Framer Motion, que leem o mesmo media query no JS. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .mask-in {
+    animation: none;
+    clip-path: none;
+    opacity: 1;
+  }
+}
