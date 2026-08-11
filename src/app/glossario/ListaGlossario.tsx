@@ -35,6 +35,7 @@ function normalizar(s: string) {
 export function ListaGlossario() {
   const [busca, setBusca] = useState("");
   const [ativo, setAtivo] = useState<string | null>(null);
+  const [indiceAberto, setIndiceAberto] = useState(false);
   const campoId = useId();
   const listaRef = useRef<HTMLDivElement>(null);
 
@@ -96,8 +97,15 @@ export function ListaGlossario() {
     </div>
   );
 
+  /**
+   * O índice é montado uma vez só e reaproveitado nos dois layouts.
+   *
+   * Antes ele era renderizado duas vezes — dentro do `<details>` do celular e
+   * de novo numa `<div>` só de desktop — o que duplicava 42 links e dois
+   * elementos `<nav>` com o mesmo rótulo acessível.
+   */
   const indice = (
-    <nav aria-label="Índice do glossário" className="mt-8 space-y-6">
+    <nav aria-label="Índice do glossário" className="mt-6 space-y-6">
       {gruposVisiveis.map((g) => (
         <div key={g.id}>
           <p className="label-field">{g.titulo}</p>
@@ -109,6 +117,11 @@ export function ListaGlossario() {
                   <a
                     href={`#${v.id}`}
                     aria-current={atual ? "true" : undefined}
+                    // No celular o índice vive recolhido: sem fechar ao
+                    // clicar, os 42 itens continuavam abertos empurrando o
+                    // verbete para fora da tela, e parecia que o link não
+                    // tinha levado a lugar nenhum.
+                    onClick={() => setIndiceAberto(false)}
                     className={`block border-l-2 py-1.5 pl-3 font-mono text-sm transition-colors duration-200 ${
                       atual
                         ? "border-signal-amber text-ink"
@@ -132,14 +145,26 @@ export function ListaGlossario() {
       <aside className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:self-start lg:overflow-y-auto lg:pb-8">
         {campoBusca}
 
-        <details className="mt-6 lg:hidden">
-          <summary className="flex min-h-touch cursor-pointer items-center font-mono text-sm text-ink-2">
-            Ver índice dos termos
-          </summary>
-          {indice}
-        </details>
+        {/* Celular: botão que abre e fecha o mesmo índice do desktop. */}
+        <button
+          type="button"
+          onClick={() => setIndiceAberto((v) => !v)}
+          aria-expanded={indiceAberto}
+          aria-controls="indice-glossario"
+          className="mt-4 flex min-h-touch w-full items-center justify-between rounded-sm border border-line px-4 font-mono text-sm text-ink-2 transition-colors duration-200 hover:text-ink lg:hidden"
+        >
+          {indiceAberto ? "Fechar índice" : "Ir direto a um termo"}
+          <span aria-hidden="true" className="text-ink-3">
+            {indiceAberto ? "×" : `${filtrados.length}`}
+          </span>
+        </button>
 
-        <div className="hidden lg:block">{indice}</div>
+        <div
+          id="indice-glossario"
+          className={indiceAberto ? "block" : "hidden lg:block"}
+        >
+          {indice}
+        </div>
       </aside>
 
       {/* Verbetes */}
@@ -165,38 +190,44 @@ export function ListaGlossario() {
                 {g.descricao}
               </p>
 
-              <dl className="mt-6 divide-y divide-line border-y border-line">
+              {/* Estrutura simples de propósito: `<div>` dentro de `<dl>` é
+                  válido em HTML5, mas confunde extensão de navegador e
+                  ferramenta de acessibilidade. Lista comum resolve igual. */}
+              <ul className="mt-6 divide-y divide-line border-y border-line">
                 {g.verbetes.map((v) => (
-                  <div
+                  <li
                     key={v.id}
                     id={v.id}
                     data-verbete
-                    className="verbete scroll-mt-24 py-7"
+                    // Sem `scroll-mt` aqui: o `scroll-padding-top` do <html>
+                    // já compensa a navbar fixa, e os dois somavam, jogando o
+                    // verbete para o meio da tela em vez do topo.
+                    className="verbete py-7"
                   >
-                    <dt className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <span className="font-mono text-lg font-semibold">
+                    <h3 className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                      <span className="font-mono text-lg font-semibold text-ink">
                         {v.termo}
                       </span>
                       {v.tambem && (
-                        <span className="font-mono text-sm text-ink-3">
+                        <span className="font-mono text-sm font-normal text-ink-3">
                           também: {v.tambem}
                         </span>
                       )}
-                    </dt>
-                    <dd className="mt-3">
-                      <p className="text-body leading-relaxed text-ink-2 text-pretty">
-                        <TextoRico>{v.definicao}</TextoRico>
+                    </h3>
+
+                    <p className="mt-3 text-body leading-relaxed text-ink-2 text-pretty">
+                      <TextoRico>{v.definicao}</TextoRico>
+                    </p>
+
+                    <div className="mt-4 border-l-2 border-line-strong py-1 pl-4">
+                      <p className="label-field">Por que isso importa</p>
+                      <p className="mt-1.5 text-body leading-relaxed text-ink-2 text-pretty">
+                        <TextoRico>{v.importa}</TextoRico>
                       </p>
-                      <div className="mt-4 border-l-2 border-line-strong py-1 pl-4">
-                        <p className="label-field">Por que isso importa</p>
-                        <p className="mt-1.5 text-body leading-relaxed text-ink-2 text-pretty">
-                          <TextoRico>{v.importa}</TextoRico>
-                        </p>
-                      </div>
-                    </dd>
-                  </div>
+                    </div>
+                  </li>
                 ))}
-              </dl>
+              </ul>
             </section>
           ))}
         </div>

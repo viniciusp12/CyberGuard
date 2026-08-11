@@ -77,6 +77,7 @@ CyberGuard-main/            ← pasta principal do projeto (onde o npm run dev r
 │       ├── golpes.ts                 ← os 4 pares de mensagens do quiz
 │       ├── glossario.ts              ← 37 verbetes (id vira âncora /glossario#id)
 │       ├── ia.ts                     ← triagem, mudanças e defesas da seção 04
+│       ├── trabalho.ts               ← 14 golpes corporativos + resposta a incidente
 │       ├── motion.ts                 ← variantes do Framer Motion
 │       ├── motion.ts                 ← variantes do Framer Motion
 │       └── utils.ts                  ← cn()
@@ -253,6 +254,33 @@ O eixo da parte 3 é: as defesas que sobrevivem são as que **não dependem de d
 
 ---
 
+## 🏢 Camada corporativa (`/no-trabalho`) — como escrever conteúdo novo
+
+Dados em `src/lib/trabalho.ts`. São **14 golpes em 5 famílias**: quem finge ser gente de dentro (4), dinheiro que muda de destino (3), acesso à conta de trabalho (3), código que entra junto (3), vazamento sem ataque (1).
+
+**Todo golpe tem quatro campos, e o terceiro é o que importa:**
+
+| Campo | O que vai nele |
+|---|---|
+| `comoChega` | O que a pessoa vê acontecer |
+| `porQueFunciona` | Qual gatilho psicológico ou falha de processo é explorado |
+| `pontoDeQuebra` | **O momento exato em que a corrente arrebenta** |
+| `oQueFazer` | A ação concreta, em uma ou duas frases |
+
+⚠️ Ao adicionar um golpe, o `pontoDeQuebra` **não pode ser conselho genérico**. Não é "tenha atenção", é o elo específico: "no botão de habilitar conteúdo — antes dele o arquivo é inerte, depois dele o código roda". É esse campo que separa este material de uma lista de boas práticas.
+
+**Decisão de escopo (agosto/2026):** esta página é **informativa, sem quiz**. A parte gamificada do projeto fica com outro integrante — não adicione interativo aqui sem o dev pedir.
+
+### A seção de cultura de reporte
+
+O eixo: o tamanho de um incidente é definido por quantos minutos passaram até alguém poder agir, não pela técnica do ataque. E o que mais alarga esse intervalo é vergonha, não falta de treinamento. A seção enfrenta as quatro frases que passam pela cabeça de quem acabou de clicar em algo errado, e fecha com um trecho dirigido a quem lidera.
+
+### O prazo da LGPD
+
+**Três dias úteis** para comunicar à ANPD e aos titulares, contados de quando a empresa soube que o incidente afetou dados pessoais. Fonte na tela: Resolução CD/ANPD nº 15/2024. Não altere esse número sem reconferir na fonte.
+
+---
+
 ## 📋 Regra importante — Server vs Client Components
 
 Pages com `export const metadata` **não podem** ser `"use client"`. Padrão adotado:
@@ -286,7 +314,7 @@ O hero ficava **vazio ao voltar para a home por navegação** (funcionava só de
 | `/agora` | 05 · checklist de 8 itens com porquê e impacto |
 | `/ja-cai` | 06 · primeiras horas em ordem + canais oficiais (server, funciona sem JS) |
 | `/glossario` | 37 termos explicados, com busca e índice lateral. Âncora por termo (`#https`) |
-| `/no-trabalho` | Camada corporativa Leroy Merlin + correção do mito do Wi-Fi público |
+| `/no-trabalho` | Camada corporativa: 14 golpes em 5 famílias, cultura de reporte, resposta a incidente + LGPD |
 | `/sobre` | Regras de precisão e acessibilidade do projeto |
 | `/contato` | Canais — sem formulário de propósito (não havia backend) |
 | `/ameacas` `/prevencao` | Redirect 301 → `/golpe` e `/agora` |

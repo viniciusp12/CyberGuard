@@ -283,6 +283,45 @@ export const VERBETES: Verbete[] = [
       "Vale conhecer os nomes porque a defesa muda de canal para canal: no SMS você consegue conferir o domínio do link, na ligação não há nada para conferir — só desligar e ligar de volta pelo número oficial.",
   },
   {
+    id: "quishing",
+    termo: "Quishing",
+    tambem: "golpe do QR code",
+    grupo: "golpes",
+    definicao:
+      "Phishing por QR code. Um adesivo é colado por cima do código original — na maquininha, no cartaz, na placa de estacionamento — e leva a uma chave PIX de terceiro ou a uma página falsa.",
+    importa:
+      "Nenhum ser humano lê um QR code a olho nu, então não existe como desconfiar do quadradinho em si. A única checagem possível vem depois: a tela de confirmação mostra o nome de quem vai receber. Ler esse nome é a defesa inteira.",
+  },
+  {
+    id: "bec",
+    termo: "Fraude do e-mail corporativo",
+    tambem: "BEC, golpe do boleto, golpe do CEO",
+    grupo: "golpes",
+    definicao:
+      "Uma mensagem se passa por diretoria, fornecedor ou cliente para desviar um pagamento. Muitas vezes vem de uma caixa de e-mail legítima que foi comprometida, no meio de uma conversa real que já estava acontecendo.",
+    importa:
+      "É a fraude que mais move dinheiro em ambiente corporativo, e todos os sinais clássicos falham: domínio confere, histórico confere, tom confere. A defesa não é olhar melhor — é ter uma regra de que mudança de dado bancário se confirma por voz, no número já cadastrado.",
+  },
+  {
+    id: "pretexting",
+    termo: "Pretexting",
+    grupo: "golpes",
+    definicao:
+      "Criar uma situação de fachada para coletar informação sem levantar suspeita. Ligações que se passam por candidato, pesquisador ou fornecedor novo, e que não pedem nada de valor — só mapeiam quem é quem, que sistema se usa, qual é a rotina.",
+    importa:
+      "Como não pede dinheiro nem senha, não aciona alarme nenhum. É a fase de preparação de uma fraude que chega semanas depois já sabendo os nomes certos, e é por isso que ela soa tão interna quando chega.",
+  },
+  {
+    id: "mfa-fatigue",
+    termo: "Bombardeio de notificação",
+    tambem: "MFA fatigue, push bombing",
+    grupo: "golpes",
+    definicao:
+      "O criminoso já tem a sua senha e dispara pedidos de aprovação de login em série, às vezes de madrugada, até que você aprove um por cansaço ou para fazer parar.",
+    importa:
+      "Mostra que ter verificação em duas etapas não basta se ela for por aprovação de toque. Um pedido que você não iniciou já é a prova de que a sua senha vazou — negar e trocar a senha na hora é a resposta, e aprovar “só para parar” entrega a conta.",
+  },
+  {
     id: "engenharia-social",
     termo: "Engenharia social",
     grupo: "golpes",

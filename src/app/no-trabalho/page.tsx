@@ -2,107 +2,31 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { TermosRelacionados } from "@/components/ui/TermosRelacionados";
+import { Fonte } from "@/components/ui/Fonte";
+import { CATEGORIAS, PASSOS_INCIDENTE, TOTAL_GOLPES } from "@/lib/trabalho";
 
 export const metadata: Metadata = {
   title: "Os mesmos golpes no trabalho",
   description:
-    "Fraude no expediente: pedido urgente da diretoria, boleto trocado, falso suporte de TI, ransomware e dados de cliente. Escrito para o contexto do varejo.",
+    "Quatorze fraudes que miram quem está no expediente — QR code trocado, login falso, bombardeio de MFA, boleto adulterado, ransomware — com o ponto exato em que cada uma quebra.",
 };
 
-type Ameaca = {
-  titulo: string;
-  comoChega: string;
-  porQueFunciona: string;
-  oQueFazer: string;
-};
-
-const AMEACAS: Ameaca[] = [
+const MEDOS = [
   {
-    titulo: "O falso suporte de TI",
-    comoChega:
-      "Alguém liga dizendo ser da TI, do time de segurança ou de um fornecedor de sistema. Fala com naturalidade, cita nomes internos que qualquer um encontra no LinkedIn, e pede sua senha ou o código de verificação “para resolver um chamado urgente antes do fim do expediente”.",
-    porQueFunciona:
-      "Explora autoridade e pressa ao mesmo tempo, e chega quando você está no meio de outra coisa. Recusar parece falta de colaboração.",
-    oQueFazer:
-      "TI nenhuma precisa da sua senha — ela tem acesso administrativo. Desligue e ligue de volta pelo ramal da lista interna, nunca pelo número que apareceu no visor. Um pedido legítimo sobrevive a essa conferência sem problema nenhum.",
+    medo: "“Vão achar que sou burro.”",
+    real: "Quem aplica isso faz o dia inteiro, testando o que funciona em milhares de pessoas. Cair é o resultado esperado de uma técnica boa chegando num dia ruim, não um teste de inteligência.",
   },
   {
-    titulo: "O pedido urgente da diretoria",
-    comoChega:
-      "Um e-mail ou WhatsApp assinado por alguém da liderança pede um pagamento fora do fluxo normal, com discrição e prazo apertado. O endereço é parecido com o corporativo, mas com uma letra trocada ou um domínio quase igual.",
-    porQueFunciona:
-      "Ninguém quer ser o funcionário que atrasou uma decisão da diretoria. A hierarquia faz o trabalho que a técnica não faria.",
-    oQueFazer:
-      "Todo pagamento fora do fluxo padrão exige confirmação por um segundo canal, com uma pessoa, por voz. Isso não é desconfiança da liderança — é o controle que existe justamente para proteger quem executa.",
+    medo: "“Vou levar bronca.”",
+    real: "Numa empresa que entendeu o problema, a bronca é por esconder, nunca por avisar. Se a sua não é assim ainda, avisar continua sendo a decisão certa — o estrago de esconder é maior, e ele sempre aparece.",
   },
   {
-    titulo: "O boleto e a nota fiscal trocados",
-    comoChega:
-      "Um fornecedor conhecido manda a cobrança de sempre, no formato de sempre — só que a conta de destino mudou, com a explicação de que “trocamos de banco”.",
-    porQueFunciona:
-      "Muitas vezes a caixa de e-mail do fornecedor foi comprometida de verdade, e a mensagem vem mesmo do endereço legítimo, no meio de uma conversa real.",
-    oQueFazer:
-      "Mudança de dados bancários de fornecedor sempre se confirma por telefone, no número já cadastrado — nunca no número que veio no e-mail novo.",
+    medo: "“Talvez não tenha sido nada, não quero dar trabalho.”",
+    real: "Falso alarme custa dez minutos de alguém. Alarme atrasado custa dias de operação. A segurança prefere cem avisos à toa a um silêncio de dois dias.",
   },
   {
-    titulo: "Anexo que executa em vez de abrir",
-    comoChega:
-      "Um pedido de orçamento, um currículo, uma segunda via de nota. O arquivo pede para “habilitar edição” ou “habilitar conteúdo” para ver direito, ou tem uma extensão incomum (.exe, .scr, .js, .iso, .lnk).",
-    porQueFunciona:
-      "O contexto é plausível e o pedido de habilitar parece uma etapa técnica chata, não uma decisão de segurança.",
-    oQueFazer:
-      "Habilitar conteúdo em documento recebido por e-mail é o passo que liga o código. Na dúvida, não abra: encaminhe para a TI. Um orçamento perdido custa menos que uma loja parada.",
-  },
-  {
-    titulo: "Ransomware",
-    comoChega:
-      "Quase sempre entra por um dos itens acima — um anexo aberto, uma credencial reutilizada, um acesso remoto exposto. Depois se espalha pela rede e criptografa arquivos e sistemas, exigindo pagamento.",
-    porQueFunciona:
-      "Não depende de um golpe espetacular. Depende de uma única porta destrancada em qualquer ponto da rede.",
-    oQueFazer:
-      "Se a tela pedir resgate, ou se arquivos começarem a virar nomes estranhos: desconecte a máquina da rede na hora — tire o cabo, desligue o Wi-Fi — e acione a TI. Não desligue o computador se puderem orientar o contrário, e não pague nada por conta própria.",
-  },
-  {
-    titulo: "Dados de cliente fora do lugar",
-    comoChega:
-      "Nem sempre é ataque. É a planilha com CPF exportada para o e-mail pessoal para adiantar o trabalho em casa, o print de cadastro mandado no grupo de WhatsApp da equipe, a foto do sistema com dados na tela.",
-    porQueFunciona:
-      "A intenção é boa e o atalho resolve o dia. O vazamento só aparece depois, quando aquele arquivo já está em quatro lugares.",
-    oQueFazer:
-      "Dado pessoal de cliente circula só pelos sistemas e canais autorizados, e só na quantidade necessária para a tarefa. Suspeita de vazamento vai imediatamente para o encarregado de dados — a LGPD trabalha com prazo, e o relógio começa na descoberta.",
-  },
-];
-
-const INCIDENTE = [
-  {
-    n: "01",
-    titulo: "Avise antes de tentar consertar",
-    texto:
-      "O tempo entre o clique e o aviso é o que define o tamanho do estrago. Avisar em cinco minutos com vergonha vale muito mais que avisar em dois dias com uma explicação pronta.",
-  },
-  {
-    n: "02",
-    titulo: "Isole a máquina, não a informação",
-    texto:
-      "Desconecte da rede para conter, mas conte tudo o que aconteceu, inclusive a parte que parece constrangedora. Detalhe omitido é investigação que começa errada.",
-  },
-  {
-    n: "03",
-    titulo: "Não apague nada",
-    texto:
-      "O e-mail, o arquivo, o histórico. Apagar por vergonha destrói a evidência de que a segurança precisa para saber até onde o problema chegou.",
-  },
-  {
-    n: "04",
-    titulo: "Anote os horários",
-    texto:
-      "Quando chegou, quando você clicou, quando percebeu, o que fez no meio. Essa linha do tempo é a primeira coisa que vão pedir.",
-  },
-  {
-    n: "05",
-    titulo: "Troque as credenciais envolvidas",
-    texto:
-      "Com orientação da TI, e em todos os lugares onde aquela senha foi usada — inclusive nos pessoais, se houver reuso.",
+    medo: "“Vou esperar para ver se dá problema.”",
+    real: "É a pior das opções. Nas primeiras horas dá para bloquear acesso, cancelar pagamento e conter o alastramento. Depois, resta contar o prejuízo.",
   },
 ];
 
@@ -112,7 +36,7 @@ export default function NoTrabalhoPage() {
       <PageHeader
         eyebrow="Camada corporativa · Challenge Leroy Merlin"
         title="Os mesmos golpes, quando você está no trabalho"
-        description="Muda o alvo, não o método. No expediente, a pressa vem da hierarquia e do fechamento do mês — e o prejuízo deixa de ser só seu."
+        description="Muda o alvo, não o método. No expediente a pressa vem da hierarquia e do fechamento do mês, o dinheiro não é seu, e o prejuízo respinga em cliente e colega."
       />
 
       <section className="py-14 md:py-20">
@@ -127,38 +51,91 @@ export default function NoTrabalhoPage() {
             </p>
           </div>
 
-          <ul className="space-y-px bg-line">
-            {AMEACAS.map((a) => (
-              <li key={a.titulo} className="bg-page py-8 md:px-6">
-                <h2 className="font-mono text-xl font-semibold text-balance md:text-2xl">
-                  {a.titulo}
-                </h2>
+          {/* Índice: com 14 golpes, uma lista corrida vira parede de texto. */}
+          <nav aria-label="Categorias" className="mb-14">
+            <p className="label-field">
+              {TOTAL_GOLPES} golpes, em cinco famílias
+            </p>
+            <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {CATEGORIAS.map((c) => (
+                <li key={c.id}>
+                  {/* A contagem vai à direita: à esquerda ela era lida como
+                      número de ordem, igual às seções 01–06 do site. */}
+                  <a
+                    href={`#${c.id}`}
+                    className="flex min-h-touch items-center justify-between gap-3 rounded-sm border border-line px-4 font-mono text-sm text-ink-2 transition-colors duration-200 hover:border-signal-amber hover:text-signal-amber"
+                  >
+                    {c.titulo}
+                    <span className="shrink-0 text-xs text-ink-3">
+                      {`${c.golpes.length} golpes`}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-                <div className="mt-5 grid gap-6 md:grid-cols-3">
-                  <div>
-                    <p className="label-field">Como chega</p>
-                    <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                      {a.comoChega}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="label-field">Por que funciona</p>
-                    <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                      {a.porQueFunciona}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="label-field text-signal-amber">
-                      O que fazer
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                      {a.oQueFazer}
-                    </p>
-                  </div>
-                </div>
-              </li>
+          <div className="space-y-16">
+            {CATEGORIAS.map((cat) => (
+              <section
+                key={cat.id}
+                id={cat.id}
+                className="scroll-mt-24"
+                aria-labelledby={`titulo-${cat.id}`}
+              >
+                <h2
+                  id={`titulo-${cat.id}`}
+                  className="font-mono text-2xl font-semibold text-balance md:text-3xl"
+                >
+                  {cat.titulo}
+                </h2>
+                <p className="mt-3 max-w-2xl text-body text-ink-2 text-pretty">
+                  {cat.resumo}
+                </p>
+
+                <ul className="mt-8 space-y-px bg-line">
+                  {cat.golpes.map((g) => (
+                    <li key={g.id} className="bg-page py-8 md:px-6">
+                      <h3 className="font-mono text-xl font-semibold text-balance">
+                        {g.titulo}
+                      </h3>
+
+                      <div className="mt-5 grid gap-6 md:grid-cols-2">
+                        <div>
+                          <p className="label-field">Como chega</p>
+                          <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                            {g.comoChega}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="label-field">Por que funciona</p>
+                          <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                            {g.porQueFunciona}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="mt-5 border-l-2 border-signal-amber py-2 pl-4">
+                        <p className="label-field text-signal-amber">
+                          Onde o golpe quebra
+                        </p>
+                        <p className="mt-1.5 text-body leading-relaxed text-ink text-pretty">
+                          {g.pontoDeQuebra}
+                        </p>
+                      </div>
+
+                      <div className="mt-4">
+                        <p className="label-field">O que fazer</p>
+                        <p className="mt-1.5 text-sm leading-relaxed text-ink-2">
+                          {g.oQueFazer}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
@@ -196,42 +173,128 @@ export default function NoTrabalhoPage() {
         </div>
       </section>
 
+      {/* Cultura de reporte — a parte que quase nenhum material corporativo tem. */}
       <section className="py-14 md:py-20">
+        <div className="container-read">
+          <p className="label-field">Contragolpe</p>
+          <h2 className="mt-3 font-mono text-2xl font-semibold text-balance md:text-3xl">
+            Avisar rápido vale mais que qualquer configuração
+          </h2>
+
+          <p className="mt-5 text-bodyLg leading-relaxed text-ink-2 text-pretty">
+            O tamanho de um incidente quase nunca é definido pela técnica do
+            ataque. É definido por quantos minutos passaram entre a pessoa
+            perceber e alguém poder agir. Nesse intervalo dá para bloquear um
+            acesso, sustar um pagamento, tirar uma máquina da rede. Depois dele,
+            resta contar o prejuízo.
+          </p>
+
+          <p className="mt-4 text-body leading-relaxed text-ink-2 text-pretty">
+            E o que mais alarga esse intervalo não é falta de treinamento. É
+            vergonha. Por isso vale enfrentar as quatro frases que passam pela
+            cabeça de quem acabou de clicar em algo errado:
+          </p>
+
+          <dl className="mt-8 divide-y divide-line border-y border-line">
+            {MEDOS.map((m) => (
+              <div key={m.medo} className="py-5">
+                <dt className="font-mono text-base text-ink">{m.medo}</dt>
+                <dd className="mt-2 text-body leading-relaxed text-ink-2 text-pretty">
+                  {m.real}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="mt-10 border-l-2 border-signal-green py-2 pl-5">
+            <p className="label-field text-signal-green">
+              Se você lidera uma equipe
+            </p>
+            <p className="mt-2 text-body leading-relaxed text-ink-2 text-pretty">
+              A sua reação ao primeiro aviso define se haverá um segundo. Quem
+              é repreendido ao reportar não deixa de errar — deixa de contar, e
+              o próximo incidente só aparece quando já é grande. Agradecer o
+              aviso na frente da equipe, mesmo quando foi falso alarme, é a
+              medida de segurança mais barata que existe e não depende de
+              orçamento nenhum.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Resposta a incidente. */}
+      <section className="border-t border-line bg-panel/40 py-14 md:py-20">
         <div className="container-read">
           <h2 className="font-mono text-2xl font-semibold">
             Se acontecer com você no expediente
           </h2>
+          <p className="mt-3 text-body text-ink-2 text-pretty">
+            A ordem importa mais que a rapidez de cada passo isolado.
+          </p>
+
           <ol className="mt-8 divide-y divide-line border-y border-line">
-            {INCIDENTE.map((i) => (
-              <li key={i.n} className="flex gap-5 py-6">
-                <span className="font-mono text-sm text-signal-amber">
-                  {i.n}
-                </span>
-                <div>
-                  <h3 className="font-mono text-lg font-semibold">{i.titulo}</h3>
-                  <p className="mt-2 text-body leading-relaxed text-ink-2 text-pretty">
-                    {i.texto}
-                  </p>
+            {PASSOS_INCIDENTE.map((i) => (
+              <li key={i.n} className="py-6">
+                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                  <span className="font-mono text-sm font-semibold text-signal-amber">
+                    {i.n}
+                  </span>
+                  <span className="label-field">{i.quando}</span>
                 </div>
+                <h3 className="mt-2 font-mono text-lg font-semibold text-balance">
+                  {i.titulo}
+                </h3>
+                <p className="mt-2 text-body leading-relaxed text-ink-2 text-pretty">
+                  {i.texto}
+                </p>
               </li>
             ))}
           </ol>
 
+          <div className="mt-10 rounded-sm border border-line bg-panel p-6">
+            <p className="label-field">O prazo legal, para quem precisa saber</p>
+            <p className="mt-3 text-body leading-relaxed text-ink-2 text-pretty">
+              Quando um incidente de segurança atinge dados pessoais e pode
+              acarretar risco relevante às pessoas afetadas, o controlador tem{" "}
+              <strong className="font-semibold text-ink">
+                três dias úteis
+              </strong>{" "}
+              para comunicar a Autoridade Nacional de Proteção de Dados e os
+              titulares. O prazo conta a partir do momento em que a empresa
+              toma conhecimento de que o incidente afetou dados pessoais.
+            </p>
+            <p className="mt-3 text-body leading-relaxed text-ink-2 text-pretty">
+              É por isso que o seu aviso rápido não é só boa vontade: ele é o
+              que faz o relógio começar cedo o bastante para a empresa
+              conseguir cumprir a lei. Quem conduz essa comunicação é o
+              encarregado de dados, nunca você por conta própria.
+            </p>
+            <Fonte
+              autor="ANPD"
+              obra="Resolução CD/ANPD nº 15, Regulamento de Comunicação de Incidente de Segurança"
+              ano="2024"
+              href="https://www.gov.br/anpd/pt-br/assuntos/noticias/anpd-aprova-o-regulamento-de-comunicacao-de-incidente-de-seguranca"
+            />
+          </div>
+
           <TermosRelacionados
             ids={[
-              "https",
-              "vpn",
-              "rede-aberta",
+              "phishing",
+              "engenharia-social",
+              "2fa",
               "ransomware",
               "malware",
-              "engenharia-social",
+              "vazamento",
               "lgpd",
+              "vpn",
+              "rede-aberta",
             ]}
           />
 
           <div className="mt-10 border-t border-line pt-8">
             <p className="text-body text-ink-2">
-              Fora do expediente, o alvo volta a ser você e a sua família.
+              Fora do expediente, o alvo volta a ser você e a sua família — e o
+              método é exatamente o mesmo.
             </p>
             <Link
               href="/golpe"

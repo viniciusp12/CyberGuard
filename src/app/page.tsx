@@ -76,9 +76,11 @@ export default function HomePage() {
             <div>
               <p className="text-body leading-relaxed text-ink-2 text-pretty">
                 No expediente muda o alvo, não o método: em vez do PIX da
-                família, é a nota fiscal de um fornecedor, o pedido urgente da
-                diretoria, o dado do cliente. Esta parte foi escrita para o
-                contexto do varejo, dentro do Challenge com a Leroy Merlin.
+                família, é o QR code trocado na maquininha, o boleto do
+                fornecedor com a conta alterada, a tela falsa de login
+                corporativo. São quatorze fraudes, cada uma com o ponto exato em
+                que quebra — mais a parte que quase nenhum material tem: por que
+                avisar em cinco minutos vale mais que qualquer configuração.
               </p>
               <Link
                 href="/no-trabalho"

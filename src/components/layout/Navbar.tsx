@@ -41,7 +41,11 @@ export function Navbar() {
           />
         </Link>
 
-        <nav aria-label="Seções" className="hidden items-center gap-1 lg:flex">
+        {/* A barra completa só cabe a partir de xl. Abaixo disso tudo vai para
+            o menu recolhido — que contém SECOES e SECUNDARIOS inteiros, para
+            nenhuma página ficar inalcançável, como já aconteceu com
+            /no-trabalho quando ela só existia no array secundário. */}
+        <nav aria-label="Seções" className="hidden items-center gap-1 xl:flex">
           {SECOES.map((s) => {
             const ativo = pathname === s.href;
             return (
@@ -70,16 +74,25 @@ export function Navbar() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
-          <Link
-            href="/glossario"
-            className="flex min-h-touch items-center rounded-sm px-3 font-mono text-sm text-ink-2 transition-colors duration-200 hover:text-ink"
-          >
-            Glossário
-          </Link>
+        <div className="hidden items-center gap-1 xl:flex">
+          {SECUNDARIOS.filter((s) => s.href !== "/sobre").map((s) => (
+            <Link
+              key={s.href}
+              href={s.href}
+              aria-current={pathname === s.href ? "page" : undefined}
+              className={cn(
+                "flex min-h-touch items-center rounded-sm px-3 font-mono text-sm transition-colors duration-200",
+                pathname === s.href
+                  ? "text-ink"
+                  : "text-ink-2 hover:bg-panel hover:text-ink",
+              )}
+            >
+              {s.label}
+            </Link>
+          ))}
           <Link
             href="/ja-cai"
-            className="flex min-h-touch items-center rounded-sm border border-signal-red/50 px-4 font-mono text-sm text-signal-red transition-colors duration-200 hover:bg-signal-redDim"
+            className="ml-1 flex min-h-touch items-center rounded-sm border border-signal-red/50 px-4 font-mono text-sm text-signal-red transition-colors duration-200 hover:bg-signal-redDim"
           >
             Já caí num golpe
           </Link>
@@ -90,7 +103,7 @@ export function Navbar() {
           aria-expanded={aberto}
           aria-controls="menu-mobile"
           onClick={() => setAberto((v) => !v)}
-          className="flex min-h-touch min-w-touch items-center justify-center rounded-sm border border-line font-mono text-sm text-ink lg:hidden"
+          className="flex min-h-touch min-w-touch items-center justify-center rounded-sm border border-line px-4 font-mono text-sm text-ink xl:hidden"
         >
           {aberto ? "Fechar" : "Menu"}
         </button>
@@ -99,7 +112,7 @@ export function Navbar() {
       {aberto && (
         <div
           id="menu-mobile"
-          className="border-t border-line bg-page lg:hidden"
+          className="border-t border-line bg-page xl:hidden"
         >
           <div className="container-page flex flex-col py-3">
             <Link
