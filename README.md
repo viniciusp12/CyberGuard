@@ -16,67 +16,27 @@ disso saiu do aparelho — mas qualquer site consegue ver.
 - **Next.js 15** (App Router) + **TypeScript**
 - **Tailwind CSS 3** — tema "laudo forense", chumbo com sinal âmbar/vermelho/verde
 - **Framer Motion** para as revelações por scroll
-- **Prisma ORM** + **PostgreSQL** (só para a área autenticada)
-- **JWT** (jose) + **bcrypt** para autenticação
 
 Fontes: **Inter Tight** (prosa) e **IBM Plex Mono** (manchete, rótulo e dado).
+
+**Sem banco de dados, sem backend, sem variáveis de ambiente.** É um site
+estático: todas as páginas são pré-renderizadas no build e tudo que é
+interativo roda no navegador de quem visita. Isso não é limitação, é o
+argumento central do site — um site sobre privacidade que não coleta nada.
 
 ---
 
 ## Como rodar
 
-Pré-requisitos: Node 20+ e, apenas se você for mexer em login/cadastro, um
-PostgreSQL acessível.
-
 ```bash
 npm install
+```
+
+```bash
 npm run dev
 ```
 
-Acesse **http://localhost:3000**.
-
-Todo o conteúdo público — home, teste de senha, quiz de golpes, anatomia, IA,
-checklist, resposta a incidente e glossário — funciona **sem banco de dados**.
-O Postgres só é necessário para `/login`, `/registro` e `/dashboard`.
-
-### Com banco (área autenticada)
-
-```bash
-cp .env.example .env
-```
-
-Ajuste `DATABASE_URL` e `JWT_SECRET` no `.env`, depois crie as tabelas:
-
-```bash
-npx prisma db push
-```
-
-Criar um usuário administrador:
-
-```bash
-npm run create-admin -- admin@cyberguard.local
-```
-
-O script sorteia uma senha forte e a imprime **uma única vez**. Para escolher a
-senha, passe como segundo argumento. Não existe senha padrão em código de
-propósito — credencial fixa em repositório sobrevive até produção sem ninguém
-perceber.
-
----
-
-## Variáveis de ambiente
-
-| Variável | Descrição |
-|---|---|
-| `DATABASE_URL` | Connection string do Postgres |
-| `JWT_SECRET` | Segredo para assinar tokens (32+ caracteres aleatórios) |
-| `NEXT_PUBLIC_APP_NAME` | Nome exibido no app |
-
-Gerar um segredo forte:
-
-```bash
-openssl rand -base64 32
-```
+Acesse **http://localhost:3000**. Não precisa configurar mais nada.
 
 ---
 
@@ -94,8 +54,7 @@ openssl rand -base64 32
 | `/glossario` | 37 termos técnicos em português comum, com busca |
 | `/no-trabalho` | Camada corporativa Leroy Merlin |
 | `/sobre` | Regras de precisão e acessibilidade do projeto |
-| `/contato` | Canais (sem formulário — não há backend para ele) |
-| `/login` `/registro` `/dashboard` | Área autenticada |
+| `/contato` | Canais (sem formulário — não há backend) |
 
 `/ameacas` e `/prevencao`, da versão anterior, redirecionam para `/golpe` e
 `/agora`.
@@ -129,18 +88,29 @@ npm run dev          # servidor de desenvolvimento
 npm run build        # build de produção
 npm run start        # rodar o build
 npm run typecheck    # tsc --noEmit
-npm run db:push      # sincronizar o schema do Prisma
-npm run create-admin # criar ou promover um usuário ADMIN
 ```
 
 ---
 
 ## Deploy
 
-Qualquer host que rode Node serve, com um proxy reverso (Caddy ou Nginx) na
-frente para HTTPS.
+Site estático — qualquer host serve, sem configuração. Na Vercel, basta
+conectar o repositório: não há variável de ambiente para preencher.
 
-Se não for usar a área autenticada, o site roda sem banco nenhum.
+---
+
+## Escopo
+
+Este repositório contém **apenas o site**. A área autenticada (login, cadastro,
+painel), o schema do banco e os scripts de administração foram removidos em
+agosto de 2026, quando o projeto se dividiu — o site ficou com um integrante e
+o jogo mais o backend com outro.
+
+O código removido continua no histórico do git, no commit anterior à remoção,
+caso alguém precise retomá-lo.
+
+A pasta `Jogo/` guarda o protótipo em Godot e é mantida por outro integrante.
+Os assets do CraftPix não são versionados aqui por restrição de licença.
 
 ---
 

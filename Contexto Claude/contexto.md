@@ -13,6 +13,16 @@
 - **Camada corporativa secundária:** `/no-trabalho`, escrita para o contexto do varejo Leroy Merlin
 - Abordagem: susto controlado + mecanismo. A pessoa aprende interagindo, não lendo aviso
 
+### 🔀 Divisão de escopo (agosto/2026)
+
+O projeto foi dividido entre os integrantes. **Este repositório é só o site**, mantido pelo Vinicius; o jogo e o backend ficaram com outro integrante.
+
+Foram **removidos** daqui: login, cadastro, painel, rotas de API, middleware de sessão, schema Prisma, scripts de admin e o `.env.example`. Sem banco, sem backend, sem variável de ambiente.
+
+⚠️ **Não reintroduza autenticação ou banco neste repositório** sem o dev pedir explicitamente. Além de fugir do escopo acordado, é o que tornava todas as páginas dinâmicas — hoje são todas estáticas. O código removido está no histórico do git, no commit anterior à remoção, caso alguém precise consultar.
+
+A pasta `Jogo/` continua aqui, mas é mantida pelo outro integrante.
+
 ### Conceito central — "Você já está exposto"
 
 A home revela ao vivo o que o navegador entrega sobre o visitante sem que ele digite nada, em cascata, como um dossiê sendo montado. Fecha com a virada: nada disso saiu do navegador, mas qualquer site consegue ver.
@@ -49,7 +59,7 @@ CyberGuard-main/            ← pasta principal do projeto (onde o npm run dev r
 │   │   ├── no-trabalho/page.tsx      ← camada corporativa Leroy Merlin
 │   │   ├── sobre/page.tsx            ← regras de precisão do projeto
 │   │   ├── contato/page.tsx          ← sem formulário, de propósito
-│   │   ├── dashboard/ login/ registro/
+│   │   ├── contato/page.tsx          ← sem formulário, de propósito
 │   │   └── globals.css               ← tokens, foco visível, prefers-reduced-motion
 │   ├── components/
 │   │   ├── home/
@@ -68,8 +78,8 @@ CyberGuard-main/            ← pasta principal do projeto (onde o npm run dev r
 │       ├── glossario.ts              ← 37 verbetes (id vira âncora /glossario#id)
 │       ├── ia.ts                     ← triagem, mudanças e defesas da seção 04
 │       ├── motion.ts                 ← variantes do Framer Motion
-│       └── auth.ts · prisma.ts · utils.ts
-├── scripts/create-admin.ts           ← cria/promove ADMIN, senha sorteada
+│       ├── motion.ts                 ← variantes do Framer Motion
+│       └── utils.ts                  ← cn()
 └── Contexto Claude/
     └── contexto.md                   ← este arquivo
 ```
@@ -86,7 +96,6 @@ CyberGuard-main/            ← pasta principal do projeto (onde o npm run dev r
 | React | 19.0.0 | UI |
 | Framer Motion | 11.11.17 | Animações |
 | Tailwind CSS | 3.4.15 | Estilização |
-| Prisma | 5.22.0 | ORM (só para a área autenticada) |
 | TypeScript | 5.6.3 | Tipagem |
 
 **Fontes Google:** Inter Tight (corpo), IBM Plex Mono (manchete, rótulo e dado)
@@ -95,21 +104,18 @@ CyberGuard-main/            ← pasta principal do projeto (onde o npm run dev r
 
 ---
 
-## ⚡ Desempenho — o que já foi tentado e revertido
+## ⚡ Desempenho
 
-**Estado atual:** todas as rotas são dinâmicas (`ƒ` no build), porque o layout raiz chama `getCurrentUser()` para a navbar mostrar o primeiro nome de quem está logado. Home em ~151 KB de first load, `/anatomia` em ~148 KB.
+**Estado atual:** todas as 14 rotas são **estáticas** (`○` no build). Não há renderização no servidor a cada visita, não há função serverless: o build gera HTML e a Vercel serve de CDN.
 
-Em agosto/2026 houve uma tentativa de otimização que foi **revertida a pedido do dev**, depois de uma sequência de erros durante o processo. O que ela fazia e quanto rendia, caso alguém queira retomar com mais calma:
+Isso veio de graça ao remover a área autenticada. O que tornava tudo dinâmico era o `getCurrentUser()` no layout raiz, que chamava `cookies()` para a navbar mostrar o nome de quem estava logado. Sem login, sem navbar personalizada, sem dinamismo.
 
-| Mudança | Ganho medido | Custo |
-|---|---|---|
-| Tirar `getCurrentUser()` do layout raiz | Todas as páginas de conteúdo viram estáticas (`○`) | Navbar deixa de mostrar o nome; sempre "Entrar" |
-| Trocar Framer Motion por `IntersectionObserver` + CSS | ~40 KB por página (home 151→114 KB, anatomia 148→110 KB) | Componente `Reveal` próprio para manter |
+> Houve uma tentativa anterior de conseguir o mesmo efeito **mantendo** o login, revertida a pedido do dev. Ela também trocava o Framer Motion por `IntersectionObserver` + CSS, o que rendia mais ~40 KB por página (home 151→114 KB, anatomia 148→110 KB). Essa parte segue disponível no histórico, caso um dia o peso do Framer Motion incomode.
 
-⚠️ Se for retomar, três armadilhas já mapeadas:
-1. Com páginas estáticas, `/login` quebra o build com `useSearchParams() should be wrapped in a suspense boundary` — precisa de `<Suspense>` em volta do formulário.
-2. Ao trocar configuração de build ou dependências, **apague o `.next`** antes de rebuildar. Cache stale já produziu um `Cannot find module for page: /api/auth/register` sem relação nenhuma com o código.
-3. **Nunca alterar className ou atributo do `<html>`/`<body>` por script antes da hidratação.** A tentativa de marcar `.js` no `<html>` para proteger quem navega sem JavaScript causou erro de hidratação — o servidor mandava uma className e o cliente já tinha outra quando o React acordava para comparar. Se algum dia for inevitável, o caminho é `suppressHydrationWarning`; melhor ainda é `@media (scripting: enabled)` no CSS, que não precisa de script nenhum.
+⚠️ Armadilhas já mapeadas, para quem for mexer em build:
+1. Ao trocar configuração de build ou dependências, **apague o `.next`** antes de rebuildar. Cache stale já produziu um `Cannot find module for page: ...` sem relação nenhuma com o código.
+2. **Nunca alterar className ou atributo do `<html>`/`<body>` por script antes da hidratação.** Uma tentativa de marcar `.js` no `<html>` causou erro de hidratação — o servidor mandava uma className e o cliente já tinha outra quando o React acordava para comparar. Se algum dia for inevitável, o caminho é `suppressHydrationWarning`; melhor ainda é `@media (scripting: enabled)` no CSS, que não precisa de script nenhum.
+3. Se alguma página estática passar a usar `useSearchParams()`, o build quebra com `should be wrapped in a suspense boundary` — precisa de `<Suspense>` em volta do componente cliente.
 
 **Recomendação de processo, aprendida na marra:** o dev deixa `npm run dev` rodando enquanto eu trabalho, então ele vê **todo estado intermediário quebrado** de uma refatoração grande. Refatoração ampla deve ser feita em passos pequenos, cada um com build passando, e não num bloco só.
 
@@ -265,19 +271,15 @@ O hero ficava **vazio ao voltar para a home por navegação** (funcionava só de
 | `/no-trabalho` | Camada corporativa Leroy Merlin + correção do mito do Wi-Fi público |
 | `/sobre` | Regras de precisão e acessibilidade do projeto |
 | `/contato` | Canais — sem formulário de propósito (não havia backend) |
-| `/login` `/registro` `/dashboard` | Auth (inalterada em comportamento, só restilizada) |
 | `/ameacas` `/prevencao` | Redirect 301 → `/golpe` e `/agora` |
 
 ---
 
 ## ⚠️ Observações importantes
 
-- O formulário de contato foi **removido** — um formulário sem backend dá a impressão falsa de envio, e num site sobre golpes isso é inaceitável. Volta quando houver integração
-- Auth usa JWT (`JWT_SECRET` via env)
+- O formulário de contato foi **removido** — um formulário sem backend dá a impressão falsa de envio, e num site sobre golpes isso é inaceitável
 - Comandos de verificação: `npm run typecheck` (tsc --noEmit) e `npm run build`
-- Criar admin: `npm run create-admin -- <email> [senha]` (`scripts/create-admin.ts`). Sem senha no argumento, sorteia uma forte e imprime uma vez só. **Não existe senha padrão em código** de propósito — credencial fixa em repositório sobrevive até produção sem ninguém notar. Precisa do Postgres no ar e de `DATABASE_URL` no `.env`
-- **Docker foi removido do projeto** (agosto/2026, a pedido do dev). Não existem mais `docker-compose.yml`, `Dockerfile` nem `.dockerignore`, e o `next.config.ts` deixou de usar `output: "standalone"`, que só servia para a imagem. Rodar é `npm install` e `npm run dev`
-- **Todo o conteúdo público funciona sem banco nenhum.** O Postgres só é necessário para `/login`, `/registro` e `/dashboard` — dá para desenvolver o site inteiro sem subir banco
+- **Docker foi removido do projeto** (agosto/2026, a pedido do dev). Não existem mais `docker-compose.yml`, `Dockerfile` nem `.dockerignore`, e o `next.config.ts` deixou de usar `output: "standalone"`, que só servia para a imagem
 - `.next/` pode ficar em cache desatualizado — deletar se mudanças não aparecerem, e **sempre** depois de mexer em configuração de build ou dependências
 - **Sistema operacional:** o dev usa **Linux e Windows** (dual). Sempre documentar comandos para **ambos**:
 

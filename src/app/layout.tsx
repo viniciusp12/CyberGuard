@@ -3,7 +3,6 @@ import { Inter_Tight, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { getCurrentUser } from "@/lib/auth";
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
@@ -35,13 +34,11 @@ export const metadata: Metadata = {
   ],
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
-
   return (
     <html
       lang="pt-BR"
@@ -51,7 +48,7 @@ export default async function RootLayout({
         <a href="#conteudo" className="skip-link">
           Pular para o conteúdo
         </a>
-        <Navbar user={user ? { name: user.name, email: user.email } : null} />
+        <Navbar />
         <main id="conteudo" className="flex-1">
           {children}
         </main>

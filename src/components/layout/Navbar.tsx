@@ -19,9 +19,7 @@ const SECUNDARIOS = [
   { href: "/sobre", label: "Sobre o projeto" },
 ];
 
-type NavUser = { name: string; email: string } | null;
-
-export function Navbar({ user }: { user: NavUser }) {
+export function Navbar() {
   const pathname = usePathname();
   const [aberto, setAberto] = useState(false);
 
@@ -85,21 +83,6 @@ export function Navbar({ user }: { user: NavUser }) {
           >
             Já caí num golpe
           </Link>
-          {user ? (
-            <Link
-              href="/dashboard"
-              className="flex min-h-touch items-center rounded-sm px-3 font-mono text-sm text-ink-2 transition-colors hover:text-ink"
-            >
-              {user.name.split(" ")[0]}
-            </Link>
-          ) : (
-            <Link
-              href="/login"
-              className="flex min-h-touch items-center rounded-sm px-3 font-mono text-sm text-ink-3 transition-colors hover:text-ink-2"
-            >
-              Entrar
-            </Link>
-          )}
         </div>
 
         <button
@@ -142,18 +125,11 @@ export function Navbar({ user }: { user: NavUser }) {
               <Link
                 key={s.href}
                 href={s.href}
-                className="flex min-h-touch items-center border-b border-line font-mono text-base text-ink-2"
+                className="flex min-h-touch items-center border-b border-line font-mono text-base text-ink-2 last:border-b-0"
               >
                 {s.label}
               </Link>
             ))}
-
-            <Link
-              href={user ? "/dashboard" : "/login"}
-              className="flex min-h-touch items-center font-mono text-base text-ink-3"
-            >
-              {user ? `Painel · ${user.name.split(" ")[0]}` : "Entrar"}
-            </Link>
           </div>
         </div>
       )}
