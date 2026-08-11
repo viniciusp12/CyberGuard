@@ -71,9 +71,12 @@ export function Indice() {
         const urgente = s.acao === "urgente";
         return (
           <motion.li key={s.n} variants={item} className="border-b border-line">
+            {/* A última coluna precisa caber "interativo" mais a seta na mesma
+                linha: em mono com tracking aberto isso passa de 7rem, e as
+                6rem anteriores empurravam a seta para baixo. */}
             <Link
               href={s.href}
-              className="group grid items-baseline gap-x-8 gap-y-2 py-7 transition-colors duration-200 hover:bg-panel/60 md:grid-cols-[3rem_minmax(0,1fr)_minmax(0,1.4fr)_6rem] md:px-3"
+              className="group grid items-baseline gap-x-8 gap-y-2 py-7 transition-colors duration-200 hover:bg-panel/60 md:grid-cols-[3rem_minmax(0,1fr)_minmax(0,1.4fr)_7.5rem] md:px-3"
             >
               <span
                 className={`font-mono text-sm ${
@@ -92,7 +95,7 @@ export function Indice() {
               </p>
 
               <span
-                className={`label-field md:text-right ${
+                className={`label-field whitespace-nowrap md:text-right ${
                   urgente ? "text-signal-red" : ""
                 }`}
               >

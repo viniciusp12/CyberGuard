@@ -143,7 +143,17 @@ export const VERBETES: Verbete[] = [
     definicao:
       "Técnica de juntar vários dados pequenos e inofensivos — resolução de tela, fuso, idioma, fontes instaladas, número de núcleos — até que a combinação fique única o bastante para reconhecer você sem cookie e sem login.",
     importa:
-      "Cada dado isolado não diz nada; o conjunto identifica. É por isso que o dossiê da home mostra tantos campos pequenos: sozinho, “12 núcleos” é irrelevante, mas somado ao resto vira uma etiqueta. Apagar cookies não desfaz fingerprinting.",
+      "Cada dado isolado não diz nada; o conjunto identifica. É por isso que o dossiê da home mostra tantos campos pequenos: sozinho, “12 núcleos” é irrelevante, mas somado ao resto vira uma etiqueta. Apagar cookies não desfaz fingerprinting — a etiqueta é montada sem cookie nenhum.",
+  },
+  {
+    id: "farbling",
+    termo: "Ruído anti-fingerprinting",
+    tambem: "farbling, resistFingerprinting",
+    grupo: "internet",
+    definicao:
+      "Defesa em que o navegador responde com valores ligeiramente errados de propósito — número de núcleos, memória, dimensões de tela — em vez de recusar a pergunta. Alguns trocam a resposta a cada site ou a cada janela.",
+    importa:
+      "É por isso que o dossiê da home pode mostrar “2 núcleos” num computador de 12, ou mudar de resposta numa janela anônima. Recusar a pergunta chamaria atenção; responder errado faz a etiqueta apontar para milhares de pessoas ao mesmo tempo, que é justamente o objetivo. Firefox, Safari, Brave e o Tor Browser fazem isso em graus diferentes.",
   },
   {
     id: "vpn",

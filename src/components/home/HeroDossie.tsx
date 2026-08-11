@@ -8,6 +8,7 @@ import {
   coletarDossie,
   lerCamposVivos,
   apagarVisita,
+  NAO_VISIVEL,
   type Entrada,
 } from "@/lib/dossie";
 
@@ -204,6 +205,32 @@ export function HeroDossie() {
                 )}
               </div>
             </div>
+
+            {/* O contraponto. Sem ele a lista de cima vira alarmismo. */}
+            <div className="mt-4 rounded-sm border border-line bg-panel/60 p-5">
+              <p className="label-field">O que esta página não consegue ver</p>
+              <p className="mt-2.5 text-sm leading-relaxed text-ink-2">
+                Tão importante quanto a lista de cima. Saber onde ficam os
+                limites é o que permite reconhecer quem blefa sobre saber mais
+                do que dá para saber.
+              </p>
+
+              <dl className="mt-4 divide-y divide-line border-t border-line">
+                {NAO_VISIVEL.map((n) => (
+                  <div key={n.item} className="py-3.5">
+                    <dt className="flex gap-2.5 font-mono text-sm text-ink">
+                      <span aria-hidden="true" className="text-signal-green">
+                        ✕
+                      </span>
+                      {n.item}
+                    </dt>
+                    <dd className="mt-1.5 pl-6 text-sm leading-relaxed text-ink-3">
+                      {n.porque}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </div>
 
@@ -234,6 +261,13 @@ export function HeroDossie() {
               começa quando alguém usa esses pedaços para escrever uma mensagem
               sob medida — no seu idioma, no seu horário, citando o seu aparelho
               — e você acredita porque parece pessoal demais para ser golpe.
+            </p>
+            <p className="mt-5 max-w-2xl text-bodyLg text-ink-2 text-pretty">
+              Repare que alguns números da lista podem não bater com o seu
+              aparelho de verdade — e que abrir esta página numa janela anônima
+              muda a resposta. Não é erro: é o seu navegador embaralhando os
+              dados de propósito para dificultar que a combinação vire uma
+              etiqueta única. A defesa existe, está ligada e funcionando.
             </p>
             <p className="mt-5 max-w-2xl text-bodyLg text-ink-2 text-pretty">
               As próximas páginas mostram como essa mensagem é montada, como

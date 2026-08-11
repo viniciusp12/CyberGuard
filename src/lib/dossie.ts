@@ -223,14 +223,14 @@ export async function coletarDossie(): Promise<Entrada[]> {
     ),
     entrada(
       "conexao",
-      "Tipo de conexão",
+      "Velocidade da conexão",
       tentar(() => {
         const c = nav.connection;
         if (!c?.effectiveType) return null;
         const economia = c.saveData ? " · modo economia ligado" : "";
         return `${c.effectiveType}${economia}`;
       }),
-      "Conexão lenta é pretexto clássico: “o site do banco travou, me manda por aqui mesmo”.",
+      "É só a faixa de velocidade — nunca o nome da sua rede. O Wi-Fi em que você está não é visível daqui, e isso é proposital.",
     ),
     entrada(
       "cpu",
@@ -238,13 +238,13 @@ export async function coletarDossie(): Promise<Entrada[]> {
       tentar(() =>
         nav.hardwareConcurrency ? `${nav.hardwareConcurrency} núcleos` : null,
       ),
-      "Indica o porte do aparelho — e quanto ele aguenta rodar em segundo plano.",
+      "Se esse número não bater com o do seu computador, ótimo: navegadores com proteção contra rastreamento mentem aqui de propósito, e alguns trocam a resposta a cada janela.",
     ),
     entrada(
       "memoria",
       "Memória do aparelho",
       tentar(() => (nav.deviceMemory ? `${nav.deviceMemory} GB (aprox.)` : null)),
-      "Mais um número que, somado aos outros, estreita quem você é.",
+      "Também raramente é o valor real: a própria especificação manda arredondar e limitar o número, justamente para não virar mais uma etiqueta sua.",
     ),
   ];
 
@@ -315,6 +315,47 @@ export function apagarVisita() {
     return false;
   }
 }
+
+/**
+ * O contraponto honesto do dossiê: o que uma página web **não** consegue ler.
+ *
+ * Está aqui porque um site que só lista o que consegue espiar vira alarmismo,
+ * e alarmismo faz a pessoa desligar. Mostrar onde ficam as fronteiras torna o
+ * resto da lista mais crível — e ensina a desconfiar de quem alega saber mais
+ * do que é tecnicamente possível, que é a base de golpes de extorsão.
+ */
+export const NAO_VISIVEL: { item: string; porque: string }[] = [
+  {
+    item: "O nome da sua rede Wi-Fi",
+    porque:
+      "Não existe função na web que devolva isso. O máximo que um site vê é a faixa de velocidade da conexão, nunca em que rede você está. Só um aplicativo instalado, com permissão de localização concedida por você, consegue ler o nome de uma rede.",
+  },
+  {
+    item: "Seu endereço",
+    porque:
+      "O fuso horário entrega a região, e o número da sua conexão entrega a cidade aproximada e a operadora. Rua e número exigem permissão de localização, que esta página nunca pede. Quem diz “descobri seu endereço pelo IP” está blefando.",
+  },
+  {
+    item: "Seu nome, e-mail ou telefone",
+    porque:
+      "Nada disso é oferecido pelo navegador. Quando um site já sabe quem você é sem você digitar, é porque você entrou em algum momento, ou porque comprou seus dados de um vazamento.",
+  },
+  {
+    item: "Os arquivos do seu computador",
+    porque:
+      "Uma página não lê o seu disco. Ela só recebe o arquivo que você escolhe e envia — por isso o golpe precisa te convencer a anexar, baixar ou instalar alguma coisa.",
+  },
+  {
+    item: "Suas outras abas e seu histórico",
+    porque:
+      "Cada site fica isolado dos demais. O rastreamento entre sites existe, mas por outro caminho: cookies e scripts de publicidade que a mesma empresa coloca em milhares de páginas.",
+  },
+  {
+    item: "Sua câmera e seu microfone",
+    porque:
+      "Exigem sua permissão explícita, e o navegador mostra um indicador enquanto estão ligados. Esta página não pede nenhuma das duas.",
+  },
+];
 
 /** Releitura barata dos campos que mudam sozinhos. */
 export function lerCamposVivos(): Record<string, string> {
