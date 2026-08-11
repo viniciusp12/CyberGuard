@@ -92,8 +92,8 @@ CyberGuard-main/            ← pasta principal do projeto (onde o npm run dev r
 
 | Tecnologia | Versão | Uso |
 |---|---|---|
-| Next.js | 15.1.6 | Framework principal (App Router) |
-| React | 19.0.0 | UI |
+| Next.js | 15.5.23 | Framework principal (App Router) — **versão travada, ver abaixo** |
+| React | 19.2.8 | UI |
 | Framer Motion | 11.11.17 | Animações |
 | Tailwind CSS | 3.4.15 | Estilização |
 | TypeScript | 5.6.3 | Tipagem |
@@ -101,6 +101,24 @@ CyberGuard-main/            ← pasta principal do projeto (onde o npm run dev r
 **Fontes Google:** Inter Tight (corpo), IBM Plex Mono (manchete, rótulo e dado)
 
 **Sem biblioteca de ícones:** `lucide-react` foi removido, a direção não usa ícone.
+
+### 🔐 Por que a versão do Next está travada sem `^`
+
+Em agosto/2026 a Vercel **recusou o deploy** com a mensagem "Vulnerable version of Next.js detected". Era o [CVE-2025-66478](https://nextjs.org/blog/CVE-2025-66478), CVSS 10.0 — execução remota de código pelo protocolo dos React Server Components, herdado do React (CVE-2025-55182).
+
+Estávamos em 15.1.6. Subimos para **15.5.23**.
+
+⚠️ **Nunca escreva `"next": "^15.x"` neste projeto.** O acento circunflexo permite resolver para qualquer 15.x, e várias delas são vulneráveis — as corrigidas são pontuais: 15.0.5, 15.1.9, 15.2.6, 15.3.6, 15.4.8, 15.5.7 e 16.0.7. Um `npm install` num dia ruim poderia cair numa 15.4.0 e o deploy volta a ser bloqueado. Versão exata, sempre.
+
+### `overrides` no package.json
+
+Existem três, todos para zerar vulnerabilidade de dependência transitiva. `npm audit --omit=dev` deve reportar **0 vulnerabilities** — se voltar a acusar, é aqui que se mexe.
+
+| Pacote | Motivo |
+|---|---|
+| `postcss` ^8.5.23 | XSS e path traversal via `sourceMappingURL`; vem do Tailwind e do Next |
+| `nanoid` ^3.3.17 | Loop infinito em gerador não-seguro; vem do postcss |
+| `sharp` ^0.35.0 | Vulnerabilidades herdadas do libvips. É dependência **opcional** do Next para `next/image` — que este site não usa em lugar nenhum, então na prática nunca é carregado. O override evita que o `npm audit` acuse, sem precisar migrar para o Next 16 |
 
 ---
 
