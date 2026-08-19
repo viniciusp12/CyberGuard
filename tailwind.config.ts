@@ -1,18 +1,28 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Direção "laudo forense".
+ * Identidade CIFRA — "Segurança que deixa registro."
+ * Manual de identidade v2 · paleta v1 · rev. 08/26.
  *
- * Três regras que mantêm a paleta longe do clichê de cibersegurança:
+ * REGRA DURA DO MANUAL: uma cor, uma função.
+ *   menta não abre alerta · âmbar não confirma nada ·
+ *   petróleo nunca vira fundo de página inteira.
  *
- * 1. Cor de sinal tem significado fixo e nunca é decorativa.
- *    âmbar = atenção · vermelho = fraude · verde = legítimo.
- * 2. Mono é para rótulo, dado e manchete. Prosa corrida é sempre `sans`.
- * 3. Nada de glow, neon ou verde-terminal.
+ * | Token    | Função                                                   |
+ * |----------|----------------------------------------------------------|
+ * | chumbo   | fundo de tudo e superfície dos painéis                   |
+ * | papel    | todo o texto sobre o chumbo                              |
+ * | menta    | ação, índice, link, estado concluído — nunca pendente    |
+ * | petroleo | campo institucional e estado "em andamento" — só fundo   |
+ * | ambar    | risco, e SÓ em bloco cheio com texto em chumbo           |
  *
- * Contraste sobre `page` (#16181B), medido em WCAG 2.1:
- *   ink 15.6 · ink-2 7.9 · ink-3 5.2 · amber 8.2 · red 5.3 · green 9.2
- * Todos passam AA para texto normal; ink-3 também passa sobre `panel`.
+ * Princípio 03: "Risco é bloco cheio, nunca acento." Âmbar não pode virar
+ * fio, brilho nem texto solto — use a classe utilitária `.bloco-risco`.
+ *
+ * Contraste sobre chumbo #1B1D21 (WCAG 2.1):
+ *   papel 15.4 · papel-2 7.6 · papel-3 5.0 · menta 9.2 · âmbar 8.5
+ * Petróleo fica em 2.5 e por isso NÃO é cor de tinta — é campo.
+ * Sobre âmbar cheio, o texto em chumbo também dá 8.5.
  */
 const config: Config = {
   content: [
@@ -23,51 +33,62 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        page: "#16181B",
-        panel: {
-          DEFAULT: "#1D2024",
-          raised: "#24282D",
+        chumbo: {
+          DEFAULT: "#1B1D21",
+          painel: "#2E3138",
+          // Derivados para borda: o manual não os especifica, então saem do
+          // próprio chumbo para não introduzir cor nova.
+          linha: "#383C44",
+          linhaForte: "#4A4F59",
         },
-        line: {
-          DEFAULT: "#2E333A",
-          strong: "#3D444D",
+        papel: {
+          DEFAULT: "#F2F4F3",
+          2: "#A9AFAE",
+          3: "#868C8B",
         },
-        ink: {
-          DEFAULT: "#E8E6E2",
-          2: "#A8AEB6",
-          3: "#858C95",
+        menta: {
+          100: "#D9F7EC",
+          200: "#B3EFD9",
+          300: "#8AE6C5",
+          400: "#61DDB4",
+          500: "#3ED6A4",
+          600: "#2FB88B",
+          700: "#249272",
+          800: "#1A6B55",
+          900: "#124839",
+          DEFAULT: "#3ED6A4",
         },
-        signal: {
-          amber: "#E8A33D",
-          amberDim: "#3A2E18",
-          red: "#F2555A",
-          redDim: "#3A1D1F",
-          green: "#58D08B",
-          greenDim: "#16301F",
+        petroleo: {
+          DEFAULT: "#164752",
+          claro: "#1F6478",
         },
-        brand: {
-          leroy: "#78BE20",
+        ambar: {
+          DEFAULT: "#F2A93D",
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter-tight)", "system-ui", "sans-serif"],
-        mono: ["var(--font-plex-mono)", "ui-monospace", "monospace"],
+        // Barlow no corpo: termo de consentimento precisa ser lido sem esforço.
+        sans: ["var(--font-barlow)", "system-ui", "sans-serif"],
+        // Condensed em título, etiqueta e botão: ar de placa técnica.
+        display: ["var(--font-barlow-condensed)", "system-ui", "sans-serif"],
       },
       fontSize: {
-        // Manchetes em mono: entrelinha maior que a de uma display sans,
-        // porque mono tem altura-x grande e aperta demais em 0.9.
-        hero: ["clamp(2.25rem, 6.2vw, 5rem)", { lineHeight: "1.04", letterSpacing: "-0.02em" }],
-        title: ["clamp(1.75rem, 4vw, 3.25rem)", { lineHeight: "1.1", letterSpacing: "-0.015em" }],
-        // Corpo generoso: o público-alvo inclui quem lê com dificuldade em tela.
-        body: ["1.0625rem", { lineHeight: "1.72" }],
-        bodyLg: ["1.1875rem", { lineHeight: "1.68" }],
+        hero: ["clamp(2.5rem, 7vw, 5.5rem)", { lineHeight: "0.98", letterSpacing: "-0.01em" }],
+        title: ["clamp(1.875rem, 4.2vw, 3.5rem)", { lineHeight: "1.05" }],
+        // Manual: sobre chumbo o corpo nunca desce de 400 nem de 15px.
+        body: ["1rem", { lineHeight: "1.65" }],
+        bodyLg: ["1.125rem", { lineHeight: "1.6" }],
       },
       spacing: {
-        // Alvo de toque mínimo confortável (WCAG 2.5.5 pede 44px).
         touch: "2.75rem",
       },
+      letterSpacing: {
+        // O respiro largo de CIFRA é o tom institucional da marca.
+        marca: "0.32em",
+        etiqueta: "0.14em",
+      },
       transitionTimingFunction: {
-        forense: "cubic-bezier(0.22, 1, 0.36, 1)",
+        cifra: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
       keyframes: {
         caret: {

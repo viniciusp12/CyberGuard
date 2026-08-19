@@ -140,7 +140,53 @@ Isso veio de graça ao remover a área autenticada. O que tornava tudo dinâmico
 
 ---
 
-## 🎨 Design System — direção "laudo forense"
+## 🎨 Identidade CIFRA — manual v2 · paleta v1 · rev. 08/26
+
+> ⚠️ Em agosto/2026 o projeto foi renomeado de **CyberGuard para CIFRA** e recebeu manual de identidade próprio (`CIFRA-identidade-grupo-paleta-v1.pdf`). A direção "laudo forense" descrita abaixo foi **substituída**. O manual é a autoridade — em caso de dúvida, ele vence.
+
+**Conceito:** "Segurança que deixa registro." A marca não é cadeado nem escudo: é registro técnico com rigor de planta — linha fina, canto reto, nada decorativo. Chumbo porque é ferramenta de trabalho, não vitrine.
+
+### Paleta (`tailwind.config.ts`)
+
+| Token | Hex | Função — **uma cor, uma função** |
+|---|---|---|
+| `chumbo` | `#1B1D21` | fundo de tudo |
+| `chumbo-painel` | `#2E3138` | superfície dos painéis |
+| `papel` / `-2` / `-3` | `#F2F4F3` · `#A9AFAE` · `#868C8B` | todo o texto |
+| `menta` (100–900, base 500) | `#3ED6A4` | ação, índice, link, concluído — **nunca pendente** |
+| `petroleo` / `-claro` | `#164752` · `#1F6478` | campo institucional, "em andamento" — **só fundo** |
+| `ambar` | `#F2A93D` | **só risco, só em bloco cheio** |
+
+Contraste sobre chumbo: papel 15.4 · papel-2 7.6 · papel-3 5.0 · menta 9.2 · âmbar 8.5. Petróleo fica em 2.5 — por isso **não é cor de tinta**, é campo (usado no `PageHeader`).
+
+### ⚠️ Princípio 03 — "Risco é bloco cheio, nunca acento"
+
+O âmbar **não pode** virar fio, borda, brilho, sublinhado nem texto solto. Só existe como bloco de tinta cheia com o texto invertido em chumbo. Três utilitários no `globals.css` cobrem os casos:
+
+| Classe | Uso |
+|---|---|
+| `.bloco-risco` | bloco inteiro em âmbar (aviso de urgência) |
+| `.etiqueta-risco` | etiqueta inline em âmbar (veredito "Fraude", "Frágil", "urgente") |
+| `.marca-risco` | marca-texto dentro de um exemplo de mensagem |
+
+**Não existe vermelho na paleta.** Onde havia vermelho para "fraude", hoje há âmbar em bloco; onde havia verde para "legítimo", há menta. Ganho colateral: âmbar contra menta é mais distinguível para daltônicos que vermelho contra verde, e o bloco cheio dá redundância de forma além da cor.
+
+### Tipografia
+
+**Barlow Condensed** (`font-display`) nomeia — título, etiqueta, botão. **Barlow** (`font-sans`) explica — corpo. Números sempre tabulares (`.tabular`). Sobre chumbo o corpo nunca desce de 400 nem de 15px: peso fino em fundo escuro fecha o contorno da letra e cansa a leitura.
+
+### Marca (`components/layout/Marca.tsx`)
+
+Hexágono de linha fina cortado por eixo vertical, com hexágono sólido em menta no centro — o registro. É a **única forma sólida e o único preenchimento em menta** da marca. NÃO FAÇA, direto do manual: arredondar vértices, trocar a cor do índice, apertar o entreletramento de CIFRA, usar o símbolo abaixo de 20px com o eixo (nessa medida o `Simbolo` já remove o eixo sozinho).
+
+### O que existe no manual e **não** está no site
+
+- **Selo de registro** (`CFR-04-0231/26`): não implementado de propósito. O manual diz "se não há registro real, não há selo" — e o site é informativo, sem login nem módulo, então não há registro a emitir. Código inventado violaria a regra dura da identidade.
+- **Mascote O Vigia**: hexágono com dois olhos quadrados em menta, quatro estados. Ainda não desenhado.
+
+---
+
+## 🎨 Design System anterior — "laudo forense" (SUBSTITUÍDO)
 
 ### Cores (`tailwind.config.ts`)
 ```

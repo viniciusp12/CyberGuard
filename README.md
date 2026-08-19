@@ -1,4 +1,4 @@
-# CyberGuard — golpes digitais explicados por dentro
+# CIFRA — golpes digitais explicados por dentro
 
 Site de conscientização sobre golpes digitais no Brasil, escrito para público
 geral, com uma camada corporativa para o contexto do varejo. Projeto acadêmico
@@ -14,10 +14,10 @@ disso saiu do aparelho — mas qualquer site consegue ver.
 ## Stack
 
 - **Next.js 15** (App Router) + **TypeScript**
-- **Tailwind CSS 3** — tema "laudo forense", chumbo com sinal âmbar/vermelho/verde
+- **Tailwind CSS 3** — identidade CIFRA — chumbo, papel, menta, petróleo e âmbar
 - **Framer Motion** para as revelações por scroll
 
-Fontes: **Inter Tight** (prosa) e **IBM Plex Mono** (manchete, rótulo e dado).
+Fontes: **Barlow** (corpo) e **Barlow Condensed** (título, etiqueta e botão).
 
 **Sem banco de dados, sem backend, sem variáveis de ambiente.** É um site
 estático: todas as páginas são pré-renderizadas no build e tudo que é

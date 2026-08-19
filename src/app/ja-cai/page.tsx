@@ -162,10 +162,10 @@ export default function JaCaiPage() {
       />
 
       {/* Ação imediata, antes de qualquer leitura longa. */}
-      <section className="border-b border-line bg-signal-redDim/40 py-8">
+      <section className="border-b border-chumbo-linha bg-ambarDim/40 py-8">
         <div className="container-read">
-          <p className="label-field text-signal-red">Se acabou de acontecer</p>
-          <p className="mt-3 text-bodyLg text-ink text-pretty">
+          <p className="etiqueta-risco">Se acabou de acontecer</p>
+          <p className="mt-3 text-bodyLg text-papel text-pretty">
             Ligue para o seu banco agora, pelo número do verso do cartão, e diga
             que foi vítima de fraude. Faça isso antes de ler o resto desta
             página — a chance de reaver dinheiro cai a cada hora.
@@ -175,28 +175,28 @@ export default function JaCaiPage() {
 
       <section className="py-14 md:py-20">
         <div className="container-read">
-          <h2 className="font-mono text-2xl font-semibold">
+          <h2 className="font-display text-2xl font-semibold">
             As primeiras horas, em ordem
           </h2>
 
           <ol className="mt-10 space-y-10">
             {PASSOS.map((p) => (
-              <li key={p.n} className="border-t border-line pt-6">
+              <li key={p.n} className="border-t border-chumbo-linha pt-6">
                 <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  <span className="font-mono text-sm font-semibold text-signal-amber">
+                  <span className="font-display text-sm font-semibold text-menta">
                     {p.n}
                   </span>
-                  <span className="label-field">{p.quando}</span>
+                  <span className="etiqueta">{p.quando}</span>
                 </div>
 
-                <h3 className="mt-3 font-mono text-xl font-semibold text-balance">
+                <h3 className="mt-3 font-display text-xl font-semibold text-balance">
                   {p.titulo}
                 </h3>
-                <p className="mt-3 text-body leading-relaxed text-ink-2 text-pretty">
+                <p className="mt-3 text-body leading-relaxed text-papel-2 text-pretty">
                   {p.texto}
                 </p>
                 {p.detalhe && (
-                  <p className="mt-3 border-l-2 border-line-strong py-1 pl-4 text-sm leading-relaxed text-ink-3">
+                  <p className="mt-3 border-l-2 border-chumbo-linhaForte py-1 pl-4 text-sm leading-relaxed text-papel-3">
                     {p.detalhe}
                   </p>
                 )}
@@ -206,14 +206,14 @@ export default function JaCaiPage() {
         </div>
       </section>
 
-      <section className="border-t border-line bg-panel/40 py-14 md:py-20">
+      <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
-          <h2 className="font-mono text-2xl font-semibold">O que não fazer</h2>
+          <h2 className="font-display text-2xl font-semibold">O que não fazer</h2>
           <ul className="mt-8 space-y-6">
             {NAO_FACA.map((n) => (
-              <li key={n.titulo} className="border-l-2 border-signal-red pl-5">
-                <h3 className="font-mono text-lg font-semibold">{n.titulo}</h3>
-                <p className="mt-2 text-body leading-relaxed text-ink-2 text-pretty">
+              <li key={n.titulo} className="border-l-2 border-ambar pl-5">
+                <h3 className="font-display text-lg font-semibold">{n.titulo}</h3>
+                <p className="mt-2 text-body leading-relaxed text-papel-2 text-pretty">
                   {n.texto}
                 </p>
               </li>
@@ -222,19 +222,19 @@ export default function JaCaiPage() {
         </div>
       </section>
 
-      <section className="border-t border-line py-14 md:py-20">
+      <section className="border-t border-chumbo-linha py-14 md:py-20">
         <div className="container-read">
-          <h2 className="font-mono text-2xl font-semibold">Canais oficiais</h2>
-          <p className="mt-3 text-body text-ink-2 text-pretty">
+          <h2 className="font-display text-2xl font-semibold">Canais oficiais</h2>
+          <p className="mt-3 text-body text-papel-2 text-pretty">
             Só entram aqui canais de órgão público ou da própria instituição.
             Nenhum intermediário, nenhum serviço pago de “recuperação”.
           </p>
 
-          <ul className="mt-8 divide-y divide-line border-y border-line">
+          <ul className="mt-8 divide-y divide-chumbo-linha border-y border-chumbo-linha">
             {CANAIS.map((c) => (
               <li key={c.nome} className="py-6">
-                <h3 className="font-mono text-lg font-semibold">{c.nome}</h3>
-                <p className="mt-2 text-body leading-relaxed text-ink-2 text-pretty">
+                <h3 className="font-display text-lg font-semibold">{c.nome}</h3>
+                <p className="mt-2 text-body leading-relaxed text-papel-2 text-pretty">
                   {c.o_que}
                 </p>
 
@@ -243,14 +243,14 @@ export default function JaCaiPage() {
                     href={c.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-3 inline-flex min-h-touch items-center break-all font-mono text-sm text-signal-amber underline decoration-signal-amber/40 underline-offset-4 transition-colors hover:decoration-signal-amber"
+                    className="mt-3 inline-flex min-h-touch items-center break-all font-display text-sm text-menta underline decoration-menta/40 underline-offset-4 transition-colors hover:decoration-menta"
                   >
                     {c.href.replace(/^https:\/\//, "")} ↗
                   </a>
                 )}
 
                 {c.rotulo && (
-                  <p className="mt-3 text-sm leading-relaxed text-ink-3">
+                  <p className="mt-3 text-sm leading-relaxed text-papel-3">
                     {c.rotulo}
                   </p>
                 )}
@@ -260,7 +260,7 @@ export default function JaCaiPage() {
                     <PendenteVerificacao>
                       link pendente de conferência
                     </PendenteVerificacao>
-                    <p className="mt-2 text-sm leading-relaxed text-ink-3">
+                    <p className="mt-2 text-sm leading-relaxed text-papel-3">
                       {c.pendente}
                     </p>
                   </div>
@@ -269,7 +269,7 @@ export default function JaCaiPage() {
             ))}
           </ul>
 
-          <p className="mt-6 font-mono text-xs leading-relaxed text-ink-3">
+          <p className="mt-6 font-display text-xs leading-relaxed text-papel-3">
             Regra desta página: nenhum endereço é publicado por suposição. Os
             links acima apontam para domínios de órgão público conferidos; o que
             ainda não foi conferido aparece marcado, com o caminho seguro para
@@ -282,14 +282,14 @@ export default function JaCaiPage() {
         </div>
       </section>
 
-      <section className="border-t border-line bg-panel/40 py-14 md:py-20">
+      <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
-          <p className="text-body text-ink-2 text-pretty">
+          <p className="text-body text-papel-2 text-pretty">
             Passada a urgência, vale fechar as portas que ficaram abertas.
           </p>
           <Link
             href="/agora"
-            className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-line-strong px-5 py-3 font-mono text-sm text-ink transition-colors duration-200 hover:border-signal-amber hover:text-signal-amber"
+            className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-chumbo-linhaForte px-5 py-3 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
           >
             O que fazer agora — os oito ajustes →
           </Link>

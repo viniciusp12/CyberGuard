@@ -37,11 +37,11 @@ export function PalavraCodigo() {
   const [palavra, setPalavra] = useState<string | null>(null);
 
   return (
-    <div className="rounded-sm border border-line bg-panel p-6">
-      <p className="label-field">Sugestão de palavra-código</p>
+    <div className="rounded-sm border border-chumbo-linha bg-chumbo-painel p-6">
+      <p className="etiqueta">Sugestão de palavra-código</p>
 
       <p
-        className="mt-4 font-mono text-2xl font-semibold text-signal-amber md:text-3xl"
+        className="mt-4 font-display text-2xl font-semibold text-menta md:text-3xl"
         aria-live="polite"
       >
         {palavra ?? "— — —"}
@@ -50,12 +50,12 @@ export function PalavraCodigo() {
       <button
         type="button"
         onClick={() => setPalavra(sortear())}
-        className="mt-5 min-h-touch rounded-sm border border-line-strong px-5 font-mono text-sm text-ink transition-colors duration-200 hover:border-signal-amber hover:text-signal-amber"
+        className="mt-5 min-h-touch rounded-sm border border-chumbo-linhaForte px-5 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
       >
         {palavra ? "Sortear outra" : "Sortear uma palavra"}
       </button>
 
-      <p className="mt-5 text-sm leading-relaxed text-ink-3">
+      <p className="mt-5 text-sm leading-relaxed text-papel-3">
         Sorteada aqui no seu navegador, sem envio e sem gravação. Combine
         pessoalmente com quem mora com você e com quem mais puder receber um
         pedido em seu nome. Não mande por mensagem — se a conta for tomada, o

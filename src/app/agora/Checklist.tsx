@@ -138,8 +138,8 @@ export function Checklist() {
             key={item.id}
             className={`rounded-sm border transition-colors duration-200 ${
               feito
-                ? "border-signal-green/40 bg-signal-greenDim/40"
-                : "border-line bg-panel"
+                ? "border-menta/40 bg-menta-900/40"
+                : "border-chumbo-linha bg-chumbo-painel"
             }`}
           >
             <div className="flex gap-4 p-5">
@@ -148,38 +148,38 @@ export function Checklist() {
                 id={`item-${item.id}`}
                 checked={feito}
                 onChange={() => alternar(item.id)}
-                className="mt-1 h-5 w-5 shrink-0 cursor-pointer accent-signal-green"
+                className="mt-1 h-5 w-5 shrink-0 cursor-pointer accent-menta"
               />
               <div className="min-w-0">
                 <label
                   htmlFor={`item-${item.id}`}
-                  className="cursor-pointer font-mono text-lg font-semibold leading-snug text-balance"
+                  className="cursor-pointer font-display text-lg font-semibold leading-snug text-balance"
                 >
                   {item.titulo}
                 </label>
 
-                <p className="mt-2.5 text-body leading-relaxed text-ink-2 text-pretty">
+                <p className="mt-2.5 text-body leading-relaxed text-papel-2 text-pretty">
                   {item.oQue}
                 </p>
 
-                <div className="mt-4 space-y-3 border-t border-line pt-4">
+                <div className="mt-4 space-y-3 border-t border-chumbo-linha pt-4">
                   <div>
-                    <p className="label-field">Por que isso existe</p>
-                    <p className="mt-1 text-sm leading-relaxed text-ink-2">
+                    <p className="etiqueta">Por que isso existe</p>
+                    <p className="mt-1 text-sm leading-relaxed text-papel-2">
                       {item.porque}
                     </p>
                   </div>
                   <div>
-                    <p className="label-field text-signal-amber">
+                    <p className="etiqueta-risco">
                       O que deixa de acontecer
                     </p>
-                    <p className="mt-1 text-sm leading-relaxed text-ink-2">
+                    <p className="mt-1 text-sm leading-relaxed text-papel-2">
                       {item.impacto}
                     </p>
                   </div>
                   <div>
-                    <p className="label-field">Onde mexer</p>
-                    <p className="mt-1 text-sm leading-relaxed text-ink-3">
+                    <p className="etiqueta">Onde mexer</p>
+                    <p className="mt-1 text-sm leading-relaxed text-papel-3">
                       {item.como}
                     </p>
                   </div>
@@ -194,21 +194,21 @@ export function Checklist() {
 
   return (
     <div>
-      <div className="sticky top-16 z-10 -mx-5 mb-8 border-b border-line bg-page/95 px-5 py-3 backdrop-blur sm:-mx-8 sm:px-8">
-        <p className="font-mono text-sm text-ink-2" aria-live="polite">
-          <span className="text-signal-green tabular-nums">{feitos.size}</span>
-          <span className="text-ink-3"> de {ITENS.length} marcados</span>
+      <div className="sticky top-16 z-10 -mx-5 mb-8 border-b border-chumbo-linha bg-chumbo/95 px-5 py-3 backdrop-blur sm:-mx-8 sm:px-8">
+        <p className="font-display text-sm text-papel-2" aria-live="polite">
+          <span className="text-menta tabular-nums">{feitos.size}</span>
+          <span className="text-papel-3"> de {ITENS.length} marcados</span>
         </p>
-        <p className="mt-1 text-xs leading-relaxed text-ink-3">
+        <p className="mt-1 text-xs leading-relaxed text-papel-3">
           Essa marcação existe só enquanto a página estiver aberta e não é
           gravada em lugar nenhum.
         </p>
       </div>
 
-      <h2 className="font-mono text-xl font-semibold">
+      <h2 className="font-display text-xl font-semibold">
         Comece por estes quatro
       </h2>
-      <p className="mt-2 max-w-2xl text-body text-ink-2">
+      <p className="mt-2 max-w-2xl text-body text-papel-2">
         São os que mudam mais o seu risco por minuto gasto. Se der para fazer só
         uma coisa hoje, faça a primeira.
       </p>
@@ -216,10 +216,10 @@ export function Checklist() {
         <Bloco itens={prioritarios} />
       </div>
 
-      <h2 className="mt-14 font-mono text-xl font-semibold">
+      <h2 className="mt-14 font-display text-xl font-semibold">
         Depois, quando sobrar um tempo
       </h2>
-      <p className="mt-2 max-w-2xl text-body text-ink-2">
+      <p className="mt-2 max-w-2xl text-body text-papel-2">
         Igualmente reais, só que menos urgentes que os de cima.
       </p>
       <div className="mt-6">

@@ -27,8 +27,8 @@ function Texto({
 
         const cor =
           destaque === "red"
-            ? "bg-signal-redDim text-signal-red decoration-signal-red/60"
-            : "bg-signal-greenDim text-signal-green decoration-signal-green/60";
+            ? "marca-risco decoration-chumbo/40"
+            : "bg-menta-900 text-menta decoration-menta/60";
 
         return (
           <mark
@@ -36,7 +36,7 @@ function Texto({
             className={`rounded-[2px] px-1 underline decoration-dotted underline-offset-4 ${cor}`}
           >
             {t.texto}
-            <sup className="ml-0.5 font-mono text-[0.625rem] font-semibold">
+            <sup className="ml-0.5 font-display text-[0.625rem] font-semibold">
               {t.sinal}
             </sup>
           </mark>
@@ -62,17 +62,17 @@ function Cartao({
   const destaque = msg.golpe ? "red" : "green";
   const borda = !revelado
     ? escolhido
-      ? "border-signal-amber"
-      : "border-line"
+      ? "border-menta"
+      : "border-chumbo-linha"
     : msg.golpe
-      ? "border-signal-red/60"
-      : "border-signal-green/60";
+      ? "border-ambar"
+      : "border-menta/60";
 
   return (
-    <div className={`flex flex-col rounded-sm border bg-panel ${borda}`}>
-      <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-2.5">
-        <span className="label-field">{CANAL_ICONE[msg.canal]}</span>
-        <span className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-ink-3">
+    <div className={`flex flex-col rounded-sm border bg-chumbo-painel ${borda}`}>
+      <div className="flex items-center justify-between gap-3 border-b border-chumbo-linha px-4 py-2.5">
+        <span className="etiqueta">{CANAL_ICONE[msg.canal]}</span>
+        <span className="font-display text-[0.625rem] uppercase tracking-[0.14em] text-papel-3">
           exemplo ilustrativo
         </span>
       </div>
@@ -80,15 +80,15 @@ function Cartao({
       <div className="space-y-3 px-4 py-4">
         {msg.campos.map((c) => (
           <div key={c.rotulo} className="flex flex-wrap gap-x-3 gap-y-1">
-            <span className="label-field pt-0.5">{c.rotulo}</span>
-            <span className="font-mono text-sm text-ink-2">
+            <span className="etiqueta pt-0.5">{c.rotulo}</span>
+            <span className="font-display text-sm text-papel-2">
               <Texto trechos={c.valor} revelado={revelado} destaque={destaque} />
             </span>
           </div>
         ))}
       </div>
 
-      <div className="flex-1 space-y-3 border-t border-line px-4 py-4 text-body leading-relaxed text-ink">
+      <div className="flex-1 space-y-3 border-t border-chumbo-linha px-4 py-4 text-body leading-relaxed text-papel">
         {msg.corpo.map((par, i) => (
           <p key={i}>
             <Texto trechos={par} revelado={revelado} destaque={destaque} />
@@ -96,21 +96,25 @@ function Cartao({
         ))}
       </div>
 
-      <div className="border-t border-line p-4">
+      <div className="border-t border-chumbo-linha p-4">
         {!revelado ? (
           <button
             type="button"
             onClick={onEscolher}
             disabled={disabled}
-            className="min-h-touch w-full rounded-sm border border-line-strong px-4 py-3 font-mono text-sm text-ink transition-colors duration-200 hover:border-signal-amber hover:text-signal-amber"
+            className="min-h-touch w-full rounded-sm border border-chumbo-linhaForte px-4 py-3 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
           >
             Esta é a fraude
           </button>
         ) : (
+          // Fraude vira bloco cheio; legítima fica em menta. O manual não
+          // admite texto solto em âmbar, nem para veredito.
           <p
-            className={`font-mono text-sm ${
-              msg.golpe ? "text-signal-red" : "text-signal-green"
-            }`}
+            className={
+              msg.golpe
+                ? "etiqueta-risco"
+                : "font-display text-sm uppercase tracking-etiqueta text-menta"
+            }
           >
             {msg.golpe ? "Fraude" : "Legítima"}
           </p>
@@ -122,10 +126,11 @@ function Cartao({
 
 function Legenda({ msg }: { msg: Mensagem }) {
   return (
-    <div className="rounded-sm border border-line bg-panel/60 p-5">
+    <div className="rounded-sm border border-chumbo-linha bg-chumbo-painel/60 p-5">
+      {msg.golpe && <p className="etiqueta-risco mb-3">Fraude</p>}
       <p
-        className={`font-mono text-sm ${
-          msg.golpe ? "text-signal-red" : "text-signal-green"
+        className={`text-body leading-relaxed ${
+          msg.golpe ? "text-papel" : "text-menta"
         }`}
       >
         {msg.veredito}
@@ -134,16 +139,16 @@ function Legenda({ msg }: { msg: Mensagem }) {
         {msg.sinais.map((s) => (
           <li key={s.n} className="flex gap-3">
             <span
-              className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-[2px] font-mono text-[0.6875rem] font-semibold ${
+              className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-[2px] font-display text-[0.6875rem] font-semibold ${
                 msg.golpe
-                  ? "bg-signal-redDim text-signal-red"
-                  : "bg-signal-greenDim text-signal-green"
+                  ? "bg-ambar text-chumbo"
+                  : "bg-menta-900 text-menta"
               }`}
             >
               {s.n}
             </span>
-            <p className="text-sm leading-relaxed text-ink-2">
-              <strong className="font-semibold text-ink">{s.titulo}.</strong>{" "}
+            <p className="text-sm leading-relaxed text-papel-2">
+              <strong className="font-semibold text-papel">{s.titulo}.</strong>{" "}
               {s.texto}
             </p>
           </li>
@@ -166,19 +171,19 @@ export function QualEGolpe() {
 
         return (
           <section key={r.id} aria-labelledby={`rodada-${r.id}`}>
-            <p className="label-field">
-              <span className="text-signal-amber">
+            <p className="etiqueta">
+              <span className="text-menta">
                 {String(idx + 1).padStart(2, "0")}
               </span>{" "}
               de {String(RODADAS.length).padStart(2, "0")}
             </p>
             <h2
               id={`rodada-${r.id}`}
-              className="mt-3 font-mono text-2xl font-semibold text-balance md:text-3xl"
+              className="mt-3 font-display text-2xl font-semibold text-balance md:text-3xl"
             >
               {r.titulo}
             </h2>
-            <p className="mt-3 max-w-2xl text-body text-ink-2 text-pretty">
+            <p className="mt-3 max-w-2xl text-body text-papel-2 text-pretty">
               {r.contexto}
             </p>
 
@@ -202,20 +207,20 @@ export function QualEGolpe() {
                 <div
                   className={`rounded-sm border px-5 py-4 ${
                     acertou
-                      ? "border-signal-green/40 bg-signal-greenDim/60"
-                      : "border-signal-amber/40 bg-signal-amberDim/60"
+                      ? "border-menta/40 bg-menta-900/60"
+                      : "border-menta/40 bg-menta-900/60"
                   }`}
                 >
                   <p
-                    className={`font-mono text-sm font-medium ${
-                      acertou ? "text-signal-green" : "text-signal-amber"
+                    className={`font-display text-sm font-medium ${
+                      acertou ? "text-menta" : "text-menta"
                     }`}
                   >
                     {acertou
                       ? "Você apontou a fraude."
                       : "Você apontou a mensagem legítima — e é exatamente por isso que esse golpe funciona tanto."}
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                  <p className="mt-2 text-sm leading-relaxed text-papel-2">
                     {acertou
                       ? "Agora repare em onde estavam as pistas: elas estão marcadas nos dois textos."
                       : "Ninguém acerta por ser esperto; acerta por saber onde olhar. As pistas estão marcadas nos dois textos abaixo."}
@@ -228,11 +233,11 @@ export function QualEGolpe() {
                   ))}
                 </div>
 
-                <div className="mt-5 border-l-2 border-signal-amber bg-panel/60 px-5 py-4">
-                  <p className="label-field text-signal-amber">
+                <div className="mt-5 border-l-2 border-menta bg-chumbo-painel/60 px-5 py-4">
+                  <p className="etiqueta-risco">
                     O que levar dessa rodada
                   </p>
-                  <p className="mt-2 text-body leading-relaxed text-ink-2">
+                  <p className="mt-2 text-body leading-relaxed text-papel-2">
                     {r.licao}
                   </p>
                 </div>
@@ -245,7 +250,7 @@ export function QualEGolpe() {
                       return resto;
                     })
                   }
-                  className="mt-5 min-h-touch rounded-sm border border-line px-4 py-2.5 font-mono text-sm text-ink-3 transition-colors duration-200 hover:border-line-strong hover:text-ink-2"
+                  className="mt-5 min-h-touch rounded-sm border border-chumbo-linha px-4 py-2.5 font-display text-sm text-papel-3 transition-colors duration-200 hover:border-chumbo-linhaForte hover:text-papel-2"
                 >
                   Refazer esta rodada
                 </button>

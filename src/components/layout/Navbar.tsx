@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Marca } from "./Marca";
 
 const SECOES = [
   { href: "/senha", n: "01", label: "Senha" },
@@ -28,17 +29,11 @@ export function Navbar() {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-line bg-page/90 backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b border-chumbo-linha bg-chumbo/90 backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Link
-          href="/"
-          className="flex shrink-0 items-baseline gap-2 font-mono text-base font-semibold"
-        >
-          CyberGuard
-          <span
-            aria-hidden="true"
-            className="h-1.5 w-1.5 translate-y-[-0.15rem] rounded-full bg-signal-amber"
-          />
+        <Link href="/" className="shrink-0">
+          <Marca size={24} />
+          <span className="sr-only">Início</span>
         </Link>
 
         {/* A barra completa só cabe a partir de xl. Abaixo disso tudo vai para
@@ -54,16 +49,16 @@ export function Navbar() {
                 href={s.href}
                 aria-current={ativo ? "page" : undefined}
                 className={cn(
-                  "flex min-h-touch items-center gap-2 rounded-sm px-3 font-mono text-sm transition-colors duration-200",
+                  "flex min-h-touch items-center gap-2 rounded-sm px-3 font-display text-sm transition-colors duration-200",
                   ativo
-                    ? "text-ink"
-                    : "text-ink-2 hover:bg-panel hover:text-ink",
+                    ? "text-papel"
+                    : "text-papel-2 hover:bg-chumbo-painel hover:text-papel",
                 )}
               >
                 <span
                   className={cn(
                     "text-[0.6875rem]",
-                    ativo ? "text-signal-amber" : "text-ink-3",
+                    ativo ? "text-menta" : "text-papel-3",
                   )}
                 >
                   {s.n}
@@ -81,10 +76,10 @@ export function Navbar() {
               href={s.href}
               aria-current={pathname === s.href ? "page" : undefined}
               className={cn(
-                "flex min-h-touch items-center rounded-sm px-3 font-mono text-sm transition-colors duration-200",
+                "flex min-h-touch items-center rounded-sm px-3 font-display text-sm transition-colors duration-200",
                 pathname === s.href
-                  ? "text-ink"
-                  : "text-ink-2 hover:bg-panel hover:text-ink",
+                  ? "text-papel"
+                  : "text-papel-2 hover:bg-chumbo-painel hover:text-papel",
               )}
             >
               {s.label}
@@ -92,7 +87,7 @@ export function Navbar() {
           ))}
           <Link
             href="/ja-cai"
-            className="ml-1 flex min-h-touch items-center rounded-sm border border-signal-red/50 px-4 font-mono text-sm text-signal-red transition-colors duration-200 hover:bg-signal-redDim"
+            className="ml-1 flex min-h-touch items-center rounded-sm bg-ambar px-4 font-display text-sm font-medium text-chumbo transition-colors duration-200 hover:bg-[#F5BB63]"
           >
             Já caí num golpe
           </Link>
@@ -103,7 +98,7 @@ export function Navbar() {
           aria-expanded={aberto}
           aria-controls="menu-mobile"
           onClick={() => setAberto((v) => !v)}
-          className="flex min-h-touch min-w-touch items-center justify-center rounded-sm border border-line px-4 font-mono text-sm text-ink xl:hidden"
+          className="flex min-h-touch min-w-touch items-center justify-center rounded-sm border border-chumbo-linha px-4 font-display text-sm text-papel xl:hidden"
         >
           {aberto ? "Fechar" : "Menu"}
         </button>
@@ -112,12 +107,12 @@ export function Navbar() {
       {aberto && (
         <div
           id="menu-mobile"
-          className="border-t border-line bg-page xl:hidden"
+          className="border-t border-chumbo-linha bg-chumbo xl:hidden"
         >
           <div className="container-page flex flex-col py-3">
             <Link
               href="/ja-cai"
-              className="mb-2 flex min-h-touch items-center rounded-sm border border-signal-red/50 px-4 font-mono text-sm text-signal-red"
+              className="mb-2 flex min-h-touch items-center rounded-sm bg-ambar px-4 font-display text-sm font-medium text-chumbo"
             >
               Já caí num golpe
             </Link>
@@ -127,9 +122,9 @@ export function Navbar() {
                 key={s.href}
                 href={s.href}
                 aria-current={pathname === s.href ? "page" : undefined}
-                className="flex min-h-touch items-center gap-3 border-b border-line font-mono text-base text-ink"
+                className="flex min-h-touch items-center gap-3 border-b border-chumbo-linha font-display text-base text-papel"
               >
-                <span className="text-xs text-ink-3">{s.n}</span>
+                <span className="text-xs text-papel-3">{s.n}</span>
                 {s.label}
               </Link>
             ))}
@@ -138,7 +133,7 @@ export function Navbar() {
               <Link
                 key={s.href}
                 href={s.href}
-                className="flex min-h-touch items-center border-b border-line font-mono text-base text-ink-2 last:border-b-0"
+                className="flex min-h-touch items-center border-b border-chumbo-linha font-display text-base text-papel-2 last:border-b-0"
               >
                 {s.label}
               </Link>

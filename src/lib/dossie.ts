@@ -18,7 +18,7 @@
  * com `available: false` e um texto explicando a ausência, nunca uma exceção.
  */
 
-export const VISIT_KEY = "cyberguard:visitou";
+export const VISIT_KEY = "cifra:visitou";
 
 /**
  * Resposta de "já esteve aqui antes", decidida uma única vez por carregamento

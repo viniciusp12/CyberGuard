@@ -18,14 +18,14 @@ export function Fonte({
   const texto = `${autor}, ${obra}, ${ano}`;
 
   return (
-    <p className="mt-3 font-mono text-xs leading-relaxed text-ink-3">
+    <p className="mt-3 font-display text-xs leading-relaxed text-papel-3">
       <span className="uppercase tracking-[0.14em]">Fonte:</span>{" "}
       {href ? (
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="underline decoration-line-strong underline-offset-4 transition-colors hover:text-ink-2 hover:decoration-signal-amber"
+          className="underline decoration-chumbo-linhaForte underline-offset-4 transition-colors hover:text-papel-2 hover:decoration-menta"
         >
           {texto}
         </a>
@@ -43,7 +43,7 @@ export function Fonte({
  */
 export function PendenteVerificacao({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-sm border border-signal-amber/40 bg-signal-amberDim px-2 py-0.5 font-mono text-xs text-signal-amber">
+    <span className="inline-flex items-center gap-2 rounded-sm border border-menta/40 bg-menta-900 px-2 py-0.5 font-display text-xs text-menta">
       <span aria-hidden="true">⚑</span>
       {children}
     </span>

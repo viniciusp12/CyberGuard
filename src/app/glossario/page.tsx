@@ -20,21 +20,21 @@ export default function GlossarioPage() {
 
       <section className="py-14 md:py-20">
         <div className="container-page">
-          <div className="mb-10 max-w-2xl border-l-2 border-signal-amber pl-5">
-            <p className="text-body text-ink-2 text-pretty">
+          <div className="mb-10 max-w-2xl border-l-2 border-menta pl-5">
+            <p className="text-body text-papel-2 text-pretty">
               Duas entradas valem a leitura mesmo de quem não gosta de termo
               técnico, porque desmontam as duas maiores fontes de falsa
               segurança que existem:{" "}
               <Link
                 href="/glossario#https"
-                className="text-ink underline decoration-signal-amber/50 underline-offset-4 hover:decoration-signal-amber"
+                className="text-papel underline decoration-menta/50 underline-offset-4 hover:decoration-menta"
               >
                 o cadeado do navegador
               </Link>{" "}
               e{" "}
               <Link
                 href="/glossario#vpn"
-                className="text-ink underline decoration-signal-amber/50 underline-offset-4 hover:decoration-signal-amber"
+                className="text-papel underline decoration-menta/50 underline-offset-4 hover:decoration-menta"
               >
                 a VPN
               </Link>
@@ -44,15 +44,15 @@ export default function GlossarioPage() {
 
           <ListaGlossario />
 
-          <div className="mt-16 max-w-2xl border-t border-line pt-8">
-            <p className="text-body text-ink-2 text-pretty">
+          <div className="mt-16 max-w-2xl border-t border-chumbo-linha pt-8">
+            <p className="text-body text-papel-2 text-pretty">
               Faltou algum termo que você viu por aí? A lista foi montada a
               partir do que aparece no próprio site e do que costuma gerar
               dúvida — ela cresce conforme chegam perguntas.
             </p>
             <Link
               href="/contato"
-              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-line-strong px-5 py-3 font-mono text-sm text-ink transition-colors duration-200 hover:border-signal-amber hover:text-signal-amber"
+              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-chumbo-linhaForte px-5 py-3 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
             >
               Sugerir um termo →
             </Link>

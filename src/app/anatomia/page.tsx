@@ -22,8 +22,8 @@ export default function AnatomiaPage() {
 
       <section className="py-14 md:py-20">
         <div className="container-page">
-          <div className="mb-14 max-w-2xl border-l-2 border-line pl-5">
-            <p className="text-body text-ink-2 text-pretty">
+          <div className="mb-14 max-w-2xl border-l-2 border-chumbo-linha pl-5">
+            <p className="text-body text-papel-2 text-pretty">
               Uma observação sobre o nome: não existe “clonagem” no sentido de
               copiar o aparelho. O que acontece é mais simples e mais
               constrangedor — a conta é transferida para outro celular usando um
@@ -50,31 +50,31 @@ export default function AnatomiaPage() {
         </div>
       </section>
 
-      <section className="border-t border-line bg-panel/40 py-14 md:py-20">
+      <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
-          <p className="label-field text-signal-amber">
+          <p className="etiqueta-risco">
             Se você fizer uma coisa só depois de ler isto
           </p>
-          <p className="mt-4 text-bodyLg text-ink text-pretty">
+          <p className="mt-4 text-bodyLg text-papel text-pretty">
             Ative a verificação em duas etapas do WhatsApp. São seis dígitos que
             você escolhe, e eles transformam o passo 05 numa parede: mesmo que o
             código do SMS seja entregue, a conta não migra.
           </p>
-          <p className="mt-4 text-body text-ink-2 text-pretty">
+          <p className="mt-4 text-body text-papel-2 text-pretty">
             No aplicativo: Configurações → Privacidade → Verificação em duas
             etapas → Ativar. Guarde o PIN onde você guarda documentos, não num
             papel na carteira, e cadastre um e-mail de recuperação — sem ele,
             esquecer o PIN significa esperar sete dias para reentrar na conta.
           </p>
 
-          <div className="mt-10 border-t border-line pt-8">
-            <p className="text-body text-ink-2">
+          <div className="mt-10 border-t border-chumbo-linha pt-8">
+            <p className="text-body text-papel-2">
               Esse golpe existe há anos. O que mudou recentemente foi o custo de
               fabricar a parte convincente dele.
             </p>
             <Link
               href="/ia"
-              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-line-strong px-5 py-3 font-mono text-sm text-ink transition-colors duration-200 hover:border-signal-amber hover:text-signal-amber"
+              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-chumbo-linhaForte px-5 py-3 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
             >
               Próximo · O que a IA mudou →
             </Link>

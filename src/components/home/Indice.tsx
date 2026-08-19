@@ -65,44 +65,40 @@ export function Indice() {
       whileInView="visible"
       viewport={VIEWPORT}
       variants={stagger(0.08)}
-      className="border-t border-line"
+      className="border-t border-chumbo-linha"
     >
       {SECOES.map((s) => {
         const urgente = s.acao === "urgente";
         return (
-          <motion.li key={s.n} variants={item} className="border-b border-line">
+          <motion.li key={s.n} variants={item} className="border-b border-chumbo-linha">
             {/* A última coluna precisa caber "interativo" mais a seta na mesma
                 linha: em mono com tracking aberto isso passa de 7rem, e as
                 6rem anteriores empurravam a seta para baixo. */}
             <Link
               href={s.href}
-              className="group grid items-baseline gap-x-8 gap-y-2 py-7 transition-colors duration-200 hover:bg-panel/60 md:grid-cols-[3rem_minmax(0,1fr)_minmax(0,1.4fr)_7.5rem] md:px-3"
+              className="group grid items-baseline gap-x-8 gap-y-2 py-7 transition-colors duration-200 hover:bg-chumbo-painel/60 md:grid-cols-[3rem_minmax(0,1fr)_minmax(0,1.4fr)_7.5rem] md:px-3"
             >
-              <span
-                className={`font-mono text-sm ${
-                  urgente ? "text-signal-red" : "text-signal-amber"
-                }`}
-              >
+              {/* Índice sempre em menta — é a cor de índice no manual.
+                  Quem sinaliza urgência é a etiqueta em bloco, à direita. */}
+              <span className="font-display text-sm tabular text-menta">
                 {s.n}
               </span>
 
-              <h3 className="font-mono text-xl font-semibold text-balance md:text-2xl">
+              <h3 className="font-display text-xl font-semibold text-balance md:text-2xl">
                 {s.titulo}
               </h3>
 
-              <p className="text-body leading-relaxed text-ink-2 text-pretty">
+              <p className="text-body leading-relaxed text-papel-2 text-pretty">
                 {s.resumo}
               </p>
 
-              <span
-                className={`label-field whitespace-nowrap md:text-right ${
-                  urgente ? "text-signal-red" : ""
-                }`}
-              >
-                {s.acao}
+              <span className="flex items-center gap-2 whitespace-nowrap md:justify-end">
+                <span className={urgente ? "etiqueta-risco" : "etiqueta"}>
+                  {s.acao}
+                </span>
                 <span
                   aria-hidden="true"
-                  className="ml-2 inline-block transition-transform duration-200 group-hover:translate-x-1"
+                  className="inline-block text-papel-3 transition-transform duration-200 group-hover:translate-x-1"
                 >
                   →
                 </span>

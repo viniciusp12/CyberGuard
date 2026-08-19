@@ -14,15 +14,15 @@ html {
 
 html,
 body {
-  background: #16181b;
-  color: #e8e6e2;
+  background: #1b1d21;
+  color: #f2f4f3;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: #e8a33d;
-  color: #16181b;
+  background: #3ed6a4;
+  color: #1b1d21;
 }
 
 ::-webkit-scrollbar {
@@ -30,32 +30,35 @@ body {
   height: 12px;
 }
 ::-webkit-scrollbar-track {
-  background: #16181b;
+  background: #1b1d21;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2e333a;
-  border: 3px solid #16181b;
+  background: #383c44;
+  border: 3px solid #1b1d21;
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3d444d;
+  background: #4a4f59;
 }
 
-/* Foco sempre visível e sempre com o mesmo desenho, em qualquer elemento.
-   Âmbar sobre chumbo tem contraste 8.2:1, bem acima do 3:1 que a WCAG pede
-   para indicador de foco. */
+/* Foco sempre visível e sempre com o mesmo desenho.
+   Menta sobre chumbo dá 9.2:1, bem acima do 3:1 que a WCAG pede para
+   indicador de foco. */
 :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
-  outline: 2px solid #e8a33d;
+  outline: 2px solid #3ed6a4;
   outline-offset: 3px;
   border-radius: 2px;
 }
 
 @layer base {
-  /* Nunca deixar o texto quebrar a leitura por falta de contraste em
-     placeholders — o padrão do navegador é baixo demais. */
   ::placeholder {
-    color: #858c95;
+    color: #868c8b;
     opacity: 1;
+  }
+
+  /* Números sempre tabulares — exigência do manual de tipografia. */
+  :where(time, [data-numero]) {
+    font-variant-numeric: tabular-nums;
   }
 }
 
@@ -76,35 +79,72 @@ body {
     text-wrap: pretty;
   }
 
-  /* Rótulo de campo de laudo: mono, caixa alta, tracking aberto.
-     Usado só em metadado — nunca em frase que alguém precise ler. */
-  .label-field {
-    @apply font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-ink-3;
+  /* Etiqueta: condensada, caixa alta, entreletramento aberto.
+     Manual: Condensed 500 · 12px. Nunca em âmbar. */
+  .etiqueta {
+    @apply font-display text-xs font-medium uppercase tracking-etiqueta text-papel-3;
   }
 
-  /* Régua fina que separa blocos do laudo sem virar caixa. */
+  /* Código de registro e números — tabulares, como manda o manual. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
   .rule {
-    @apply h-px w-full bg-line;
+    @apply h-px w-full bg-chumbo-linha;
   }
 
-  /* Link visível para pular a navegação, exigido para navegação por teclado. */
   .skip-link {
-    @apply absolute left-4 top-4 z-[100] -translate-y-24 rounded-sm bg-signal-amber px-4 py-3
-           font-mono text-sm text-page transition-transform focus:translate-y-0;
+    @apply absolute left-4 top-4 z-[100] -translate-y-24 rounded-sm bg-menta px-4 py-3
+           font-display font-medium uppercase tracking-etiqueta text-chumbo transition-transform focus:translate-y-0;
+  }
+
+  /* PRINCÍPIO 03 DO MANUAL — "Risco é bloco cheio, nunca acento."
+     Âmbar só existe assim: tinta cheia, texto invertido em chumbo.
+     Nunca como fio, brilho, borda ou texto solto. */
+  .bloco-risco {
+    background-color: #f2a93d;
+    color: #1b1d21;
+  }
+
+  .bloco-risco a {
+    color: #1b1d21;
+    text-decoration: underline;
+  }
+
+  /* Etiqueta de risco: a forma inline do bloco cheio. Substitui o antigo
+     "etiqueta em âmbar", que era exatamente o destaque solto proibido. */
+  .etiqueta-risco {
+    @apply inline-block bg-ambar px-2 py-1 font-display text-xs font-medium
+           uppercase tracking-etiqueta text-chumbo;
+  }
+
+  /* Marca-texto de fraude dentro de um exemplo de mensagem. Bloco cheio,
+     texto invertido — mesma regra do âmbar, aplicada em linha. */
+  .marca-risco {
+    @apply rounded-[2px] bg-ambar px-1 text-chumbo;
+  }
+
+  /* O contraponto: trecho que torna a mensagem confiável. */
+  .marca-ok {
+    @apply rounded-[2px] bg-menta px-1 text-chumbo;
+  }
+
+  /* Campo institucional: petróleo é fundo, nunca tinta.
+     O manual proíbe usá-lo como fundo de página inteira. */
+  .campo-petroleo {
+    background-color: #164752;
+    color: #f2f4f3;
   }
 }
 
-/* Verbete do glossário alcançado por âncora (/glossario#https).
-   Sem isso, quem clica num termo no meio de um texto cai no meio de uma lista
-   longa sem saber qual das entradas era o alvo. */
+/* Verbete do glossário alcançado por âncora (/glossario#https). */
 .verbete:target {
-  border-left: 2px solid #e8a33d;
+  border-left: 2px solid #3ed6a4;
   padding-left: 1.25rem;
 }
 
-/* Revelação por máscara: o bloco não some e reaparece, ele é descoberto.
-   Aplicada por JS/Framer Motion via variantes; aqui fica só o caso CSS puro,
-   usado pela cascata do hero, que dispara no carregamento. */
+/* Revelação por máscara — cascata do hero, dispara no carregamento. */
 @keyframes mask-in {
   from {
     clip-path: inset(0 100% 0 0);
@@ -120,9 +160,7 @@ body {
   animation: mask-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Interruptor geral de movimento.
-   Tudo que anima no site passa por aqui — inclusive o scroll suave e as
-   variantes do Framer Motion, que leem o mesmo media query no JS. */
+/* Interruptor geral de movimento. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

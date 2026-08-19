@@ -100,7 +100,7 @@ export function LinhaDoTempo() {
       {/* Trilho vertical da linha do tempo. */}
       <div
         aria-hidden="true"
-        className="absolute left-[0.6875rem] top-2 bottom-2 w-px bg-line md:left-[4.6875rem]"
+        className="absolute left-[0.6875rem] top-2 bottom-2 w-px bg-chumbo-linha md:left-[4.6875rem]"
       />
 
       {PASSOS.map((p) => (
@@ -110,11 +110,11 @@ export function LinhaDoTempo() {
             aria-hidden="true"
             className={`absolute left-1.5 top-1.5 h-3 w-3 rounded-full border-2 md:left-[4.1875rem] ${
               p.decisivo
-                ? "border-signal-amber bg-signal-amber"
-                : "border-line-strong bg-page"
+                ? "border-menta bg-menta"
+                : "border-chumbo-linhaForte bg-chumbo"
             }`}
           />
-          <span className="label-field absolute left-0 top-0 hidden w-14 text-right md:block">
+          <span className="etiqueta absolute left-0 top-0 hidden w-14 text-right md:block">
             {p.n}
           </span>
 
@@ -124,8 +124,8 @@ export function LinhaDoTempo() {
             viewport={VIEWPORT}
             variants={vTexto}
           >
-            <p className="label-field">{p.quando}</p>
-            <h3 className="mt-2 font-mono text-xl font-semibold text-balance md:text-2xl">
+            <p className="etiqueta">{p.quando}</p>
+            <h3 className="mt-2 font-display text-xl font-semibold text-balance md:text-2xl">
               {p.titulo}
             </h3>
           </motion.div>
@@ -135,7 +135,7 @@ export function LinhaDoTempo() {
             whileInView="visible"
             viewport={VIEWPORT}
             variants={v}
-            className="mt-3 max-w-2xl text-body leading-relaxed text-ink-2 text-pretty"
+            className="mt-3 max-w-2xl text-body leading-relaxed text-papel-2 text-pretty"
           >
             {p.movimento}
           </motion.p>
@@ -147,15 +147,15 @@ export function LinhaDoTempo() {
               viewport={VIEWPORT}
               variants={vTexto}
               className={`mt-4 max-w-2xl border-l-2 py-2.5 pl-4 ${
-                p.decisivo ? "border-signal-amber" : "border-line-strong"
+                p.decisivo ? "border-menta" : "border-chumbo-linhaForte"
               }`}
             >
               <p
-                className={`label-field ${p.decisivo ? "text-signal-amber" : ""}`}
+                className={`etiqueta ${p.decisivo ? "text-menta" : ""}`}
               >
                 {p.decisivo ? "Aqui o golpe quebra" : "O que atrapalha"}
               </p>
-              <p className="mt-1.5 text-body leading-relaxed text-ink-2 text-pretty">
+              <p className="mt-1.5 text-body leading-relaxed text-papel-2 text-pretty">
                 {p.ruptura}
               </p>
             </motion.div>

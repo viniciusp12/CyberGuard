@@ -27,7 +27,7 @@ export function TextoRico({ children }: { children: string }) {
           return (
             <code
               key={i}
-              className="rounded-[2px] bg-panel-raised px-1.5 py-0.5 font-mono text-[0.9em] text-ink"
+              className="rounded-[2px] bg-chumbo-painel px-1.5 py-0.5 font-display text-[0.9em] text-papel"
             >
               {parte.slice(1, -1)}
             </code>
@@ -36,7 +36,7 @@ export function TextoRico({ children }: { children: string }) {
 
         if (parte.startsWith("**") && parte.endsWith("**") && parte.length > 4) {
           return (
-            <strong key={i} className="font-semibold text-ink">
+            <strong key={i} className="font-semibold text-papel">
               {parte.slice(2, -2)}
             </strong>
           );

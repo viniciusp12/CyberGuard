@@ -41,8 +41,8 @@ export default function NoTrabalhoPage() {
 
       <section className="py-14 md:py-20">
         <div className="container-page">
-          <div className="mb-12 max-w-2xl border-l-2 border-line pl-5">
-            <p className="text-body text-ink-2 text-pretty">
+          <div className="mb-12 max-w-2xl border-l-2 border-chumbo-linha pl-5">
+            <p className="text-body text-papel-2 text-pretty">
               Uma premissa que vale para tudo o que vem abaixo: quem cai não é
               descuidado. Cai quem estava resolvendo três coisas ao mesmo tempo
               às 17h50 de uma sexta — ou seja, todo mundo, uma hora ou outra. Um
@@ -53,7 +53,7 @@ export default function NoTrabalhoPage() {
 
           {/* Índice: com 14 golpes, uma lista corrida vira parede de texto. */}
           <nav aria-label="Categorias" className="mb-14">
-            <p className="label-field">
+            <p className="etiqueta">
               {TOTAL_GOLPES} golpes, em cinco famílias
             </p>
             <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -63,10 +63,10 @@ export default function NoTrabalhoPage() {
                       número de ordem, igual às seções 01–06 do site. */}
                   <a
                     href={`#${c.id}`}
-                    className="flex min-h-touch items-center justify-between gap-3 rounded-sm border border-line px-4 font-mono text-sm text-ink-2 transition-colors duration-200 hover:border-signal-amber hover:text-signal-amber"
+                    className="flex min-h-touch items-center justify-between gap-3 rounded-sm border border-chumbo-linha px-4 font-display text-sm text-papel-2 transition-colors duration-200 hover:border-menta hover:text-menta"
                   >
                     {c.titulo}
-                    <span className="shrink-0 text-xs text-ink-3">
+                    <span className="shrink-0 text-xs text-papel-3">
                       {`${c.golpes.length} golpes`}
                     </span>
                   </a>
@@ -85,48 +85,48 @@ export default function NoTrabalhoPage() {
               >
                 <h2
                   id={`titulo-${cat.id}`}
-                  className="font-mono text-2xl font-semibold text-balance md:text-3xl"
+                  className="font-display text-2xl font-semibold text-balance md:text-3xl"
                 >
                   {cat.titulo}
                 </h2>
-                <p className="mt-3 max-w-2xl text-body text-ink-2 text-pretty">
+                <p className="mt-3 max-w-2xl text-body text-papel-2 text-pretty">
                   {cat.resumo}
                 </p>
 
-                <ul className="mt-8 space-y-px bg-line">
+                <ul className="mt-8 space-y-px bg-chumbo-linha">
                   {cat.golpes.map((g) => (
-                    <li key={g.id} className="bg-page py-8 md:px-6">
-                      <h3 className="font-mono text-xl font-semibold text-balance">
+                    <li key={g.id} className="bg-chumbo py-8 md:px-6">
+                      <h3 className="font-display text-xl font-semibold text-balance">
                         {g.titulo}
                       </h3>
 
                       <div className="mt-5 grid gap-6 md:grid-cols-2">
                         <div>
-                          <p className="label-field">Como chega</p>
-                          <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                          <p className="etiqueta">Como chega</p>
+                          <p className="mt-2 text-sm leading-relaxed text-papel-2">
                             {g.comoChega}
                           </p>
                         </div>
                         <div>
-                          <p className="label-field">Por que funciona</p>
-                          <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                          <p className="etiqueta">Por que funciona</p>
+                          <p className="mt-2 text-sm leading-relaxed text-papel-2">
                             {g.porQueFunciona}
                           </p>
                         </div>
                       </div>
 
-                      <div className="mt-5 border-l-2 border-signal-amber py-2 pl-4">
-                        <p className="label-field text-signal-amber">
+                      <div className="mt-5 border-l-2 border-menta py-2 pl-4">
+                        <p className="etiqueta-risco">
                           Onde o golpe quebra
                         </p>
-                        <p className="mt-1.5 text-body leading-relaxed text-ink text-pretty">
+                        <p className="mt-1.5 text-body leading-relaxed text-papel text-pretty">
                           {g.pontoDeQuebra}
                         </p>
                       </div>
 
                       <div className="mt-4">
-                        <p className="label-field">O que fazer</p>
-                        <p className="mt-1.5 text-sm leading-relaxed text-ink-2">
+                        <p className="etiqueta">O que fazer</p>
+                        <p className="mt-1.5 text-sm leading-relaxed text-papel-2">
                           {g.oQueFazer}
                         </p>
                       </div>
@@ -140,22 +140,22 @@ export default function NoTrabalhoPage() {
       </section>
 
       {/* Correção de um mito que aparecia na versão anterior deste site. */}
-      <section className="border-y border-line bg-panel/40 py-14 md:py-20">
+      <section className="border-y border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
-          <p className="label-field text-signal-amber">
+          <p className="etiqueta-risco">
             Uma correção sobre Wi-Fi público
           </p>
-          <h2 className="mt-4 font-mono text-2xl font-semibold text-balance">
+          <h2 className="mt-4 font-display text-2xl font-semibold text-balance">
             “Alguém na mesma rede lê a sua senha” já não é mais o risco
           </h2>
-          <p className="mt-5 text-body leading-relaxed text-ink-2 text-pretty">
+          <p className="mt-5 text-body leading-relaxed text-papel-2 text-pretty">
             Esse aviso vem de uma web em que os sites trafegavam sem
             criptografia. Hoje praticamente todo site sério usa HTTPS, e o
             conteúdo do que você acessa não é legível por quem está na mesma
             rede. Repetir o alerta antigo desgasta a confiança no resto do
             conselho.
           </p>
-          <p className="mt-4 text-body leading-relaxed text-ink-2 text-pretty">
+          <p className="mt-4 text-body leading-relaxed text-papel-2 text-pretty">
             O risco real hoje é outro. Primeiro, a rede com nome clonado: um
             ponto de acesso chamado igual ao do shopping, do hotel ou da loja,
             que te leva a uma tela de login falsa. Segundo, a tela de cadastro
@@ -163,7 +163,7 @@ export default function NoTrabalhoPage() {
             alimentam a próxima mensagem de golpe. Terceiro, o mais banal: a
             tela do notebook visível para quem está atrás de você.
           </p>
-          <p className="mt-4 text-body leading-relaxed text-ink-2 text-pretty">
+          <p className="mt-4 text-body leading-relaxed text-papel-2 text-pretty">
             O que resolve: preferir o 4G ou 5G do celular a rede aberta
             desconhecida; nunca fazer login numa tela que apareceu sozinha ao
             conectar; e, para sistema interno, usar a VPN da empresa — que aí
@@ -176,12 +176,12 @@ export default function NoTrabalhoPage() {
       {/* Cultura de reporte — a parte que quase nenhum material corporativo tem. */}
       <section className="py-14 md:py-20">
         <div className="container-read">
-          <p className="label-field">Contragolpe</p>
-          <h2 className="mt-3 font-mono text-2xl font-semibold text-balance md:text-3xl">
+          <p className="etiqueta">Contragolpe</p>
+          <h2 className="mt-3 font-display text-2xl font-semibold text-balance md:text-3xl">
             Avisar rápido vale mais que qualquer configuração
           </h2>
 
-          <p className="mt-5 text-bodyLg leading-relaxed text-ink-2 text-pretty">
+          <p className="mt-5 text-bodyLg leading-relaxed text-papel-2 text-pretty">
             O tamanho de um incidente quase nunca é definido pela técnica do
             ataque. É definido por quantos minutos passaram entre a pessoa
             perceber e alguém poder agir. Nesse intervalo dá para bloquear um
@@ -189,28 +189,28 @@ export default function NoTrabalhoPage() {
             resta contar o prejuízo.
           </p>
 
-          <p className="mt-4 text-body leading-relaxed text-ink-2 text-pretty">
+          <p className="mt-4 text-body leading-relaxed text-papel-2 text-pretty">
             E o que mais alarga esse intervalo não é falta de treinamento. É
             vergonha. Por isso vale enfrentar as quatro frases que passam pela
             cabeça de quem acabou de clicar em algo errado:
           </p>
 
-          <dl className="mt-8 divide-y divide-line border-y border-line">
+          <dl className="mt-8 divide-y divide-chumbo-linha border-y border-chumbo-linha">
             {MEDOS.map((m) => (
               <div key={m.medo} className="py-5">
-                <dt className="font-mono text-base text-ink">{m.medo}</dt>
-                <dd className="mt-2 text-body leading-relaxed text-ink-2 text-pretty">
+                <dt className="font-display text-base text-papel">{m.medo}</dt>
+                <dd className="mt-2 text-body leading-relaxed text-papel-2 text-pretty">
                   {m.real}
                 </dd>
               </div>
             ))}
           </dl>
 
-          <div className="mt-10 border-l-2 border-signal-green py-2 pl-5">
-            <p className="label-field text-signal-green">
+          <div className="mt-10 border-l-2 border-menta py-2 pl-5">
+            <p className="etiqueta text-menta">
               Se você lidera uma equipe
             </p>
-            <p className="mt-2 text-body leading-relaxed text-ink-2 text-pretty">
+            <p className="mt-2 text-body leading-relaxed text-papel-2 text-pretty">
               A sua reação ao primeiro aviso define se haverá um segundo. Quem
               é repreendido ao reportar não deixa de errar — deixa de contar, e
               o próximo incidente só aparece quando já é grande. Agradecer o
@@ -223,47 +223,47 @@ export default function NoTrabalhoPage() {
       </section>
 
       {/* Resposta a incidente. */}
-      <section className="border-t border-line bg-panel/40 py-14 md:py-20">
+      <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
-          <h2 className="font-mono text-2xl font-semibold">
+          <h2 className="font-display text-2xl font-semibold">
             Se acontecer com você no expediente
           </h2>
-          <p className="mt-3 text-body text-ink-2 text-pretty">
+          <p className="mt-3 text-body text-papel-2 text-pretty">
             A ordem importa mais que a rapidez de cada passo isolado.
           </p>
 
-          <ol className="mt-8 divide-y divide-line border-y border-line">
+          <ol className="mt-8 divide-y divide-chumbo-linha border-y border-chumbo-linha">
             {PASSOS_INCIDENTE.map((i) => (
               <li key={i.n} className="py-6">
                 <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  <span className="font-mono text-sm font-semibold text-signal-amber">
+                  <span className="font-display text-sm font-semibold text-menta">
                     {i.n}
                   </span>
-                  <span className="label-field">{i.quando}</span>
+                  <span className="etiqueta">{i.quando}</span>
                 </div>
-                <h3 className="mt-2 font-mono text-lg font-semibold text-balance">
+                <h3 className="mt-2 font-display text-lg font-semibold text-balance">
                   {i.titulo}
                 </h3>
-                <p className="mt-2 text-body leading-relaxed text-ink-2 text-pretty">
+                <p className="mt-2 text-body leading-relaxed text-papel-2 text-pretty">
                   {i.texto}
                 </p>
               </li>
             ))}
           </ol>
 
-          <div className="mt-10 rounded-sm border border-line bg-panel p-6">
-            <p className="label-field">O prazo legal, para quem precisa saber</p>
-            <p className="mt-3 text-body leading-relaxed text-ink-2 text-pretty">
+          <div className="mt-10 rounded-sm border border-chumbo-linha bg-chumbo-painel p-6">
+            <p className="etiqueta">O prazo legal, para quem precisa saber</p>
+            <p className="mt-3 text-body leading-relaxed text-papel-2 text-pretty">
               Quando um incidente de segurança atinge dados pessoais e pode
               acarretar risco relevante às pessoas afetadas, o controlador tem{" "}
-              <strong className="font-semibold text-ink">
+              <strong className="font-semibold text-papel">
                 três dias úteis
               </strong>{" "}
               para comunicar a Autoridade Nacional de Proteção de Dados e os
               titulares. O prazo conta a partir do momento em que a empresa
               toma conhecimento de que o incidente afetou dados pessoais.
             </p>
-            <p className="mt-3 text-body leading-relaxed text-ink-2 text-pretty">
+            <p className="mt-3 text-body leading-relaxed text-papel-2 text-pretty">
               É por isso que o seu aviso rápido não é só boa vontade: ele é o
               que faz o relógio começar cedo o bastante para a empresa
               conseguir cumprir a lei. Quem conduz essa comunicação é o
@@ -291,14 +291,14 @@ export default function NoTrabalhoPage() {
             ]}
           />
 
-          <div className="mt-10 border-t border-line pt-8">
-            <p className="text-body text-ink-2">
+          <div className="mt-10 border-t border-chumbo-linha pt-8">
+            <p className="text-body text-papel-2">
               Fora do expediente, o alvo volta a ser você e a sua família — e o
               método é exatamente o mesmo.
             </p>
             <Link
               href="/golpe"
-              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-line-strong px-5 py-3 font-mono text-sm text-ink transition-colors duration-200 hover:border-signal-amber hover:text-signal-amber"
+              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-chumbo-linhaForte px-5 py-3 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
             >
               Voltar para os golpes do dia a dia →
             </Link>

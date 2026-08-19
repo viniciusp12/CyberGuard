@@ -24,7 +24,7 @@ export function Termo({
   return (
     <Link
       href={`/glossario#${id}`}
-      className="underline decoration-dotted decoration-ink-3 underline-offset-4 transition-colors hover:text-ink hover:decoration-signal-amber"
+      className="underline decoration-dotted decoration-papel-3 underline-offset-4 transition-colors hover:text-papel hover:decoration-menta"
     >
       {children}
       <span className="sr-only"> — ver no glossário</span>

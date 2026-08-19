@@ -37,10 +37,10 @@ export default function AgoraPage() {
         </div>
       </section>
 
-      <section className="border-t border-line bg-panel/40 py-14 md:py-20">
+      <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
-          <p className="label-field">Uma coisa que esta lista não faz</p>
-          <p className="mt-4 text-body text-ink-2 text-pretty">
+          <p className="etiqueta">Uma coisa que esta lista não faz</p>
+          <p className="mt-4 text-body text-papel-2 text-pretty">
             Nada aqui garante nada. Existe golpe que passa por cima de tudo isso
             — e quando passa, a culpa não é de quem foi enganado. Segurança
             digital não é um teste de caráter nem de inteligência: é uma disputa
@@ -49,14 +49,14 @@ export default function AgoraPage() {
             É isso que eles fazem, e já é bastante.
           </p>
 
-          <div className="mt-10 border-t border-line pt-8">
-            <p className="text-body text-ink-2">
+          <div className="mt-10 border-t border-chumbo-linha pt-8">
+            <p className="text-body text-papel-2">
               Se algo já aconteceu com você, a próxima página é a única que
               importa agora.
             </p>
             <Link
               href="/ja-cai"
-              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-signal-red/50 px-5 py-3 font-mono text-sm text-signal-red transition-colors duration-200 hover:bg-signal-redDim"
+              className="mt-5 inline-flex min-h-touch items-center rounded-sm bg-ambar px-5 py-3 font-display text-sm font-medium text-chumbo transition-colors duration-200 hover:bg-[#F5BB63]"
             >
               Já caí num golpe — e agora? →
             </Link>

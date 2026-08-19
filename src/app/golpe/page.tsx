@@ -22,8 +22,8 @@ export default function GolpePage() {
 
       <section className="py-14 md:py-20">
         <div className="container-page">
-          <div className="mb-12 max-w-2xl border-l-2 border-line pl-5">
-            <p className="text-body text-ink-2 text-pretty">
+          <div className="mb-12 max-w-2xl border-l-2 border-chumbo-linha pl-5">
+            <p className="text-body text-papel-2 text-pretty">
               Antes de começar: errar aqui é o esperado. Essas mensagens são
               escritas por gente que faz isso o dia inteiro, testando o que
               funciona em milhares de pessoas. Cair não é falta de atenção nem
@@ -48,24 +48,24 @@ export default function GolpePage() {
         </div>
       </section>
 
-      <section className="border-t border-line bg-panel/40 py-14 md:py-20">
+      <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
-          <p className="label-field">A regra que serve para todos os casos</p>
-          <p className="mt-4 text-bodyLg text-ink text-pretty">
+          <p className="etiqueta">A regra que serve para todos os casos</p>
+          <p className="mt-4 text-bodyLg text-papel text-pretty">
             Nunca confirme uma mensagem pelo caminho que a mensagem oferece.
             Saia dela: abra o aplicativo por conta própria, ligue para o número
             que você já tinha salvo, digite o endereço do site você mesmo. Todo
             golpe depende de você seguir o caminho que ele montou.
           </p>
 
-          <div className="mt-10 border-t border-line pt-8">
-            <p className="text-body text-ink-2">
+          <div className="mt-10 border-t border-chumbo-linha pt-8">
+            <p className="text-body text-papel-2">
               Reconhecer a mensagem é metade. A outra metade é entender como ela
               chegou até você.
             </p>
             <Link
               href="/anatomia"
-              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-line-strong px-5 py-3 font-mono text-sm text-ink transition-colors duration-200 hover:border-signal-amber hover:text-signal-amber"
+              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-chumbo-linhaForte px-5 py-3 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
             >
               Próximo · Como o golpe funciona por dentro →
             </Link>

@@ -22,7 +22,7 @@ export function Triagem() {
 
   return (
     <div>
-      <p className="font-mono text-sm text-ink-3" aria-live="polite">
+      <p className="font-display text-sm text-papel-3" aria-live="polite">
         {respondidos} de {TRIAGEM.length} respondidos
       </p>
 
@@ -35,16 +35,16 @@ export function Triagem() {
           return (
             <li
               key={item.id}
-              className={`rounded-sm border bg-panel transition-colors duration-200 ${
+              className={`rounded-sm border bg-chumbo-painel transition-colors duration-200 ${
                 !respondido
-                  ? "border-line"
+                  ? "border-chumbo-linha"
                   : item.seguro
-                    ? "border-signal-green/50"
-                    : "border-signal-red/50"
+                    ? "border-menta/50"
+                    : "border-chumbo-linhaForte"
               }`}
             >
               <div className="p-5">
-                <p className="text-body leading-relaxed text-ink text-pretty">
+                <p className="text-body leading-relaxed text-papel text-pretty">
                   {item.texto}
                 </p>
 
@@ -53,31 +53,37 @@ export function Triagem() {
                     <button
                       type="button"
                       onClick={() => responder(item.id, true)}
-                      className="min-h-touch rounded-sm border border-line-strong px-5 font-mono text-sm text-ink transition-colors duration-200 hover:border-signal-green hover:text-signal-green"
+                      className="min-h-touch rounded-sm border border-chumbo-linhaForte px-5 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
                     >
                       Pode colar
                     </button>
                     <button
                       type="button"
                       onClick={() => responder(item.id, false)}
-                      className="min-h-touch rounded-sm border border-line-strong px-5 font-mono text-sm text-ink transition-colors duration-200 hover:border-signal-red hover:text-signal-red"
+                      className="min-h-touch rounded-sm border border-chumbo-linhaForte px-5 font-display text-sm text-papel transition-colors duration-200 hover:border-ambar hover:text-papel"
                     >
                       Não pode
                     </button>
                   </div>
                 ) : (
-                  <div className="mt-4 border-t border-line pt-4">
-                    <p
-                      className={`font-mono text-sm ${
-                        item.seguro ? "text-signal-green" : "text-signal-red"
-                      }`}
-                    >
-                      {item.seguro ? "Pode colar" : "Não pode"}
+                  <div className="mt-4 border-t border-chumbo-linha pt-4">
+                    <p className="flex flex-wrap items-center gap-2">
+                      <span
+                        className={
+                          item.seguro
+                            ? "font-display text-sm uppercase tracking-etiqueta text-menta"
+                            : "etiqueta-risco"
+                        }
+                      >
+                        {item.seguro ? "Pode colar" : "Não pode"}
+                      </span>
                       {!acertou && (
-                        <span className="text-ink-3"> — você marcou o contrário</span>
+                        <span className="text-sm text-papel-3">
+                          você marcou o contrário
+                        </span>
                       )}
                     </p>
-                    <p className="mt-2 text-body leading-relaxed text-ink-2 text-pretty">
+                    <p className="mt-2 text-body leading-relaxed text-papel-2 text-pretty">
                       {item.motivo}
                     </p>
                   </div>
@@ -92,7 +98,7 @@ export function Triagem() {
         <button
           type="button"
           onClick={() => setRespostas({})}
-          className="mt-6 min-h-touch rounded-sm border border-line px-4 font-mono text-sm text-ink-3 transition-colors duration-200 hover:border-line-strong hover:text-ink-2"
+          className="mt-6 min-h-touch rounded-sm border border-chumbo-linha px-4 font-display text-sm text-papel-3 transition-colors duration-200 hover:border-chumbo-linhaForte hover:text-papel-2"
         >
           Recomeçar
         </button>

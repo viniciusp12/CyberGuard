@@ -39,10 +39,10 @@ export default function SenhaPage() {
         </div>
       </section>
 
-      <section className="border-t border-line bg-panel/40 py-14 md:py-20">
+      <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
-          <p className="label-field">Sobre a recomendação de não trocar por rotina</p>
-          <p className="mt-4 text-body text-ink-2 text-pretty">
+          <p className="etiqueta">Sobre a recomendação de não trocar por rotina</p>
+          <p className="mt-4 text-body text-papel-2 text-pretty">
             A diretriz de identidade digital do NIST, referência usada por
             órgãos e empresas no mundo todo, deixou de recomendar troca
             periódica obrigatória de senha e passou a recomendar troca apenas
@@ -57,14 +57,14 @@ export default function SenhaPage() {
             href="https://pages.nist.gov/800-63-3/sp800-63b.html"
           />
 
-          <div className="mt-10 border-t border-line pt-8">
-            <p className="text-body text-ink-2">
+          <div className="mt-10 border-t border-chumbo-linha pt-8">
+            <p className="text-body text-papel-2">
               Senha resolvida, sobra o outro caminho: convencer você a entregar
               o acesso de bom grado.
             </p>
             <Link
               href="/golpe"
-              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-line-strong px-5 py-3 font-mono text-sm text-ink transition-colors duration-200 hover:border-signal-amber hover:text-signal-amber"
+              className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-chumbo-linhaForte px-5 py-3 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
             >
               Próximo · Qual deles é golpe? →
             </Link>
