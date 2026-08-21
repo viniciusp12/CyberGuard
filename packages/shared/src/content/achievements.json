@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ach-cacador-phishing",
+    "title": "Caçador de Phishing",
+    "description": "Identifique corretamente 10 emails de phishing.",
+    "icon": "fish",
+    "criteria": { "kind": "concept_mastered", "concept": "phishing", "correctCount": 10 },
+    "xpReward": 200,
+    "moneyReward": 100
+  },
+  {
+    "id": "ach-guardiao-empresa",
+    "title": "Guardião da Empresa",
+    "description": "Complete 3 fases sem deixar a segurança da empresa cair abaixo de 100.",
+    "icon": "shield",
+    "criteria": { "kind": "phases_completed", "count": 3 },
+    "xpReward": 300,
+    "moneyReward": 150
+  },
+  {
+    "id": "ach-mestre-links",
+    "title": "Mestre dos Links",
+    "description": "Identifique corretamente 10 links maliciosos.",
+    "icon": "link",
+    "criteria": { "kind": "concept_mastered", "concept": "link_malicioso", "correctCount": 10 },
+    "xpReward": 200,
+    "moneyReward": 100
+  },
+  {
+    "id": "ach-especialista-malware",
+    "title": "Especialista em Malware",
+    "description": "Identifique corretamente 10 anexos ou ameaças de malware.",
+    "icon": "bug",
+    "criteria": { "kind": "concept_mastered", "concept": "malware", "correctCount": 10 },
+    "xpReward": 250,
+    "moneyReward": 125
+  },
+  {
+    "id": "ach-100-emails-perfeitos",
+    "title": "100 Emails Perfeitos",
+    "description": "Acerte 100 emails no total.",
+    "icon": "check-check",
+    "criteria": { "kind": "perfect_emails_total", "count": 100 },
+    "xpReward": 500,
+    "moneyReward": 250
+  },
+  {
+    "id": "ach-combo-x30",
+    "title": "Combo x30",
+    "description": "Alcance um combo de 30 acertos consecutivos.",
+    "icon": "flame",
+    "criteria": { "kind": "combo_reached", "combo": 30 },
+    "xpReward": 400,
+    "moneyReward": 200
+  }
+]

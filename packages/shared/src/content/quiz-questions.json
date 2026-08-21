@@ -1,0 +1,254 @@
+[
+  {
+    "id": "quiz-01",
+    "question": "Um email pede que você clique em um link para 'evitar o bloqueio da conta em 24 horas'. O que isso indica?",
+    "options": [
+      "É sempre legítimo, contas realmente bloqueiam rápido",
+      "Urgência artificial é uma técnica clássica de engenharia social",
+      "Só é phishing se vier de um remetente desconhecido",
+      "Não indica nada, é só um estilo de escrita"
+    ],
+    "correctIndex": 1,
+    "concept": "engenharia_social",
+    "difficulty": 1,
+    "explanation": "Criar senso de urgência para reduzir sua reflexão antes de agir é uma tática clássica de engenharia social."
+  },
+  {
+    "id": "quiz-02",
+    "question": "O que é um ataque de homógrafos?",
+    "options": [
+      "Um vírus que se replica em várias máquinas",
+      "Usar caracteres visualmente parecidos (como 'I' maiúsculo no lugar de 'l') para falsificar um domínio",
+      "Enviar o mesmo email para várias pessoas",
+      "Um tipo de golpe feito apenas por telefone"
+    ],
+    "correctIndex": 1,
+    "concept": "phishing",
+    "difficulty": 3,
+    "explanation": "Ataques de homógrafos exploram caracteres parecidos para criar domínios falsos quase indistinguíveis do original."
+  },
+  {
+    "id": "quiz-03",
+    "question": "Você recebe um pedido de PIX urgente do 'diretor financeiro' por email, pedindo sigilo. O que fazer?",
+    "options": [
+      "Fazer o PIX rapidamente para não incomodar a diretoria",
+      "Responder o email pedindo mais detalhes",
+      "Confirmar por outro canal (telefone conhecido) antes de qualquer pagamento",
+      "Encaminhar para um colega decidir"
+    ],
+    "correctIndex": 2,
+    "concept": "pix_falso",
+    "difficulty": 3,
+    "explanation": "Pedidos de pagamento urgente e sigiloso são a marca registrada de fraudes BEC — sempre confirme por outro canal."
+  },
+  {
+    "id": "quiz-04",
+    "question": "Por que nunca se deve desativar a verificação em duas etapas (MFA) a pedido de um email?",
+    "options": [
+      "Porque o MFA é opcional e não faz diferença",
+      "Porque isso remove uma das principais proteções contra invasão de contas",
+      "Porque só funciona em celulares Android",
+      "Porque desativar o MFA é ilegal"
+    ],
+    "correctIndex": 1,
+    "concept": "mfa",
+    "difficulty": 2,
+    "explanation": "O MFA é uma das defesas mais importantes contra invasão — nenhuma equipe de TI legítima pede para desativá-lo."
+  },
+  {
+    "id": "quiz-05",
+    "question": "Um arquivo chamado 'nota_fiscal.pdf.exe' foi enviado como anexo. O que isso indica?",
+    "options": [
+      "É um PDF protegido por senha",
+      "É uma extensão dupla escondendo um executável malicioso",
+      "É um formato válido de compactação",
+      "Não há nada de errado, é só um nome longo"
+    ],
+    "correctIndex": 1,
+    "concept": "anexo_perigoso",
+    "difficulty": 1,
+    "explanation": "A extensão real é '.exe' (executável); '.pdf' antes disso é só para enganar visualmente."
+  },
+  {
+    "id": "quiz-06",
+    "question": "Um certificado HTTPS válido (cadeado verde) em um site significa que:",
+    "options": [
+      "O site é 100% confiável e seguro",
+      "A conexão é criptografada, mas isso não garante que o conteúdo seja legítimo",
+      "O site pertence ao governo",
+      "Não existem golpes possíveis nesse site"
+    ],
+    "correctIndex": 1,
+    "concept": "phishing",
+    "difficulty": 3,
+    "explanation": "HTTPS garante apenas criptografia da conexão — sites falsos também podem ter certificado válido."
+  },
+  {
+    "id": "quiz-07",
+    "question": "Você encontra um pendrive desconhecido no estacionamento da empresa. O que fazer?",
+    "options": [
+      "Conectar no seu computador para ver o que tem",
+      "Entregar para a equipe de TI sem conectar em nenhum dispositivo",
+      "Levar para casa e verificar com calma",
+      "Deixar onde estava"
+    ],
+    "correctIndex": 1,
+    "concept": "usb_infectado",
+    "difficulty": 2,
+    "explanation": "Pendrives desconhecidos podem estar infectados propositalmente — nunca conecte, entregue à TI."
+  },
+  {
+    "id": "quiz-08",
+    "question": "Qual sinal MAIS indica que um email de 'WhatsApp' pedindo confirmação de sessão é falso?",
+    "options": [
+      "O logotipo está em verde",
+      "O domínio do remetente não tem relação com a Meta/WhatsApp",
+      "O email chegou de manhã",
+      "O assunto tem emoji"
+    ],
+    "correctIndex": 1,
+    "concept": "whatsapp_falso",
+    "difficulty": 2,
+    "explanation": "Serviços legítimos não enviam notificações por domínios genéricos não associados à empresa real."
+  },
+  {
+    "id": "quiz-09",
+    "question": "Um fornecedor real e confiável pede, só por email, para trocar os dados bancários de pagamento. O que isso pode indicar?",
+    "options": [
+      "É rotina, fornecedores trocam de banco o tempo todo",
+      "A conta de email do fornecedor pode ter sido comprometida",
+      "Não há risco, já que o fornecedor é conhecido",
+      "É preciso responder imediatamente confirmando"
+    ],
+    "correctIndex": 1,
+    "concept": "fornecedor_comprometido",
+    "difficulty": 3,
+    "explanation": "Mesmo fornecedores reais podem ter contas de email invadidas — confirme mudanças bancárias por telefone."
+  },
+  {
+    "id": "quiz-10",
+    "question": "Antes de escanear um QR Code desconhecido, o que é recomendado?",
+    "options": [
+      "Escanear e ver o que acontece",
+      "Visualizar o destino/URL real antes de acessar",
+      "Compartilhar com um colega primeiro",
+      "QR Codes são sempre seguros"
+    ],
+    "correctIndex": 1,
+    "concept": "qr_falso",
+    "difficulty": 1,
+    "explanation": "É possível pré-visualizar o link de um QR Code antes de acessá-lo, evitando golpes disfarçados."
+  },
+  {
+    "id": "quiz-11",
+    "question": "O que caracteriza um golpe de 'CEO Fraud' / BEC (Business Email Compromise)?",
+    "options": [
+      "Um vírus que ataca especificamente diretores",
+      "Um golpista se passando por um executivo para induzir pagamentos ou ações urgentes",
+      "Uma falha de segurança em servidores de email",
+      "Um tipo de spam comum sem intenção maliciosa"
+    ],
+    "correctIndex": 1,
+    "concept": "bec",
+    "difficulty": 4,
+    "explanation": "BEC/CEO Fraud usa a autoridade percebida de um executivo para pressionar a vítima a agir sem verificar."
+  },
+  {
+    "id": "quiz-12",
+    "question": "Por que um domínio como 'microsoft-suporte-verificacao.com' deve gerar desconfiança?",
+    "options": [
+      "Porque é muito longo",
+      "Porque não é o domínio oficial da Microsoft, apenas contém a palavra 'microsoft'",
+      "Porque usa hífen",
+      "Domínios assim são sempre legítimos parceiros"
+    ],
+    "correctIndex": 1,
+    "concept": "microsoft_falso",
+    "difficulty": 2,
+    "explanation": "Conter o nome de uma marca não torna um domínio oficial — qualquer pessoa pode registrar domínios assim."
+  },
+  {
+    "id": "quiz-13",
+    "question": "Qual é a melhor prática ao receber um boleto por email, mesmo de um fornecedor conhecido?",
+    "options": [
+      "Pagar imediatamente para evitar juros",
+      "Conferir o beneficiário e os dados bancários antes de pagar",
+      "Encaminhar para o financeiro sem checar nada",
+      "Ignorar sempre boletos por email"
+    ],
+    "correctIndex": 1,
+    "concept": "boleto_adulterado",
+    "difficulty": 3,
+    "explanation": "Boletos podem ter o beneficiário adulterado mesmo vindo de um fornecedor real — sempre confira antes de pagar."
+  },
+  {
+    "id": "quiz-14",
+    "question": "Um SMS avisa que uma encomenda está retida e pede para clicar em um link para liberar. Isso é:",
+    "options": [
+      "Sempre verdadeiro, encomendas ficam retidas com frequência",
+      "Possível phishing por SMS (smishing), especialmente se você não esperava encomenda",
+      "Só um golpe se vier de número internacional",
+      "Seguro, desde que o link comece com 'https'"
+    ],
+    "correctIndex": 1,
+    "concept": "sms_falso",
+    "difficulty": 2,
+    "explanation": "Golpes por SMS (smishing) usam a mesma engenharia social do phishing por email, com urgência e links falsos."
+  },
+  {
+    "id": "quiz-15",
+    "question": "Qual dessas é uma boa prática de senha?",
+    "options": [
+      "Usar a mesma senha em todos os sistemas para não esquecer",
+      "Usar senhas longas e únicas por serviço, idealmente com um gerenciador de senhas",
+      "Trocar '123456' por 'senha123' de vez em quando",
+      "Compartilhar a senha só com colegas de confiança"
+    ],
+    "correctIndex": 1,
+    "concept": "senha_fraca",
+    "difficulty": 1,
+    "explanation": "Senhas únicas e longas por serviço, geridas por um gerenciador, reduzem drasticamente o risco de invasão em cadeia."
+  },
+  {
+    "id": "quiz-16",
+    "question": "A 'IA Corporativa' do sistema aponta apenas 40% de probabilidade de phishing para um email que, na verdade, é malicioso. Isso significa que:",
+    "options": [
+      "A IA nunca erra, então o email é seguro",
+      "Ferramentas de IA são um apoio, mas podem errar — o julgamento humano continua necessário",
+      "40% já é prova suficiente de que é phishing",
+      "A ferramenta deve ser desativada"
+    ],
+    "correctIndex": 1,
+    "concept": "phishing",
+    "difficulty": 4,
+    "explanation": "Ferramentas automáticas ajudam, mas não substituem a investigação humana, especialmente em golpes sofisticados."
+  },
+  {
+    "id": "quiz-17",
+    "question": "Por que emails com extrema urgência ('responda em 10 minutos ou...') são um sinal de alerta?",
+    "options": [
+      "Porque emails urgentes são sempre spam",
+      "Porque a pressão de tempo é usada para impedir que a vítima pense com calma e verifique",
+      "Porque servidores de email demoram para processar",
+      "Não é um sinal de alerta, é só educação"
+    ],
+    "correctIndex": 1,
+    "concept": "engenharia_social",
+    "difficulty": 1,
+    "explanation": "Reduzir o tempo de reflexão da vítima é uma das táticas mais usadas em golpes de engenharia social."
+  },
+  {
+    "id": "quiz-18",
+    "question": "O que fazer ao suspeitar que um email é phishing, mesmo sem ter certeza absoluta?",
+    "options": [
+      "Ignorar e apagar sem reportar",
+      "Reportar ao TI/segurança da informação para análise",
+      "Responder ao remetente perguntando se é verdade",
+      "Encaminhar para vários colegas perguntando a opinião deles"
+    ],
+    "correctIndex": 1,
+    "concept": "phishing",
+    "difficulty": 1,
+    "explanation": "Reportar permite que a equipe de segurança analise e proteja outros colaboradores do mesmo golpe."
+  }
+]

@@ -1,0 +1,317 @@
+{
+  "id": "day-03",
+  "dayNumber": 3,
+  "title": "The scams get sophisticated",
+  "description": "Nearly identical domains, urgent PIX transfers, tampered invoices, fake Microsoft alerts, and a compromised vendor. Nothing is what it seems at first glance.",
+  "difficultyRange": [3, 3],
+  "timeLimitSeconds": 360,
+  "isBossDay": false,
+  "events": [
+    {
+      "id": "d3-evt-slow",
+      "type": "slow_internet",
+      "triggerAfterEmailIndex": 3,
+      "durationSeconds": 10,
+      "message": "The store's internet is slow today — every second counts even more.",
+      "effect": { "kind": "timer_penalty", "seconds": 20 }
+    }
+  ],
+  "emails": [
+    {
+      "id": "d3-e01",
+      "dayId": "day-03",
+      "order": 1,
+      "subject": "Access confirmation required",
+      "bodyHtml": "<p>Dear employee, we detected a new device trying to access your account. Confirm it was you by clicking the link below, or your account will be suspended for security reasons.</p>",
+      "sender": {
+        "displayName": "Leroy Merlin IT",
+        "emailAddressRaw": "seguranca@leroymerIin.com.br",
+        "domain": "leroymerIin.com.br",
+        "isSpoofed": true,
+        "spoofType": "homograph"
+      },
+      "links": [
+        { "id": "d3-e01-link1", "displayText": "Confirm access", "actualUrl": "http://leroymerIin.com.br/confirmar-acesso", "isMalicious": true }
+      ],
+      "attachments": [],
+      "headers": {
+        "fromServer": "mail.leroymerIin.com.br",
+        "sourceIp": "185.220.102.8",
+        "spf": "fail",
+        "dkim": "fail",
+        "dmarc": "fail",
+        "sentAt": "2026-07-22T08:10:00Z",
+        "routeHops": ["185.220.102.8"]
+      },
+      "internalDbRecord": { "senderStatus": "recently_created_domain", "notes": "Domain visually identical to the official one, registered 3 days ago." },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "phishing",
+      "tags": ["phishing", "link_malicioso"],
+      "difficulty": 3,
+      "investigationHints": [
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Look closely: the domain uses an uppercase 'I' in place of a lowercase 'l' — a homograph attack that fools the eye." },
+        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM, and DMARC all failed." },
+        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Domain visually identical to the official one, but registered only 3 days ago." }
+      ],
+      "explanation": {
+        "short": "Homograph attack: uppercase 'I' in place of lowercase 'l'.",
+        "detailed": "In many fonts, the uppercase letter 'I' is nearly indistinguishable from a lowercase 'l'. This email uses 'leroymerIin.com.br' instead of 'leroymerlin.com.br' — visually identical, but a completely different domain registered only 3 days ago. This is called a homograph attack.",
+        "conceptGlossaryId": "ataque_homografos"
+      },
+      "idealInvestigationSeconds": 10
+    },
+    {
+      "id": "d3-e02",
+      "dayId": "day-03",
+      "order": 2,
+      "subject": "URGENT: I need you to send a PIX transfer now",
+      "bodyHtml": "<p>I'm in a meeting with an important vendor and need to close a payment now via PIX so we don't lose the special deal. Confirm with me once you've done it, I'll explain later. Key: 47.xxx.xxx/0001-xx</p>",
+      "sender": {
+        "displayName": "Finance Management",
+        "emailAddressRaw": "diretoria.financeira@leroymerlin-corp.com",
+        "domain": "leroymerlin-corp.com",
+        "isSpoofed": true,
+        "spoofType": "lookalike_domain"
+      },
+      "links": [],
+      "attachments": [],
+      "headers": {
+        "fromServer": "mail.leroymerlin-corp.com",
+        "sourceIp": "91.219.212.77",
+        "spf": "fail",
+        "dkim": "none",
+        "dmarc": "fail",
+        "sentAt": "2026-07-22T14:32:00Z",
+        "routeHops": ["91.219.212.77"]
+      },
+      "aiAssistantHint": {
+        "phishingProbability": 95,
+        "isReliable": true,
+        "reasoning": "Urgent PIX request, with no formal approval process, coming from an unofficial corporate domain — a classic Business Email Compromise (BEC) pattern."
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "pix_falso",
+      "tags": ["pix_falso", "bec", "engenharia_social"],
+      "difficulty": 3,
+      "investigationHints": [
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'leroymerlin-corp.com' is not the company's official domain." },
+        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF and DMARC failed." },
+        { "toolId": "ai_assistant", "revealsField": "aiAssistantHint", "summaryText": "The AI identifies a classic PIX/BEC fraud pattern with high confidence." }
+      ],
+      "explanation": {
+        "short": "Urgent PIX fraud (BEC) impersonating management.",
+        "detailed": "Urgent PIX payment requests, with no formal approval process and creating emotional pressure ('I'm in a meeting', 'don't lose the deal'), are the hallmark of Business Email Compromise (BEC) fraud. The sender's domain confirms it: it's not the company's official one. Urgent payments should always be confirmed through another channel before being carried out.",
+        "conceptGlossaryId": "bec_pix_urgente"
+      },
+      "idealInvestigationSeconds": 8
+    },
+    {
+      "id": "d3-e03",
+      "dayId": "day-03",
+      "order": 3,
+      "subject": "Updated payment slip - Constrular Vendor",
+      "bodyHtml": "<p>Attached is the updated payment slip for the last shipment of materials. Please use only this slip for payment, the previous one was canceled due to a value error.</p>",
+      "sender": {
+        "displayName": "Constrular Materiais Finance",
+        "emailAddressRaw": "financeiro@constrular-materiais.com.br",
+        "domain": "constrular-materiais.com.br",
+        "isSpoofed": false,
+        "spoofType": "compromised_legit"
+      },
+      "links": [],
+      "attachments": [
+        {
+          "id": "d3-e03-att1",
+          "fileName": "updated_invoice.pdf",
+          "declaredExtension": ".pdf",
+          "actualType": "application/pdf",
+          "sizeKB": 145,
+          "hasMacro": false,
+          "isMalicious": true
+        }
+      ],
+      "headers": {
+        "fromServer": "mail.constrular-materiais.com.br",
+        "sourceIp": "177.85.44.12",
+        "spf": "pass",
+        "dkim": "pass",
+        "dmarc": "pass",
+        "sentAt": "2026-07-22T10:05:00Z",
+        "routeHops": ["177.85.44.12"]
+      },
+      "internalDbRecord": { "senderStatus": "trusted_vendor", "notes": "Vendor active for 5 years. Registered payee: 'Constrular Materiais de Construção LTDA'." },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "boleto_adulterado",
+      "tags": ["boleto_adulterado", "fornecedor_comprometido"],
+      "difficulty": 3,
+      "investigationHints": [
+        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "The registered payee is 'Constrular Materiais de Construção LTDA' — check whether the attached slip matches this name before paying." },
+        { "toolId": "attachment_analysis", "revealsField": "attachments[0].actualType", "summaryText": "The file is technically a legitimate PDF, but that doesn't guarantee the banking details inside it haven't been tampered with." },
+        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM, and DMARC all pass — the originating server really does belong to the vendor." }
+      ],
+      "explanation": {
+        "short": "Real vendor, but payment slip with a tampered payee.",
+        "detailed": "This is the most dangerous scenario: real sender, real domain, real email authentication (SPF/DKIM/DMARC all pass). The scam is inside the PDF — the slip's payee was swapped for a different account than the one on record. The defense here isn't technical, it's procedural: always confirm changes to payment details by phone with an already-known contact at the vendor, never by email alone.",
+        "conceptGlossaryId": "boleto_adulterado_fornecedor_real"
+      },
+      "idealInvestigationSeconds": 12
+    },
+    {
+      "id": "d3-e04",
+      "dayId": "day-03",
+      "order": 4,
+      "subject": "Microsoft: your Office 365 license expires today",
+      "bodyHtml": "<p>Your Microsoft 365 license expires today at 11:59pm. Click below to renew automatically and avoid losing access to your files.</p>",
+      "sender": {
+        "displayName": "Microsoft Account Team",
+        "emailAddressRaw": "account-security@micros0ft-online.com",
+        "domain": "micros0ft-online.com",
+        "isSpoofed": true,
+        "spoofType": "lookalike_domain"
+      },
+      "links": [
+        { "id": "d3-e04-link1", "displayText": "Renew license", "actualUrl": "http://micros0ft-online.com/renovar-licenca", "isMalicious": true }
+      ],
+      "attachments": [],
+      "certificate": {
+        "companyName": "Micros0ft Online Services",
+        "issuer": "Let's Encrypt",
+        "validFrom": "2026-07-15T00:00:00Z",
+        "validTo": "2026-10-15T00:00:00Z",
+        "domain": "micros0ft-online.com",
+        "isTechnicallyValid": true,
+        "isTrustworthy": false
+      },
+      "headers": {
+        "fromServer": "mail.micros0ft-online.com",
+        "sourceIp": "45.146.164.90",
+        "spf": "fail",
+        "dkim": "fail",
+        "dmarc": "fail",
+        "sentAt": "2026-07-22T07:55:00Z",
+        "routeHops": ["45.146.164.90"]
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "microsoft_falso",
+      "tags": ["microsoft_falso", "phishing", "link_malicioso"],
+      "difficulty": 3,
+      "investigationHints": [
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'micros0ft-online.com' uses the number zero in place of the letter 'o' — it's not a Microsoft domain." },
+        { "toolId": "certificate_view", "revealsField": "certificate", "summaryText": "The certificate is technically valid, but issued for the fake domain, not for the real Microsoft." },
+        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM, and DMARC failed." }
+      ],
+      "explanation": {
+        "short": "Microsoft domain spoofed with a number in place of a letter.",
+        "detailed": "'micros0ft-online.com' replaces the 'o' with a zero — a common lookalike-domain trick known as typosquatting. The HTTPS certificate is technically valid, which only proves the connection is encrypted, not that the site belongs to Microsoft. The real Microsoft would never use this domain, and the total failure of SPF/DKIM/DMARC confirms the spoofing.",
+        "conceptGlossaryId": "microsoft_falso_typosquatting"
+      },
+      "idealInvestigationSeconds": 9
+    },
+    {
+      "id": "d3-e05",
+      "dayId": "day-03",
+      "order": 5,
+      "subject": "Banking details update - Eletrotech Vendor",
+      "bodyHtml": "<p>Dear all, due to internal restructuring, our bank account has changed. Please update our records for upcoming payments using the attached details. Thank you for your understanding.</p>",
+      "sender": {
+        "displayName": "Eletrotech Finance",
+        "emailAddressRaw": "financeiro@eletrotech-suprimentos.com.br",
+        "domain": "eletrotech-suprimentos.com.br",
+        "isSpoofed": false,
+        "spoofType": "compromised_legit"
+      },
+      "links": [],
+      "attachments": [
+        {
+          "id": "d3-e05-att1",
+          "fileName": "new_bank_details.pdf",
+          "declaredExtension": ".pdf",
+          "actualType": "application/pdf",
+          "sizeKB": 98,
+          "hasMacro": false,
+          "isMalicious": true
+        }
+      ],
+      "headers": {
+        "fromServer": "mail.eletrotech-suprimentos.com.br",
+        "sourceIp": "191.252.88.30",
+        "spf": "pass",
+        "dkim": "pass",
+        "dmarc": "pass",
+        "sentAt": "2026-07-22T15:48:00Z",
+        "routeHops": ["191.252.88.30"]
+      },
+      "internalDbRecord": { "senderStatus": "trusted_vendor", "notes": "Vendor active for 4 years. No formal request for a change in banking details on file." },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "fornecedor_comprometido",
+      "tags": ["fornecedor_comprometido", "bec", "engenharia_social"],
+      "difficulty": 3,
+      "investigationHints": [
+        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "There is no formal request for a banking details change in progress for this vendor." },
+        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM, and DMARC all pass — the email really did come from the vendor's server." }
+      ],
+      "explanation": {
+        "short": "Real vendor account compromised to divert payments.",
+        "detailed": "Everything here looks technically legitimate: real domain, real email authentication. The scam is the change in banking details requested by email alone, with no formal process — a classic sign of a compromised vendor account (a real vendor, but hacked). Any change to a vendor's banking details should be confirmed by phone with an already-known contact, never just through a received email.",
+        "conceptGlossaryId": "fornecedor_comprometido_troca_bancaria"
+      },
+      "idealInvestigationSeconds": 8
+    },
+    {
+      "id": "d3-e06",
+      "dayId": "day-03",
+      "order": 6,
+      "subject": "Monthly operations meeting agenda",
+      "bodyHtml": "<p>Attached is the agenda for tomorrow's monthly operations meeting, at 10am in the training room. Attendance is mandatory for department leaders.</p>",
+      "sender": {
+        "displayName": "Leroy Merlin Operations",
+        "emailAddressRaw": "operacoes@leroymerlin.com.br",
+        "domain": "leroymerlin.com.br",
+        "isSpoofed": false,
+        "spoofType": "none"
+      },
+      "links": [],
+      "attachments": [
+        {
+          "id": "d3-e06-att1",
+          "fileName": "operations_meeting_agenda.pdf",
+          "declaredExtension": ".pdf",
+          "actualType": "application/pdf",
+          "sizeKB": 210,
+          "hasMacro": false,
+          "isMalicious": false
+        }
+      ],
+      "headers": {
+        "fromServer": "mail.leroymerlin.com.br",
+        "sourceIp": "200.150.10.25",
+        "spf": "pass",
+        "dkim": "pass",
+        "dmarc": "pass",
+        "sentAt": "2026-07-22T07:00:00Z",
+        "routeHops": ["200.150.10.25"]
+      },
+      "internalDbRecord": { "senderStatus": "trusted_vendor", "notes": "Official internal department." },
+      "riskLevel": "safe",
+      "correctAction": "accept",
+      "primaryConcept": "phishing",
+      "tags": ["phishing"],
+      "difficulty": 3,
+      "investigationHints": [
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Company's official domain." },
+        { "toolId": "attachment_analysis", "revealsField": "attachments[0].actualType", "summaryText": "Legitimate PDF, extension and actual type match, no macro." }
+      ],
+      "explanation": {
+        "short": "Legitimate internal announcement with a safe attachment.",
+        "detailed": "Official domain, correct email authentication, and the attachment is a genuine PDF with no signs of tampering or malware. Not every attachment is dangerous — what matters is always checking before assuming.",
+        "conceptGlossaryId": "nem_todo_anexo_e_perigoso"
+      },
+      "idealInvestigationSeconds": 4
+    }
+  ]
+}

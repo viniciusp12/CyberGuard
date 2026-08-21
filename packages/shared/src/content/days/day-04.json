@@ -1,0 +1,352 @@
+{
+  "id": "day-04",
+  "dayNumber": 4,
+  "title": "As coisas ficam sutis",
+  "description": "Chega de golpes óbvios. Agora os ataques combinam várias técnicas ao mesmo tempo — e nem tudo que parece suspeito é malicioso.",
+  "difficultyRange": [4, 4],
+  "timeLimitSeconds": 300,
+  "isBossDay": false,
+  "events": [
+    {
+      "id": "d4-ev1",
+      "type": "message_burst",
+      "triggerAfterEmailIndex": 2,
+      "durationSeconds": 8,
+      "message": "A rede trava por alguns segundos — algo está sobrecarregando o sistema.",
+      "effect": { "kind": "ui_distraction", "variant": "lag_glitch" }
+    }
+  ],
+  "emails": [
+    {
+      "id": "d4-e01",
+      "dayId": "day-04",
+      "order": 1,
+      "subject": "Ação necessária: renovação do certificado da VPN",
+      "bodyHtml": "<p>Olá,</p><p>O certificado da VPN corporativa expira hoje. Baixe e instale o novo cliente pelo link abaixo antes das 18h para não perder o acesso remoto.</p>",
+      "sender": {
+        "displayName": "TI Leroy Merlin",
+        "emailAddressRaw": "suporte@leroymer1in.com.br",
+        "domain": "leroymer1in.com.br",
+        "isSpoofed": true,
+        "spoofType": "homograph"
+      },
+      "links": [
+        {
+          "id": "d4-e01-link1",
+          "displayText": "Baixar novo cliente VPN",
+          "actualUrl": "http://leroymer1in.com.br/vpn-client-update.exe",
+          "isMalicious": true
+        }
+      ],
+      "attachments": [],
+      "headers": {
+        "fromServer": "mail.leroymer1in.com.br",
+        "sourceIp": "91.219.212.44",
+        "spf": "fail",
+        "dkim": "none",
+        "dmarc": "fail",
+        "sentAt": "2026-08-10T08:05:00Z",
+        "routeHops": ["91.219.212.44"]
+      },
+      "internalDbRecord": {
+        "senderStatus": "recently_created_domain",
+        "notes": "Domínio registrado há 2 dias. Usa '1' no lugar do 'l' em 'leroymerlin' — homógrafo quase idêntico ao domínio oficial."
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "phishing",
+      "tags": ["phishing", "link_malicioso", "engenharia_social"],
+      "difficulty": 4,
+      "investigationHints": [
+        {
+          "toolId": "domain_inspect",
+          "revealsField": "sender.domain",
+          "summaryText": "'leroymer1in.com.br' usa o número 1 no lugar do 'l' — um homógrafo quase indistinguível do domínio oficial."
+        },
+        {
+          "toolId": "header_inspect",
+          "revealsField": "headers",
+          "summaryText": "SPF e DMARC falharam, e o servidor de origem não tem nenhuma relação com a infraestrutura real da empresa."
+        },
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "Domínio registrado há apenas 2 dias — muito recente para ser uma comunicação oficial de TI."
+        }
+      ],
+      "explanation": {
+        "short": "Domínio homógrafo ('1' no lugar de 'l') pedindo instalação de executável.",
+        "detailed": "À primeira vista 'leroymer1in.com.br' parece idêntico ao domínio oficial — a troca do 'l' por '1' é o tipo de homógrafo mais fácil de passar despercebido em uma leitura rápida. Combinado com um prazo curto ('antes das 18h') e um link que baixa um .exe disfarçado de atualização de VPN, este é um ataque de phishing bem construído. Sempre confira o domínio letra por letra quando o pedido envolver instalar algo.",
+        "conceptGlossaryId": "dominio_falso"
+      },
+      "idealInvestigationSeconds": 12
+    },
+    {
+      "id": "d4-e02",
+      "dayId": "day-04",
+      "order": 2,
+      "subject": "Preciso de um favor rápido, é urgente",
+      "bodyHtml": "<p>Oi, estou em reunião e não posso ligar agora.</p><p>Preciso que você compre 5 cartões-presente de R$500 para um cliente importante e me envie os códigos por aqui. Reembolso na volta. Conto com você, é sigiloso.</p>",
+      "sender": {
+        "displayName": "Diretor Ricardo Almeida",
+        "emailAddressRaw": "ricardo.almeida.diretoria@gmail.com",
+        "domain": "gmail.com",
+        "isSpoofed": true,
+        "spoofType": "display_name_spoof"
+      },
+      "links": [],
+      "attachments": [],
+      "headers": {
+        "fromServer": "smtp.gmail.com",
+        "sourceIp": "142.250.65.109",
+        "spf": "pass",
+        "dkim": "pass",
+        "dmarc": "none",
+        "sentAt": "2026-08-10T09:20:00Z",
+        "routeHops": ["142.250.65.109"]
+      },
+      "internalDbRecord": {
+        "senderStatus": "never_used",
+        "notes": "Este endereço nunca enviou nada para a empresa antes. O diretor real usa apenas o email corporativo."
+      },
+      "outOfBandCheck": {
+        "channelDescription": "Ligação para o ramal cadastrado do Diretor Ricardo Almeida",
+        "outcome": "confirmed_fraud",
+        "details": "O diretor confirmou por telefone que não enviou esse email e que está em reunião presencial sem acesso ao computador."
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "bec",
+      "tags": ["bec", "engenharia_social"],
+      "difficulty": 4,
+      "investigationHints": [
+        {
+          "toolId": "sender_address",
+          "revealsField": "sender.emailAddressRaw",
+          "summaryText": "O endereço é um Gmail pessoal, não o email corporativo do diretor — apenas o nome de exibição foi copiado."
+        },
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "Esse remetente nunca enviou nada à empresa — o diretor real só usa o email corporativo."
+        },
+        {
+          "toolId": "out_of_band_verify",
+          "revealsField": "outOfBandCheck",
+          "summaryText": "O diretor de verdade, contatado por telefone, confirmou que não enviou esse pedido."
+        }
+      ],
+      "explanation": {
+        "short": "Golpe de fraude do CEO (BEC): nome de um diretor, email pessoal, pedido urgente e sigiloso.",
+        "detailed": "SPF e DKIM passam porque o email realmente veio de um Gmail de verdade — só que não é o do diretor. Esse é o golpe clássico de 'fraude do CEO' (Business Email Compromise): urgência, sigilo, e um pedido que evita qualquer verificação (cartões-presente são praticamente impossíveis de rastrear ou reverter). A única forma confiável de resolver isso é confirmar por outro canal — uma ligação para o número já conhecido do diretor, nunca respondendo no mesmo email.",
+        "conceptGlossaryId": "bec"
+      },
+      "idealInvestigationSeconds": 14
+    },
+    {
+      "id": "d4-e03",
+      "dayId": "day-04",
+      "order": 3,
+      "subject": "Nota fiscal 3021 - pagamento confirmado",
+      "bodyHtml": "<p>Olá,</p><p>Confirmamos o recebimento do pagamento referente à nota fiscal 3021. Segue o comprovante em anexo para seus registros. Qualquer dúvida, estamos à disposição.</p>",
+      "sender": {
+        "displayName": "Financeiro Fornecedor ABC",
+        "emailAddressRaw": "financeiro@fornecedorabc.com",
+        "domain": "fornecedorabc.com",
+        "isSpoofed": false,
+        "spoofType": "none"
+      },
+      "links": [],
+      "attachments": [
+        {
+          "id": "d4-e03-att1",
+          "fileName": "comprovante_3021.pdf",
+          "declaredExtension": ".pdf",
+          "actualType": "application/pdf",
+          "sizeKB": 128,
+          "hasMacro": false,
+          "isMalicious": false,
+          "sandboxResult": { "outcome": "no_activity" }
+        }
+      ],
+      "certificate": {
+        "companyName": "Fornecedor ABC LTDA",
+        "issuer": "Let's Encrypt",
+        "validFrom": "2026-06-01T00:00:00Z",
+        "validTo": "2026-09-01T00:00:00Z",
+        "domain": "fornecedorabc.com",
+        "isTechnicallyValid": true,
+        "isTrustworthy": true
+      },
+      "internalDbRecord": {
+        "senderStatus": "trusted_vendor",
+        "notes": "Fornecedor ativo há 3 anos. Comunicação consistente com o histórico normal."
+      },
+      "headers": {
+        "fromServer": "mail.fornecedorabc.com",
+        "sourceIp": "201.45.12.9",
+        "spf": "pass",
+        "dkim": "pass",
+        "dmarc": "pass",
+        "sentAt": "2026-08-10T10:00:00Z",
+        "routeHops": ["201.45.12.9"]
+      },
+      "riskLevel": "safe",
+      "correctAction": "accept",
+      "primaryConcept": "fornecedor_comprometido",
+      "tags": ["fornecedor_comprometido"],
+      "difficulty": 4,
+      "investigationHints": [
+        {
+          "toolId": "attachment_analysis",
+          "revealsField": "attachments[0].actualType",
+          "summaryText": "O anexo é um PDF de verdade, sem extensão dupla nem sinais de disfarce."
+        },
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "Fornecedor confiável, com histórico de comunicação normal e consistente."
+        }
+      ],
+      "explanation": {
+        "short": "Comunicação legítima de um fornecedor de confiança.",
+        "detailed": "Depois do golpe do 'nota_fiscal_2854.pdf.exe', é natural desconfiar de qualquer email desse fornecedor — mas nem todo contato dele é malicioso. Aqui o anexo é um PDF real, o certificado é confiável, e o histórico da conta é consistente. Investigar e confirmar que está tudo certo também é uma vitória: reportar ou excluir comunicações legítimas atrapalha o trabalho e gera ruído desnecessário para o time de segurança.",
+        "conceptGlossaryId": "fornecedor_comprometido"
+      },
+      "idealInvestigationSeconds": 8
+    },
+    {
+      "id": "d4-e04",
+      "dayId": "day-04",
+      "order": 4,
+      "subject": "RH: atualize seus dados cadastrais via QR Code",
+      "bodyHtml": "<p>Prezado(a) colaborador(a),</p><p>Estamos atualizando o sistema de cadastro. Escaneie o QR Code abaixo com o celular para confirmar seus dados bancários até amanhã.</p>",
+      "sender": {
+        "displayName": "RH Leroy Merlin",
+        "emailAddressRaw": "rh@leroymerlin-cadastro.com.br",
+        "domain": "leroymerlin-cadastro.com.br",
+        "isSpoofed": true,
+        "spoofType": "lookalike_domain"
+      },
+      "links": [],
+      "attachments": [],
+      "qrCode": {
+        "imageAsset": "qr-rh-cadastro.png",
+        "decodedUrl": "http://leroymerlin-cadastro.com.br/dados-bancarios",
+        "isMalicious": true
+      },
+      "headers": {
+        "fromServer": "mail.leroymerlin-cadastro.com.br",
+        "sourceIp": "45.140.17.88",
+        "spf": "fail",
+        "dkim": "none",
+        "dmarc": "fail",
+        "sentAt": "2026-08-10T11:30:00Z",
+        "routeHops": ["45.140.17.88"]
+      },
+      "internalDbRecord": {
+        "senderStatus": "recently_created_domain",
+        "notes": "Domínio registrado há 4 dias. RH nunca solicita dados bancários por QR Code."
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "qr_falso",
+      "tags": ["qr_falso", "phishing", "engenharia_social"],
+      "difficulty": 4,
+      "investigationHints": [
+        {
+          "toolId": "qr_preview",
+          "revealsField": "qrCode.decodedUrl",
+          "summaryText": "O QR Code aponta para um domínio parecido com o oficial, mas registrado fora da empresa."
+        },
+        {
+          "toolId": "domain_inspect",
+          "revealsField": "sender.domain",
+          "summaryText": "'leroymerlin-cadastro.com.br' não é um domínio da empresa — é um domínio parecido registrado por terceiros."
+        },
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "Domínio recém-criado. RH nunca pede dados bancários dessa forma."
+        }
+      ],
+      "explanation": {
+        "short": "QR Code disfarçando um link de phishing para roubo de dados bancários.",
+        "detailed": "QR Codes escondem a URL de destino da visão direta, o que os torna perfeitos para phishing — a vítima só vê o resultado depois de escanear. Aqui, o domínio por trás do QR Code é uma variação do domínio oficial da empresa, registrada há poucos dias especificamente para esse golpe. Nenhum processo de RH legítimo pede dados bancários sensíveis por QR Code em um prazo apertado.",
+        "conceptGlossaryId": "qr_falso"
+      },
+      "idealInvestigationSeconds": 10
+    },
+    {
+      "id": "d4-e05",
+      "dayId": "day-04",
+      "order": 5,
+      "subject": "Achei isso no estacionamento, é seu?",
+      "bodyHtml": "<p>Oi, tudo bem?</p><p>Achei um pendrive caído perto da sua vaga com uma etiqueta escrito 'Folha de pagamento - RH'. Abri só pra ver de quem era e vi seu nome numa planilha. Deixei os arquivos aqui, dá uma olhada e confirma se é seu.</p>",
+      "sender": {
+        "displayName": "Marcos (Segurança Patrimonial)",
+        "emailAddressRaw": "seguranca.patrimonial@leroymerlin-rh.net",
+        "domain": "leroymerlin-rh.net",
+        "isSpoofed": true,
+        "spoofType": "lookalike_domain"
+      },
+      "links": [],
+      "attachments": [
+        {
+          "id": "d4-e05-att1",
+          "fileName": "folha_pagamento_backup.pdf.scr",
+          "declaredExtension": ".pdf",
+          "actualType": "application/x-msdownload",
+          "sizeKB": 340,
+          "hasMacro": false,
+          "isMalicious": true,
+          "sandboxResult": {
+            "outcome": "suspicious_connection",
+            "host": "185.220.101.99"
+          }
+        }
+      ],
+      "headers": {
+        "fromServer": "mail.leroymerlin-rh.net",
+        "sourceIp": "185.220.101.33",
+        "spf": "fail",
+        "dkim": "none",
+        "dmarc": "fail",
+        "sentAt": "2026-08-10T13:15:00Z",
+        "routeHops": ["185.220.101.33"]
+      },
+      "internalDbRecord": {
+        "senderStatus": "recently_created_domain",
+        "notes": "Não existe 'Segurança Patrimonial' com esse domínio. O time de segurança física não envia arquivos por email."
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "usb_infectado",
+      "tags": ["usb_infectado", "anexo_perigoso", "engenharia_social"],
+      "difficulty": 4,
+      "investigationHints": [
+        {
+          "toolId": "attachment_analysis",
+          "revealsField": "attachments[0].fileName",
+          "summaryText": "'folha_pagamento_backup.pdf.scr' usa extensão dupla — '.scr' é um executável disfarçado de protetor de tela."
+        },
+        {
+          "toolId": "sandbox_execution",
+          "revealsField": "attachments[0].sandboxResult",
+          "summaryText": "Em sandbox, o arquivo tenta se conectar a um servidor externo desconhecido."
+        },
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "Não existe essa área com esse domínio. Segurança física não distribui arquivos por email."
+        }
+      ],
+      "explanation": {
+        "short": "Pretexto de 'pendrive achado' usando engenharia social para justificar um anexo malicioso.",
+        "detailed": "Esse é um clássico ataque de engenharia social conhecido como 'USB drop', adaptado para email: em vez de deixar um pendrive infectado no chão esperando alguém conectar por curiosidade, o atacante finge já ter feito isso e envia o 'conteúdo' por email — pulando a etapa de precisar de acesso físico. A extensão dupla '.pdf.scr' esconde um executável, e a sandbox confirma o comportamento malicioso. Como é um ataque direcionado e deliberado contra a empresa, vale reportar ao TI, não só excluir.",
+        "conceptGlossaryId": "usb_infectado"
+      },
+      "idealInvestigationSeconds": 14
+    }
+  ]
+}

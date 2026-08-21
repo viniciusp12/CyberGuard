@@ -1,0 +1,14 @@
+{
+  // O tsconfig.json principal emite para `dist/` com rootDir em `src`, porque
+  // é ele que gera o `dist/main.js` usado em servidor tradicional. Incluir a
+  // pasta `api/` ali mudaria a estrutura da saída e quebraria `pnpm start`.
+  //
+  // Este arquivo existe só para conferir tipos, sem emitir: cobre o código do
+  // Nest e também o handler serverless da Vercel.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": "."
+  },
+  "include": ["src", "api"]
+}

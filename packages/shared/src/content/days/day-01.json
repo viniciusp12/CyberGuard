@@ -1,0 +1,301 @@
+{
+  "id": "day-01",
+  "dayNumber": 1,
+  "title": "Primeiro dia na Leroy Merlin",
+  "description": "Emails obviamente falsos. Aprenda a reconhecer os sinais mais básicos de phishing.",
+  "difficultyRange": [1, 1],
+  "timeLimitSeconds": 240,
+  "isBossDay": false,
+  "events": [],
+  "emails": [
+    {
+      "id": "d1-e01",
+      "dayId": "day-01",
+      "order": 1,
+      "subject": "Sua conta será bloqueada em 24h!!!",
+      "bodyHtml": "<p>Prezado colaborador,</p><p>Identificamos uma atividade suspeita em sua conta corporativa. Para evitar o <strong>bloqueio em 24 horas</strong>, clique no botão abaixo e regularize seus dados imediatamente.</p>",
+      "sender": {
+        "displayName": "TI Leroy Merlin",
+        "emailAddressRaw": "suporte@leroymerlin-ti.com.br",
+        "domain": "leroymerlin-ti.com.br",
+        "isSpoofed": true,
+        "spoofType": "lookalike_domain"
+      },
+      "links": [
+        {
+          "id": "d1-e01-link1",
+          "displayText": "Regularizar agora",
+          "actualUrl": "http://leroymerlin-ti.com.br/login-seguro",
+          "isMalicious": true
+        }
+      ],
+      "attachments": [],
+      "internalDbRecord": {
+        "senderStatus": "recently_created_domain",
+        "notes": "Domínio registrado há 6 dias. Nenhum histórico de envio anterior."
+      },
+      "aiAssistantHint": {
+        "phishingProbability": 91,
+        "isReliable": true,
+        "reasoning": "Domínio recém-registrado combinado com linguagem de urgência extrema é um padrão fortemente associado a phishing."
+      },
+      "headers": {
+        "fromServer": "mail.leroymerlin-ti.com.br",
+        "sourceIp": "185.220.101.5",
+        "spf": "fail",
+        "dkim": "none",
+        "dmarc": "fail",
+        "sentAt": "2026-07-20T03:12:00Z",
+        "routeHops": ["185.220.101.5", "smtp-relay-04.unknown-host.ru"]
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "phishing",
+      "tags": ["phishing", "engenharia_social", "link_malicioso"],
+      "difficulty": 1,
+      "investigationHints": [
+        {
+          "toolId": "sender_address",
+          "revealsField": "sender.domain",
+          "summaryText": "O domínio 'leroymerlin-ti.com.br' não é o domínio oficial da empresa — foi criado só para parecer legítimo."
+        },
+        {
+          "toolId": "link_hover",
+          "revealsField": "links[0].actualUrl",
+          "summaryText": "O botão 'Regularizar agora' aponta para o mesmo domínio falso, não para o portal oficial."
+        },
+        {
+          "toolId": "domain_inspect",
+          "revealsField": "sender.domain",
+          "summaryText": "Domínio hospedado fora do Brasil, sem certificado de segurança e com reputação desconhecida."
+        },
+        {
+          "toolId": "header_inspect",
+          "revealsField": "headers",
+          "summaryText": "SPF e DMARC falharam, e o servidor de origem está fora do Brasil — fortes indícios de falsificação."
+        },
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "O domínio foi registrado há apenas 6 dias — remetentes legítimos raramente usam domínios tão novos."
+        },
+        {
+          "toolId": "ai_assistant",
+          "revealsField": "aiAssistantHint",
+          "summaryText": "A IA Corporativa aponta alta probabilidade de phishing, de forma confiável neste caso."
+        }
+      ],
+      "explanation": {
+        "short": "Domínio falso + urgência artificial = phishing clássico.",
+        "detailed": "Este email usa um domínio parecido ('leroymerlin-ti.com.br' em vez do domínio oficial da empresa) e cria urgência artificial ('bloqueio em 24h') para induzir um clique sem reflexão — uma técnica clássica de engenharia social. A verificação de cabeçalho confirma: SPF e DMARC falharam, e o servidor de origem é desconhecido e está fora do país. Da próxima vez, desconfie de qualquer domínio parecido, mas não idêntico, ao oficial.",
+        "conceptGlossaryId": "phishing_urgencia"
+      },
+      "idealInvestigationSeconds": 5
+    },
+    {
+      "id": "d1-e02",
+      "dayId": "day-01",
+      "order": 2,
+      "subject": "Nota fiscal em atraso - urgente",
+      "bodyHtml": "<p>Olá,</p><p>Segue em anexo a nota fiscal referente ao pedido 2854, que está em atraso. Por favor, efetue o pagamento hoje para evitar multas.</p>",
+      "sender": {
+        "displayName": "Financeiro Fornecedor ABC",
+        "emailAddressRaw": "financeiro@fornecedorabc.com",
+        "domain": "fornecedorabc.com",
+        "isSpoofed": false,
+        "spoofType": "none"
+      },
+      "links": [],
+      "attachments": [
+        {
+          "id": "d1-e02-att1",
+          "fileName": "nota_fiscal_2854.pdf.exe",
+          "declaredExtension": ".pdf",
+          "actualType": "application/x-msdownload",
+          "sizeKB": 812,
+          "hasMacro": false,
+          "isMalicious": true,
+          "sandboxResult": {
+            "outcome": "ransomware_attempt",
+            "details": "O arquivo tentou criptografar documentos na pasta Documentos assim que foi executado."
+          }
+        }
+      ],
+      "certificate": {
+        "companyName": "Fornecedor ABC LTDA",
+        "issuer": "Let's Encrypt",
+        "validFrom": "2026-06-01T00:00:00Z",
+        "validTo": "2026-09-01T00:00:00Z",
+        "domain": "fornecedorabc.com",
+        "isTechnicallyValid": true,
+        "isTrustworthy": false
+      },
+      "internalDbRecord": {
+        "senderStatus": "trusted_vendor",
+        "notes": "Fornecedor ativo há 3 anos. Nenhuma verificação de segurança recente registrada."
+      },
+      "aiAssistantHint": {
+        "phishingProbability": 38,
+        "isReliable": false,
+        "reasoning": "Remetente, domínio e certificado parecem legítimos. A IA não analisa o conteúdo real do anexo e não detectou o executável disfarçado."
+      },
+      "headers": {
+        "fromServer": "mail.fornecedorabc.com",
+        "sourceIp": "201.45.12.9",
+        "spf": "pass",
+        "dkim": "pass",
+        "dmarc": "pass",
+        "sentAt": "2026-07-20T09:40:00Z",
+        "routeHops": ["201.45.12.9"]
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "anexo_perigoso",
+      "tags": ["anexo_perigoso", "malware", "ransomware"],
+      "difficulty": 1,
+      "investigationHints": [
+        {
+          "toolId": "attachment_analysis",
+          "revealsField": "attachments[0].fileName",
+          "summaryText": "O arquivo 'nota_fiscal_2854.pdf.exe' usa extensão dupla: na verdade termina em '.exe', não '.pdf'."
+        },
+        {
+          "toolId": "certificate_view",
+          "revealsField": "certificate",
+          "summaryText": "O certificado do site é tecnicamente válido, mas isso não garante que o remetente seja confiável."
+        },
+        {
+          "toolId": "sandbox_execution",
+          "revealsField": "attachments[0].sandboxResult",
+          "summaryText": "Em sandbox, o arquivo tentou criptografar documentos — comportamento típico de ransomware."
+        },
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "O fornecedor é conhecido e confiável, mas isso não impede que a conta dele tenha sido comprometida."
+        },
+        {
+          "toolId": "ai_assistant",
+          "revealsField": "aiAssistantHint",
+          "summaryText": "A IA Corporativa errou desta vez: deu baixa probabilidade de phishing porque não analisa o conteúdo real do anexo."
+        }
+      ],
+      "explanation": {
+        "short": "Extensão dupla escondendo um executável malicioso.",
+        "detailed": "O certificado HTTPS do domínio do fornecedor é válido, mas isso só garante que a conexão é criptografada — não que o conteúdo enviado é seguro. O verdadeiro alerta está no anexo: 'nota_fiscal_2854.pdf.exe' usa dupla extensão para enganar o usuário, fazendo parecer um PDF quando na verdade é um programa executável. A sandbox confirma: o arquivo tenta criptografar documentos, um comportamento de ransomware.",
+        "conceptGlossaryId": "certificado_nao_garante_legitimidade"
+      },
+      "idealInvestigationSeconds": 10
+    },
+    {
+      "id": "d1-e03",
+      "dayId": "day-01",
+      "order": 3,
+      "subject": "🎉 Resgate seus pontos de fidelidade agora!",
+      "bodyHtml": "<p>Parabéns! Você acumulou pontos suficientes para trocar por um vale-compras. Escaneie o QR Code abaixo antes que expire hoje à meia-noite.</p>",
+      "sender": {
+        "displayName": "Programa de Benefícios",
+        "emailAddressRaw": "beneficios@promocoes-parceiras.net",
+        "domain": "promocoes-parceiras.net",
+        "isSpoofed": true,
+        "spoofType": "display_name_spoof"
+      },
+      "links": [],
+      "attachments": [],
+      "qrCode": {
+        "imageAsset": "qr-fake-rewards.png",
+        "decodedUrl": "http://resgate-pontos-cliente.xyz/confirmar-dados",
+        "isMalicious": true
+      },
+      "internalDbRecord": {
+        "senderStatus": "never_used",
+        "notes": "Nenhum email deste remetente foi recebido pela empresa antes."
+      },
+      "headers": {
+        "fromServer": "mail.promocoes-parceiras.net",
+        "sourceIp": "91.234.56.12",
+        "spf": "fail",
+        "dkim": "fail",
+        "dmarc": "fail",
+        "sentAt": "2026-07-20T14:05:00Z",
+        "routeHops": ["91.234.56.12"]
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "qr_falso",
+      "tags": ["qr_falso", "phishing", "engenharia_social"],
+      "difficulty": 1,
+      "investigationHints": [
+        {
+          "toolId": "sender_address",
+          "revealsField": "sender.domain",
+          "summaryText": "O domínio 'promocoes-parceiras.net' não tem relação com a empresa nem com um programa de benefícios conhecido."
+        },
+        {
+          "toolId": "qr_preview",
+          "revealsField": "qrCode.decodedUrl",
+          "summaryText": "O QR Code aponta para um site desconhecido que pede confirmação de dados pessoais — não para o portal oficial de benefícios."
+        },
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "Este remetente nunca enviou mensagens para a empresa antes — não faz parte de nenhum programa de benefícios conhecido."
+        }
+      ],
+      "explanation": {
+        "short": "QR Code falso usando urgência e prêmio como isca.",
+        "detailed": "A promessa de um prêmio com prazo apertado ('antes da meia-noite') é uma tática clássica de engenharia social para reduzir a reflexão antes do clique — ou, neste caso, do escaneamento. Antes de escanear qualquer QR Code, é possível visualizar o destino real: aqui, ele leva a um site que pede 'confirmação de dados', típico de golpes de phishing.",
+        "conceptGlossaryId": "qr_code_golpe"
+      },
+      "idealInvestigationSeconds": 5
+    },
+    {
+      "id": "d1-e04",
+      "dayId": "day-01",
+      "order": 4,
+      "subject": "Cronograma de manutenção do estacionamento",
+      "bodyHtml": "<p>Prezados colaboradores,</p><p>Informamos que o estacionamento da loja passará por manutenção na garagem B na próxima segunda-feira, das 8h às 12h. Por favor, utilizem a garagem A durante esse período.</p><p>Att, Facilities</p>",
+      "sender": {
+        "displayName": "Facilities Leroy Merlin",
+        "emailAddressRaw": "facilities@leroymerlin.com.br",
+        "domain": "leroymerlin.com.br",
+        "isSpoofed": false,
+        "spoofType": "none"
+      },
+      "links": [],
+      "attachments": [],
+      "headers": {
+        "fromServer": "mail.leroymerlin.com.br",
+        "sourceIp": "200.150.10.20",
+        "spf": "pass",
+        "dkim": "pass",
+        "dmarc": "pass",
+        "sentAt": "2026-07-20T08:00:00Z",
+        "routeHops": ["200.150.10.20"]
+      },
+      "riskLevel": "safe",
+      "correctAction": "accept",
+      "primaryConcept": "phishing",
+      "tags": ["phishing"],
+      "difficulty": 1,
+      "investigationHints": [
+        {
+          "toolId": "sender_address",
+          "revealsField": "sender.domain",
+          "summaryText": "O domínio 'leroymerlin.com.br' é o domínio oficial da empresa."
+        },
+        {
+          "toolId": "header_inspect",
+          "revealsField": "headers",
+          "summaryText": "SPF, DKIM e DMARC passaram — o servidor de origem é legítimo."
+        }
+      ],
+      "explanation": {
+        "short": "Email interno legítimo, sem sinais de risco.",
+        "detailed": "Nem todo email é uma ameaça — reportar ou excluir comunicados legítimos atrapalha o trabalho da equipe sem necessidade. Este email vem do domínio oficial, não tem urgência artificial, não pede dados nem contém links ou anexos suspeitos. A autenticação SPF/DKIM/DMARC confirma que o servidor de origem está autorizado a enviar em nome da empresa.",
+        "conceptGlossaryId": "nem_tudo_e_phishing"
+      },
+      "idealInvestigationSeconds": 3
+    }
+  ]
+}

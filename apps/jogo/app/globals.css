@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #e8e1cc;
+  --color-surface: #f3ecd9;
+  --color-surface-2: #ddd3b4;
+  --color-surface-3: #cabe97;
+  --color-border: #b3a476;
+  --color-primary: #3a5a40;
+  --color-primary-hover: #2f4a34;
+  --color-success: #4c7a3d;
+  --color-danger: #963c30;
+  --color-warning: #a9781f;
+  --color-text: #2b2a20;
+  --color-text-muted: #6b6045;
+}
+
+.dark {
+  --color-bg: #0f1912;
+  --color-surface: #16241a;
+  --color-surface-2: #1e3024;
+  --color-surface-3: #28402f;
+  --color-border: #3a5240;
+  --color-primary: #5fae5f;
+  --color-primary-hover: #7fc27f;
+  --color-success: #5fae5f;
+  --color-danger: #d97a68;
+  --color-warning: #d9a83f;
+  --color-text: #e8e1cc;
+  --color-text-muted: #a89f82;
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-surface-3: var(--color-surface-3);
+  --color-border: var(--color-border);
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-success: var(--color-success);
+  --color-danger: var(--color-danger);
+  --color-warning: var(--color-warning);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-pixel);
+  --font-stencil: var(--font-heading);
+  --font-pixel: var(--font-pixel);
+}
+
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(color-mix(in srgb, var(--color-text) 6%, transparent) 1px, transparent 1px);
+  background-size: 3px 3px;
+  color: var(--color-text);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+* {
+  scrollbar-color: var(--color-surface-3) var(--color-bg);
+}
+
+/* ═══════════════════════════════════════════════════
+   Glossary Book Animations
+   ═══════════════════════════════════════════════════ */
+
+@keyframes book-open {
+  0% {
+    opacity: 0;
+    transform: perspective(1800px) rotateY(-25deg) rotateX(5deg) scale(0.8) translateY(30px);
+  }
+  60% {
+    opacity: 1;
+    transform: perspective(1800px) rotateY(3deg) rotateX(-1deg) scale(1.02) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1800px) rotateY(0deg) rotateX(0deg) scale(1) translateY(0px);
+  }
+}
+
+@keyframes book-overlay-in {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(12px);
+  }
+}
+
+@keyframes book-close {
+  0% {
+    opacity: 1;
+    transform: perspective(1800px) rotateY(0deg) scale(1) translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: perspective(1800px) rotateY(-20deg) scale(0.85) translateY(20px);
+  }
+}
+
+@keyframes book-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes bounce-x {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-3px);
+  }
+}
+
+@keyframes bounce-x-reverse {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+}
+
+.glossary-content[data-state="open"] {
+  animation: book-open 550ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.glossary-content[data-state="closed"] {
+  animation: book-close 350ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+.glossary-overlay[data-state="open"] {
+  animation: book-overlay-in 300ms ease-out both;
+}
+
+.glossary-overlay[data-state="closed"] {
+  animation: book-overlay-out 300ms ease-in both;
+}
+
+.glossary-nav-btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glossary-nav-btn:active {
+  opacity: 0.8;
+}
+
+.glossary-book-cover {
+  transition: box-shadow 0.3s ease;
+}
+
+.glossary-book-cover:hover {
+  box-shadow:
+    0 25px 60px -12px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(61, 74, 46, 0.15);
+}
+
+.animate-bounce-x {
+  animation: bounce-x 1.5s ease-in-out infinite;
+}
+
+.animate-bounce-x-reverse {
+  animation: bounce-x-reverse 1.5s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════
+   Play screen "lag glitch" event
+   ═══════════════════════════════════════════════════ */
+
+@keyframes screen-glitch {
+  0%, 100% { transform: translate(0, 0); filter: none; }
+  20% { transform: translate(-2px, 1px); filter: hue-rotate(8deg); }
+  40% { transform: translate(2px, -1px); filter: hue-rotate(-8deg); }
+  60% { transform: translate(-1px, 2px); filter: none; }
+  80% { transform: translate(1px, -2px); filter: hue-rotate(4deg); }
+}
+
+.animate-screen-glitch {
+  animation: screen-glitch 0.35s steps(2, end) infinite;
+}

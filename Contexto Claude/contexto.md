@@ -1,6 +1,137 @@
-# Contexto do Projeto — CyberGuard
+# Contexto do Projeto — CIFRA
 
 > Arquivo de referência para o Claude. Atualizar sempre que houver mudanças relevantes no projeto.
+
+---
+
+## 🔗 Integração com o jogo — CONCLUÍDA em 21/08/2026
+
+O repositório virou **monorepo pnpm + turbo**. O site, o front do jogo, a API e o pacote compartilhado vivem juntos aqui.
+
+```
+CIFRA/
+├── apps/
+│   ├── site/     Next 15 · Tailwind 3 · estático
+│   ├── jogo/     Next 16 · Tailwind 4
+│   └── api/      NestJS 11 · Prisma · PostgreSQL
+├── packages/shared/   engine, schemas e conteúdo dos módulos
+├── Jogo/         protótipo Godot (à parte)
+└── deploy/       nginx/systemd da VPS antiga, como referência
+```
+
+### Comandos
+
+`pnpm typecheck`, `pnpm build` e `pnpm audit --prod` — os três passam limpos. Para um app só: `pnpm --filter site dev`.
+
+⚠️ **pnpm 10+ não lê mais `pnpm.overrides` do package.json.** Os overrides moram em `pnpm-workspace.yaml`. Se aparecer o aviso "The pnpm field in package.json is no longer read", é alguém que colocou no lugar errado.
+
+### Deploy: três projetos Vercel, um repositório
+
+| Projeto | Root Directory | Variáveis |
+|---|---|---|
+| site | `apps/site` | `NEXT_PUBLIC_JOGO_URL` (opcional) |
+| jogo | `apps/jogo` | `API_ORIGIN` |
+| api | `apps/api` | `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET`, `NODE_ENV`, `CORS_ORIGIN` |
+
+### ⚠️ Por que jogo e API precisam parecer a mesma origem
+
+O cookie de sessão é criado com `sameSite: "lax"` (`apps/api/src/auth/auth.controller.ts`). Numa chamada cross-origin de verdade o navegador **não envia o cookie**, e o login não persiste.
+
+O que salva é o **rewrite do Next** em `apps/jogo/next.config.ts`: ele roda no servidor, então o navegador enxerga tudo em `/api/*` do próprio domínio do jogo. É o mesmo papel que o nginx fazia na VPS.
+
+**Não troque o rewrite por chamada direta à API** sem antes mudar o cookie para `SameSite=None; Secure` e tratar CSRF. O jeito atual é mais simples e mais seguro.
+
+### A API em serverless
+
+`apps/api/api/index.ts` é o handler da Vercel: monta o mesmo `AppModule` sobre Express com `app.init()` (em vez de `app.listen()`) e guarda a instância em cache no escopo do módulo, com trava contra corrida no cold start.
+
+`src/main.ts` continua existindo e é o que roda em servidor tradicional. **Os dois compartilham o AppModule** — nenhuma regra de negócio foi duplicada.
+
+O `tsconfig.json` da API não inclui a pasta `api/` de propósito: ele emite para `dist/` com `rootDir: src`, e incluir o handler mudaria a estrutura da saída e quebraria `pnpm start`. Por isso existe o `tsconfig.typecheck.json`, que só confere tipos e cobre as duas pastas.
+
+⚠️ **pnpm é estrito com dependências transitivas.** O handler importa `express`, que antes vinha só de carona pelo `@nestjs/platform-express` — precisou ser declarado explicitamente no `package.json` da API.
+
+### Banco no Supabase
+
+`DATABASE_URL` usa o **pooler** (porta 6543) com `?pgbouncer=true&connection_limit=1`; `DIRECT_URL` usa a **direta** (5432), porque migrations não funcionam através do pooler em modo transaction. O `schema.prisma` declara as duas.
+
+Sem o pooler, cada invocação serverless abriria a própria conexão e estouraria o limite do Postgres em minutos.
+
+### NestJS 10 → 11
+
+O upgrade foi feito junto com a integração: o Nest 10 arrastava 10 vulnerabilidades por transitivas (`multer`, `file-type`, `qs`, `body-parser`). Depois do upgrade sobraram duas, resolvidas por override. **`pnpm audit --prod` reporta zero.**
+
+### A porta entre os dois
+
+`apps/site/src/app/treinamento/page.tsx` apresenta a plataforma e leva ao login dela. **Não existe segundo login no site** — a autenticação é da API, com cookie no domínio do jogo; duplicar criaria duas sessões e nenhuma vantagem.
+
+A página avisa duas coisas que evitam frustração: que **não há cadastro aberto** (o admin cria os acessos) e que a plataforma **tem visual próprio, de jogo**.
+
+### 🔴 Pendências
+
+1. **Migrar o dump para o Supabase.** O `hackudinhos_dump.sql` tem 4 tabelas, 2 migrations e um usuário admin. É ação na conta do dev.
+2. **Rotacionar os segredos.** O `JWT_SECRET` e a senha do Postgres do colega circularam fora de canal controlado. Quem tem o `JWT_SECRET` forja token de ADMIN. O dev ficou de trocar.
+3. **Nome.** O jogo se chama "The Hackudinhos", o site é CIFRA. Falta decidir a marca guarda-chuva.
+4. **Conteúdo duplicado.** `day-01.json` do jogo repete o caso de phishing da seção `/golpe`; há dois glossários (42 verbetes em `apps/site/src/lib/glossario.ts`, outro em `apps/jogo/lib/glossary.ts`). A sugestão é o jogo consumir a fonte do site.
+
+### O que é o projeto do jogo
+
+**Nome: "The Hackudinhos | Leroy Merlin"** (diferente de CIFRA — precisa de decisão de marca).
+
+Monorepo pnpm + turbo, já em produção em `play.mizanis.com.br` (nginx, Let's Encrypt, systemd):
+
+| Parte | Stack |
+|---|---|
+| `apps/api` | NestJS + Prisma + Postgres · auth JWT com roles, admin, phases, players, ranking, upgrades |
+| `apps/web` | Next **16.2.12** + Tailwind **4** · rotas de jogo, minigames, ranking, loja, conquistas |
+| `packages/shared` | engine de scoring/combo/phaseMachine **com testes**, schemas Zod, conteúdo em JSON (6 dias, pt + en) |
+
+### Divergências técnicas com o site
+
+| | Site CIFRA | Jogo |
+|---|---|---|
+| Next | 15.5.23 | 16.2.12 |
+| Tailwind | 3 (config JS) | 4 (CSS-first, `@theme`) |
+| Pacotes | npm | pnpm + turbo |
+| Deploy | Vercel, estático | VPS nginx + systemd |
+| Tema | escuro fixo | claro **e** escuro |
+| Fontes | Barlow / Barlow Condensed | VT323, Pixelify Sans, Press Start 2P |
+
+### ⚠️ A API NestJS não roda na Vercel como está
+
+`apps/api/src/main.ts` faz `app.listen(porta)` — modelo de servidor com processo, incompatível com serverless. Adaptar exige reescrever o bootstrap **e** hospedar o Postgres num serviço acessível pela internet. Como já funciona na VPS, o plano acordado é: **Vercel serve o site e o front do jogo; a API e o banco ficam na VPS**.
+
+### ✅ O que facilita muito a integração
+
+`apps/web/lib/api/client.ts` chama sempre `/api/*` na **própria origem**, e o `next.config.ts` reescreve para `${API_ORIGIN}/api/*`. Ou seja: **o front do jogo roda na Vercel sem alterar uma linha de código** — basta definir `API_ORIGIN`. O rewrite ainda resolve CORS de brinde.
+
+### Arquitetura combinada (a executar quando o projeto chegar)
+
+```
+CIFRA/
+├── apps/
+│   ├── site/        o site atual        → Vercel, projeto 1
+│   ├── jogo/        o front deles       → Vercel, projeto 2 (env API_ORIGIN)
+│   └── api/         NestJS              → VPS, não vai para a Vercel
+├── packages/shared/ engine e conteúdo deles
+└── Jogo/            protótipo Godot
+```
+
+Dois projetos Vercel apontando para o mesmo repositório, com Root Directory diferente. O projeto Vercel que já existe passa a ter Root Directory `apps/site`.
+
+### Decisões de produto já tomadas
+
+- **Não aproximar visualmente as duas identidades por enquanto.** São opostas por construção: a CIFRA é registro técnico institucional; o jogo é pixel art retrô. Trocar só a cor do jogo não o tornaria CIFRA — a tipografia pixel continuaria dominando — e o manual da CIFRA proíbe justamente o que um jogo precisa (ilustração, gradiente, glitch).
+- **Nada de segundo login no site.** O jogo já autentica contra a API com JWT em cookie. O site ganha uma **porta**: página que apresenta o jogo e leva ao login dele.
+
+### ⚠️ Dívida a resolver: conteúdo duplicado
+
+Os dois lados ensinam a mesma coisa por caminhos diferentes, e vão divergir com o tempo:
+
+- `day-01.json` do jogo tem um e-mail *"Sua conta será bloqueada em 24h!!!"* com `spoofType: "lookalike_domain"` — exatamente o caso do Banco Aurora na seção `/golpe` do site.
+- **Dois glossários**: 42 verbetes em `src/lib/glossario.ts` (site) e outro conjunto em `apps/web/lib/glossary.ts` (jogo).
+
+A sugestão é o jogo passar a consumir a mesma fonte de dados do glossário do site, em vez de manter a própria.
 
 ---
 

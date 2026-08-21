@@ -1,0 +1,400 @@
+{
+  "id": "day-05",
+  "dayNumber": 5,
+  "title": "Pressão e urgência",
+  "description": "Áudios, vídeos e ligações agora fazem parte do golpe. Quanto mais alguém tenta te apressar, mais importa parar para confirmar.",
+  "difficultyRange": [5, 5],
+  "timeLimitSeconds": 330,
+  "isBossDay": false,
+  "events": [
+    {
+      "id": "d5-ev1",
+      "type": "boss_call",
+      "triggerAfterEmailIndex": 1,
+      "durationSeconds": 6,
+      "message": "'Preciso que você aprove uma transferência AGORA, estou em reunião, depois te explico.' — mensagem do seu gerente.",
+      "effect": { "kind": "ui_distraction", "variant": "boss_popup" }
+    }
+  ],
+  "emails": [
+    {
+      "id": "d5-e01",
+      "dayId": "day-05",
+      "order": 1,
+      "subject": "Confirmação urgente - transferência PIX da aquisição",
+      "bodyHtml": "<p>Segue em anexo o print da nossa videochamada de agora há pouco confirmando os dados.</p><p>Por favor, efetue o PIX de R$48.000 para a chave abaixo ainda hoje. É confidencial até o anúncio oficial da aquisição na sexta-feira.</p><p>Chave PIX: 45.812.finance@fastpay.com.br</p>",
+      "sender": {
+        "displayName": "Carla Mendes - CFO",
+        "emailAddressRaw": "carla.mendes@leroymerlin.corp-mail.com",
+        "domain": "leroymerlin.corp-mail.com",
+        "isSpoofed": true,
+        "spoofType": "subdomain_trick"
+      },
+      "links": [],
+      "attachments": [
+        {
+          "id": "d5-e01-att1",
+          "fileName": "confirmacao_videochamada.jpg",
+          "declaredExtension": ".jpg",
+          "actualType": "image/jpeg",
+          "sizeKB": 210,
+          "hasMacro": false,
+          "isMalicious": false
+        }
+      ],
+      "headers": {
+        "fromServer": "mail.corp-mail.com",
+        "sourceIp": "103.42.18.90",
+        "spf": "fail",
+        "dkim": "none",
+        "dmarc": "fail",
+        "sentAt": "2026-08-11T09:10:00Z",
+        "routeHops": ["103.42.18.90"]
+      },
+      "internalDbRecord": {
+        "senderStatus": "never_used",
+        "notes": "'leroymerlin.corp-mail.com' não é um domínio da empresa — é um subdomínio de 'corp-mail.com', um serviço de terceiros."
+      },
+      "outOfBandCheck": {
+        "channelDescription": "Ligação para o ramal cadastrado da CFO Carla Mendes",
+        "outcome": "confirmed_fraud",
+        "details": "A CFO confirmou que não houve nenhuma videochamada e que não existe aquisição em andamento."
+      },
+      "aiAssistantHint": {
+        "phishingProbability": 45,
+        "isReliable": false,
+        "reasoning": "O texto formal e a imagem anexada parecem legítimos. A IA não analisa vídeo/áudio nem confirma identidade por outros meios."
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "deepfake",
+      "tags": ["deepfake", "pix_falso", "bec"],
+      "difficulty": 5,
+      "investigationHints": [
+        {
+          "toolId": "domain_inspect",
+          "revealsField": "sender.domain",
+          "summaryText": "'leroymerlin.corp-mail.com' é um subdomínio de 'corp-mail.com' — um serviço de terceiros, não a empresa."
+        },
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "Esse remetente nunca foi usado antes para se comunicar com a empresa."
+        },
+        {
+          "toolId": "out_of_band_verify",
+          "revealsField": "outOfBandCheck",
+          "summaryText": "A CFO de verdade, contatada por telefone, confirmou que não existe essa videochamada nem aquisição."
+        }
+      ],
+      "explanation": {
+        "short": "Truque de subdomínio + imagem forjada de videochamada para dar credibilidade a um pedido de PIX.",
+        "detailed": "'leroymerlin.corp-mail.com' parece ter 'leroymerlin' no nome, mas o domínio de verdade é 'corp-mail.com' — a empresa aparece só como subdomínio, um truque para enganar quem lê rápido. A 'confirmação' anexada é só uma imagem, fácil de forjar ou tirar de outro contexto. Pedidos de transferência urgente, sigilosa e fora do processo normal são o padrão clássico de fraude de CEO — a única defesa real é confirmar por um canal diferente, como uma ligação para o número já conhecido da pessoa.",
+        "conceptGlossaryId": "deepfake"
+      },
+      "idealInvestigationSeconds": 16
+    },
+    {
+      "id": "d5-e02",
+      "dayId": "day-05",
+      "order": 2,
+      "subject": "[Alerta] Sua conta Microsoft 365 foi comprometida",
+      "bodyHtml": "<p>Detectamos atividade suspeita na sua conta corporativa Microsoft 365.</p><p>Para proteger seus dados, ligue agora para nosso suporte técnico especializado: <strong>0800 025 1188</strong>, ou instale nossa ferramenta de acesso remoto para resolvermos isso imediatamente com você.</p>",
+      "sender": {
+        "displayName": "Microsoft 365 Security",
+        "emailAddressRaw": "security-alert@microsoft-0365support.com",
+        "domain": "microsoft-0365support.com",
+        "isSpoofed": true,
+        "spoofType": "lookalike_domain"
+      },
+      "links": [
+        {
+          "id": "d5-e02-link1",
+          "displayText": "Instalar ferramenta de suporte remoto",
+          "actualUrl": "http://microsoft-0365support.com/remote-access-tool.exe",
+          "isMalicious": true
+        }
+      ],
+      "attachments": [],
+      "headers": {
+        "fromServer": "mail.microsoft-0365support.com",
+        "sourceIp": "194.5.10.22",
+        "spf": "fail",
+        "dkim": "none",
+        "dmarc": "fail",
+        "sentAt": "2026-08-11T10:45:00Z",
+        "routeHops": ["194.5.10.22"]
+      },
+      "internalDbRecord": {
+        "senderStatus": "recently_created_domain",
+        "notes": "A Microsoft nunca pede para instalar ferramentas de acesso remoto por email nem oferece suporte via 0800 desse tipo."
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "microsoft_falso",
+      "tags": ["microsoft_falso", "engenharia_social", "link_malicioso"],
+      "difficulty": 5,
+      "investigationHints": [
+        {
+          "toolId": "domain_inspect",
+          "revealsField": "sender.domain",
+          "summaryText": "'microsoft-0365support.com' não pertence à Microsoft — é um domínio de terceiros criado para imitar suporte oficial."
+        },
+        {
+          "toolId": "link_hover",
+          "revealsField": "links[0].actualUrl",
+          "summaryText": "O link baixa diretamente um executável de 'ferramenta de acesso remoto'."
+        },
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "A Microsoft nunca solicita instalação de ferramentas de acesso remoto por email."
+        }
+      ],
+      "explanation": {
+        "short": "Falso suporte técnico da Microsoft pedindo instalação de acesso remoto.",
+        "detailed": "Esse golpe de 'suporte técnico falso' combina um alerta assustador (conta comprometida) com uma solução aparentemente conveniente (uma ligação ou uma ferramenta) que, na verdade, dá controle total do computador para o atacante. Empresas de tecnologia legítimas nunca pedem para instalar ferramentas de acesso remoto a partir de um email não solicitado — se houver dúvida real sobre a segurança da conta, o caminho é acessar o site oficial diretamente, sem clicar em nada do email.",
+        "conceptGlossaryId": "microsoft_falso"
+      },
+      "idealInvestigationSeconds": 12
+    },
+    {
+      "id": "d5-e03",
+      "dayId": "day-05",
+      "order": 3,
+      "subject": "Seu código de verificação em duas etapas",
+      "bodyHtml": "<p>Olá,</p><p>Recebemos uma tentativa de login na sua conta corporativa a partir de um dispositivo novo.</p><p>Se foi você, use o código <strong>482913</strong> para confirmar o acesso. Se não reconhece essa tentativa, ignore este email e sua conta permanecerá segura.</p>",
+      "sender": {
+        "displayName": "Segurança da Conta - Leroy Merlin",
+        "emailAddressRaw": "seguranca@leroymerlin.com.br",
+        "domain": "leroymerlin.com.br",
+        "isSpoofed": false,
+        "spoofType": "none"
+      },
+      "links": [],
+      "attachments": [],
+      "headers": {
+        "fromServer": "mail.leroymerlin.com.br",
+        "sourceIp": "179.94.10.5",
+        "spf": "pass",
+        "dkim": "pass",
+        "dmarc": "pass",
+        "sentAt": "2026-08-11T11:30:00Z",
+        "routeHops": ["179.94.10.5"]
+      },
+      "internalDbRecord": {
+        "senderStatus": "trusted_vendor",
+        "notes": "Domínio oficial da empresa, sistema interno de autenticação."
+      },
+      "riskLevel": "safe",
+      "correctAction": "accept",
+      "primaryConcept": "mfa",
+      "tags": ["mfa"],
+      "difficulty": 5,
+      "investigationHints": [
+        {
+          "toolId": "domain_inspect",
+          "revealsField": "sender.domain",
+          "summaryText": "Domínio oficial da empresa, sem nenhuma variação suspeita."
+        },
+        {
+          "toolId": "header_inspect",
+          "revealsField": "headers",
+          "summaryText": "SPF, DKIM e DMARC passam — o email realmente veio da infraestrutura oficial da empresa."
+        }
+      ],
+      "explanation": {
+        "short": "Alerta de MFA legítimo, vindo do domínio oficial e com opção segura de ignorar.",
+        "detailed": "Diferente de golpes de phishing, este email não pede para clicar em nada nem cria urgência artificial — ele só informa um código e explica claramente o que fazer se você não reconhecer a tentativa. O domínio, SPF, DKIM e DMARC confirmam a origem legítima. Alertas de MFA de verdade funcionam assim: informativos, sem links, e com uma saída segura para quem não reconhece a tentativa de login.",
+        "conceptGlossaryId": "mfa"
+      },
+      "idealInvestigationSeconds": 8
+    },
+    {
+      "id": "d5-e04",
+      "dayId": "day-05",
+      "order": 4,
+      "subject": "Fwd: Fwd: OPORTUNIDADE - empréstimo consignado liberado",
+      "bodyHtml": "<p>Bom dia pessoal, recebi isso no grupo da empresa no WhatsApp e estão encaminhando pra todo mundo, segue o link:</p><p>Empréstimo consignado liberado sem consulta ao SPC/Serasa, aprovação em 5 minutos, clique e confira suas condições exclusivas de colaborador.</p>",
+      "sender": {
+        "displayName": "Ana (RH - grupo do WhatsApp)",
+        "emailAddressRaw": "ana.rh.grupowpp@hotmail.com",
+        "domain": "hotmail.com",
+        "isSpoofed": false,
+        "spoofType": "none"
+      },
+      "links": [
+        {
+          "id": "d5-e04-link1",
+          "displayText": "Ver condições exclusivas",
+          "actualUrl": "http://emprestimo-facil-colaborador.net/oferta",
+          "isMalicious": true
+        }
+      ],
+      "attachments": [],
+      "headers": {
+        "fromServer": "smtp.hotmail.com",
+        "sourceIp": "40.97.110.20",
+        "spf": "pass",
+        "dkim": "pass",
+        "dmarc": "none",
+        "sentAt": "2026-08-11T13:00:00Z",
+        "routeHops": ["40.97.110.20"]
+      },
+      "riskLevel": "suspicious",
+      "correctAction": "delete",
+      "primaryConcept": "whatsapp_falso",
+      "tags": ["whatsapp_falso", "phishing", "engenharia_social"],
+      "difficulty": 5,
+      "investigationHints": [
+        {
+          "toolId": "link_hover",
+          "revealsField": "links[0].actualUrl",
+          "summaryText": "O link leva a um domínio genérico de golpe financeiro, sem relação com bancos reais."
+        },
+        {
+          "toolId": "domain_inspect",
+          "revealsField": "sender.domain",
+          "summaryText": "Enviado de um Hotmail pessoal encaminhando uma corrente, não de um canal oficial de RH."
+        }
+      ],
+      "explanation": {
+        "short": "Corrente de golpe financeiro reencaminhada por email pessoal, sem alvo específico na empresa.",
+        "detailed": "Esse é um golpe de massa clássico — 'empréstimo fácil sem consulta' é uma isca genérica que circula por grupos de WhatsApp e é reencaminhada, muitas vezes por pessoas bem-intencionadas que não perceberam o golpe. Diferente dos ataques anteriores, este não foi direcionado especificamente à empresa nem usa infraestrutura da Leroy Merlin — não há necessidade de acionar o TI, mas também não deve ser encaminhado adiante. O caminho certo aqui é simplesmente apagar.",
+        "conceptGlossaryId": "whatsapp_falso"
+      },
+      "idealInvestigationSeconds": 8
+    },
+    {
+      "id": "d5-e05",
+      "dayId": "day-05",
+      "order": 5,
+      "subject": "Boleto atualizado - novo beneficiário a partir deste mês",
+      "bodyHtml": "<p>Prezados,</p><p>Informamos que, devido a uma reestruturação societária, nossos pagamentos passarão a ser recebidos por uma nova razão social. Segue o boleto atualizado em anexo com os novos dados bancários.</p>",
+      "sender": {
+        "displayName": "Financeiro Fornecedor ABC",
+        "emailAddressRaw": "financeiro@fornecedorabc.com",
+        "domain": "fornecedorabc.com",
+        "isSpoofed": false,
+        "spoofType": "compromised_legit"
+      },
+      "links": [],
+      "attachments": [
+        {
+          "id": "d5-e05-att1",
+          "fileName": "boleto_atualizado_agosto.pdf",
+          "declaredExtension": ".pdf",
+          "actualType": "application/pdf",
+          "sizeKB": 96,
+          "hasMacro": false,
+          "isMalicious": false
+        }
+      ],
+      "certificate": {
+        "companyName": "Fornecedor ABC LTDA",
+        "issuer": "Let's Encrypt",
+        "validFrom": "2026-06-01T00:00:00Z",
+        "validTo": "2026-09-01T00:00:00Z",
+        "domain": "fornecedorabc.com",
+        "isTechnicallyValid": true,
+        "isTrustworthy": false
+      },
+      "headers": {
+        "fromServer": "mail.fornecedorabc.com",
+        "sourceIp": "201.45.12.9",
+        "spf": "pass",
+        "dkim": "pass",
+        "dmarc": "pass",
+        "sentAt": "2026-08-11T14:20:00Z",
+        "routeHops": ["201.45.12.9"]
+      },
+      "internalDbRecord": {
+        "senderStatus": "trusted_vendor",
+        "notes": "Conta legítima do fornecedor, mas nenhuma reestruturação societária foi comunicada previamente por canais oficiais."
+      },
+      "outOfBandCheck": {
+        "channelDescription": "Ligação para o contato financeiro já conhecido do Fornecedor ABC",
+        "outcome": "confirmed_fraud",
+        "details": "O fornecedor confirmou que não houve nenhuma reestruturação e que a conta de email dele foi comprometida recentemente."
+      },
+      "riskLevel": "malicious",
+      "correctAction": "report",
+      "primaryConcept": "boleto_adulterado",
+      "tags": ["boleto_adulterado", "fornecedor_comprometido", "bec"],
+      "difficulty": 5,
+      "investigationHints": [
+        {
+          "toolId": "internal_db_lookup",
+          "revealsField": "internalDbRecord",
+          "summaryText": "Nenhuma reestruturação societária foi comunicada antes por canais oficiais — mudança de beneficiário sem aviso prévio é bandeira vermelha."
+        },
+        {
+          "toolId": "out_of_band_verify",
+          "revealsField": "outOfBandCheck",
+          "summaryText": "O fornecedor confirmou por telefone que a conta de email foi comprometida e que não houve reestruturação nenhuma."
+        }
+      ],
+      "explanation": {
+        "short": "Conta real do fornecedor comprometida para trocar os dados bancários do boleto.",
+        "detailed": "Este é o golpe de 'boleto adulterado' em sua forma mais perigosa: o email vem de verdade da conta real do fornecedor (por isso SPF/DKIM/DMARC passam e o certificado é tecnicamente válido), porque a conta foi comprometida. A mudança de beneficiário bancário sem aviso prévio por um canal já estabelecido é sempre motivo para confirmar por fora do email antes de pagar qualquer coisa — e foi exatamente essa confirmação que revelou a fraude.",
+        "conceptGlossaryId": "boleto_adulterado"
+      },
+      "idealInvestigationSeconds": 14
+    },
+    {
+      "id": "d5-e06",
+      "dayId": "day-05",
+      "order": 6,
+      "subject": "🎉 CUPOM EXCLUSIVO: 70% OFF só hoje para colaboradores!",
+      "bodyHtml": "<p>Parabéns! Você foi selecionado para um cupom exclusivo de 70% de desconto em nossa loja parceira. Válido apenas nas próximas 2 horas.</p>",
+      "sender": {
+        "displayName": "Promoções Parceiras",
+        "emailAddressRaw": "promo@mega-descontos-vip.shop",
+        "domain": "mega-descontos-vip.shop",
+        "isSpoofed": false,
+        "spoofType": "none"
+      },
+      "links": [
+        {
+          "id": "d5-e06-link1",
+          "displayText": "Resgatar cupom agora",
+          "actualUrl": "http://mega-descontos-vip.shop/resgate?id=8827",
+          "isMalicious": true
+        }
+      ],
+      "attachments": [],
+      "headers": {
+        "fromServer": "mail.mega-descontos-vip.shop",
+        "sourceIp": "89.44.10.201",
+        "spf": "fail",
+        "dkim": "none",
+        "dmarc": "none",
+        "sentAt": "2026-08-11T15:50:00Z",
+        "routeHops": ["89.44.10.201"]
+      },
+      "riskLevel": "suspicious",
+      "correctAction": "delete",
+      "primaryConcept": "phishing",
+      "tags": ["phishing", "link_malicioso", "engenharia_social"],
+      "difficulty": 5,
+      "investigationHints": [
+        {
+          "toolId": "link_hover",
+          "revealsField": "links[0].actualUrl",
+          "summaryText": "Domínio genérico de spam ('mega-descontos-vip.shop'), sem qualquer relação com a empresa."
+        },
+        {
+          "toolId": "header_inspect",
+          "revealsField": "headers",
+          "summaryText": "SPF, DKIM e DMARC falham — típico de spam em massa disparado de infraestrutura descartável."
+        }
+      ],
+      "explanation": {
+        "short": "Spam promocional genérico com urgência artificial, sem alvo específico.",
+        "detailed": "Urgência artificial ('só nas próximas 2 horas') e uma oferta boa demais para ser verdade são sinais clássicos de spam/phishing de baixo esforço, disparado em massa para qualquer lista de emails, sem relação com a empresa especificamente. Não representa uma ameaça direcionada que exija ação do TI — o certo aqui é simplesmente apagar.",
+        "conceptGlossaryId": "phishing_urgencia"
+      },
+      "idealInvestigationSeconds": 6
+    }
+  ]
+}

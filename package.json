@@ -1,36 +1,17 @@
 {
   "name": "cifra",
-  "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.18.0",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "framer-motion": "^11.18.2",
-    "next": "15.5.23",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "tailwind-merge": "^2.5.4"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "validate-content": "turbo run validate-content"
   },
   "devDependencies": {
-    "@types/node": "^22.9.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.23",
-    "postcss": "^8.5.23",
-    "tailwindcss": "^3.4.15",
-    "typescript": "^5.6.3"
-  },
-  "overrides": {
-    "postcss": "^8.5.23",
-    "nanoid": "^3.3.17",
-    "sharp": "^0.35.0"
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
   }
 }
