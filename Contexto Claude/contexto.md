@@ -645,6 +645,42 @@ está correto — porque o retorno do Prisma virou `any`. Rodar `prisma generate
 de novo faz tudo passar.
 Por isso `build` e `typecheck` **regeneram o Client antes de compilar**.
 
+**4-b. O cache de build da Vercel transforma o install em no-op — e lifecycle
+script que não roda não compila nada.**
+Quando a Vercel restaura o cache de um deploy anterior, o `node_modules` já vem
+pronto e o `pnpm install` termina assim:
+
+```
+Restored build cache from previous deployment
+Already up to date
+Done in 817ms
+```
+
+Nesse caminho o `prepare` do `packages/shared` **não executa**, e como
+`packages/shared/dist` não faz parte do `node_modules` (não é cacheado), ele
+simplesmente não existe. O `tsc` da API então falha com
+`Cannot find module '@repo/shared/engine'` — o mesmo erro do item 4, mas por
+outro motivo, num deploy onde o install "passou".
+
+Por isso o `buildCommand` da API é `cd ../.. && pnpm turbo run build
+--filter=api`, e não `pnpm build`: o turbo lê o `dependsOn: ["^build"]` e
+compila o `shared` antes, independentemente de o install ter rodado ou não.
+Confiar no `prepare` é confiar que o install sempre executa. Ele não executa.
+
+Para reproduzir localmente antes de subir — este é o teste que vale, porque
+apaga só o que a Vercel não cacheia:
+
+```bash
+rm -rf packages/shared/dist apps/api/dist node_modules/.cache/turbo
+pnpm install --frozen-lockfile     # deve dizer "Already up to date"
+cd apps/api && cd ../.. && pnpm turbo run build --filter=api
+```
+
+⚠️ `apps/jogo` também depende de `@repo/shared` e está exposto ao mesmo risco.
+Hoje sobrevive porque a Vercel detecta o Turbo e orquestra sozinha, mas isso é
+sorte de configuração, não garantia — se ele quebrar com esse erro, a correção
+é a mesma.
+
 **4. Compilar durante o install cascateia para os três projetos.**
 Quando o `tsc` estava no `postinstall`, ele rodava antes de `packages/shared`
 existir em `dist/` → `Cannot find module '@repo/shared/engine'`. E como
