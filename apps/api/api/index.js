@@ -47,6 +47,7 @@ const { ExpressAdapter } = require("@nestjs/platform-express");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const { AppModule } = require("../dist/app.module");
+const { origensPermitidas } = require("../dist/config");
 
 let cached = null;
 let iniciando = null;
@@ -61,8 +62,10 @@ async function criarApp() {
 
   app.use(cookieParser());
   app.setGlobalPrefix("api");
+  // Mesma regra de origem do src/main.ts — os dois pontos de entrada leem de
+  // ../dist/config justamente para não divergirem.
   app.enableCors({
-    origin: process.env.CORS_ORIGIN?.split(",") ?? true,
+    origin: origensPermitidas(),
     credentials: true,
   });
 
