@@ -1,20 +1,19 @@
 /**
  * Ponto de entrada da API na Vercel.
  *
- * O nome do arquivo é obrigatório: `[...path]` é o catch-all das Vercel
- * Functions, e faz a plataforma encaminhar tudo sob `/api/*` para esta única
- * função.
+ * Todo request chega aqui, por `routes` no vercel.json — que substitui o
+ * roteamento por sistema de arquivos, em vez de rodar depois dele.
  *
  * Duas tentativas anteriores falharam, e vale registrar para ninguém repetir:
  *
- *  - `api/index.ts` mais um rewrite `/(.*)` no vercel.json dava
- *    FUNCTION_INVOCATION_FAILED em qualquer rota sob `/api`, inclusive nas que
- *    nem tocam o banco. A Vercel trata `api/` como diretório de funções e
- *    tentava resolver `/api/auth/status` como um arquivo `api/auth/status.ts`,
- *    brigando com o rewrite.
+ *  - `api/index.ts` com `rewrites` dava FUNCTION_INVOCATION_FAILED em qualquer
+ *    rota sob `/api`, inclusive nas que nem tocam o banco: `rewrites` roda
+ *    DEPOIS do roteamento por arquivos, então a Vercel primeiro tentava
+ *    resolver `/api/auth/status` como `api/auth/status.ts` e o conflito
+ *    derrubava a função.
  *
  *  - `api/[[...path]].ts` dava NOT_FOUND. Colchetes duplos são o catch-all
- *    OPCIONAL do Next.js; Vercel Functions usa colchetes simples.
+ *    opcional do Next.js, não das Vercel Functions.
  *
  * A Vercel é serverless: não existe processo escutando porta, então o
  * `app.listen()` do `src/main.ts` não funciona aqui. Este handler monta a
