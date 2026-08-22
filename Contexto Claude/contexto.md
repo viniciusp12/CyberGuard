@@ -615,3 +615,93 @@ Jogo/
     - `setor_suporte.tscn` → `DoorBack` em **(192,16)** na parede de cima, `target_scene = main.tscn`.
   - ⚠️ Ainda **não** tem "spawn point": ao voltar pro Saguão o player nasce na posição fixa inicial (240,144), não ao lado da porta. (Melhoria futura.)
 - **Próximo:** decorar a sala (objetos/tochas/rachaduras do dungeon pack), primeiro inimigo (Worm) ou puzzle, coletáveis (cristais HP/mana), HUD de HP/mana.
+
+---
+
+## 🚀 Deploy na Vercel — a API NestJS (armadilhas já pagas)
+
+São **três projetos** na Vercel apontando para o mesmo repositório, cada um com seu
+Root Directory: `apps/site`, `apps/jogo` e `apps/api`.
+
+### As quatro armadilhas que quebraram o deploy
+
+**1. Express 4 com NestJS 11 → todas as rotas em 500.**
+O NestJS 11 exige **Express 5**. Com o 4, o `ExpressAdapter.isMiddlewareApplied`
+lê `app.router`, que o Express 4 transformou em getter que *lança* exceção
+(`'app.router' is deprecated!`). O app morre no bootstrap e **toda** rota
+responde `FUNCTION_INVOCATION_FAILED` — sem stack trace útil no painel.
+Travado em `express@^5.2.1` + `@types/express@^5.0.6`.
+
+**2. esbuild não emite `emitDecoratorMetadata` → a injeção de dependência do Nest morre.**
+Por isso o handler é **`api/[...path].js`** (JavaScript, não TypeScript) e importa
+de `../dist/` — saída do `tsc`, que emite as chamadas `Reflect.metadata` de verdade.
+Não converter esse arquivo para `.ts`.
+
+**3. `prisma generate` no `postinstall` não é confiável com pnpm.**
+O Client é gerado dentro do store (`node_modules/.pnpm/@prisma+client@…`) e o
+install ainda remonta os links depois, então os tipos somem. O sintoma engana:
+uma chuva de `TS7006 implicitly has an 'any' type` e `unknown[]` em código que
+está correto — porque o retorno do Prisma virou `any`. Rodar `prisma generate`
+de novo faz tudo passar.
+Por isso `build` e `typecheck` **regeneram o Client antes de compilar**.
+
+**4. Compilar durante o install cascateia para os três projetos.**
+Quando o `tsc` estava no `postinstall`, ele rodava antes de `packages/shared`
+existir em `dist/` → `Cannot find module '@repo/shared/engine'`. E como
+`pnpm install` roda o postinstall de *todos* os workspaces, os três deploys
+caíam juntos. Compilação pertence ao **build**, não ao install.
+O `packages/shared` tem `"prepare": "tsup"` para se compilar sozinho no install
+(o pnpm roda os lifecycle scripts em ordem topológica).
+
+### Por que `functions` e não `builds`/`routes`
+
+`builds` **substitui** o roteamento por sistema de arquivos, e `routes` exige
+`builds`. Mas o catch-all **`api/[...path].js`** já faz a Vercel mandar todo
+`/api/*` para o handler sozinha — sem rewrite, sem `builds`. Fica só:
+
+```json
+{
+  "buildCommand": "pnpm build",
+  "functions": { "api/[...path].js": { "maxDuration": 30, "includeFiles": "dist/**" } }
+}
+```
+
+O `includeFiles: "dist/**"` é obrigatório: sem ele o `dist/` não vai junto e o
+`require("../dist/app.module")` falha em produção.
+
+⚠️ O `vercel.json` **rejeita chaves desconhecidas** — uma chave `"//"` usada como
+comentário derruba o build com `should NOT have additional property '//'`.
+O efeito colateral é cruel: nenhum deploy novo sobe, e você fica depurando a
+versão antiga achando que as correções não funcionaram.
+
+### Prisma atrás do pooler do Supabase
+
+`apps/api/src/prisma/prisma.service.ts` completa a URL sozinho: se detecta a
+porta `6543` (pooler em modo *transaction*), acrescenta `pgbouncer=true` e
+`connection_limit=1`. Sem isso o Prisma usa prepared statements, que o PgBouncer
+não suporta — e o sintoma engana, porque a conexão **abre** (o app sobe e
+responde) e só as consultas falham.
+O `schema.prisma` também tem `directUrl = env("DIRECT_URL")` (porta 5432), que é
+o que as *migrations* usam.
+
+### Como testar antes de subir
+
+A lição mais cara desta fase: passei várias rodadas lendo código de erro do
+painel da Vercel em vez de reproduzir local. O handler é um `module.exports =
+(req, res)` comum — dá para subir num `http.createServer` e bater nele:
+
+```bash
+cd apps/api && pnpm build
+node ../../scripts/testar-handler.js .   # /api/auth/status → 200
+```
+
+Quando finalmente rodei isso, o stack trace apontou a linha exata em segundos.
+**Reproduza local antes de interpretar erro de plataforma.**
+
+### Pendências conhecidas
+
+- 🔴 **Rotacionar `JWT_SECRET` e a senha do Supabase.** Circularam fora de canal
+  controlado; quem tiver o segredo antigo consegue forjar token de ADMIN.
+- Conteúdo duplicado entre site e jogo (dois glossários; o `day-01.json` repete
+  o caso de phishing que já está em `/golpe`).
+- Prisma 5.22 → 7 é upgrade maior, ainda não feito.
