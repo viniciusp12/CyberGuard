@@ -29,7 +29,7 @@ if (fs.existsSync(caminhoEnv)) {
   console.log(`aviso: ${caminhoEnv} nao encontrado — as rotas com banco vao falhar\n`);
 }
 
-const handler = require(path.join(RAIZ, "api", "[...path].js"));
+const handler = require(path.join(RAIZ, "api", "index.js"));
 
 let houveFalha = false;
 

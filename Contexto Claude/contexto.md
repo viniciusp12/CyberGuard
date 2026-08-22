@@ -653,18 +653,54 @@ caíam juntos. Compilação pertence ao **build**, não ao install.
 O `packages/shared` tem `"prepare": "tsup"` para se compilar sozinho no install
 (o pnpm roda os lifecycle scripts em ordem topológica).
 
-### Por que `functions` e não `builds`/`routes`
+### O roteamento: `rewrites`, e por que o catch-all NÃO serve
 
-`builds` **substitui** o roteamento por sistema de arquivos, e `routes` exige
-`builds`. Mas o catch-all **`api/[...path].js`** já faz a Vercel mandar todo
-`/api/*` para o handler sozinha — sem rewrite, sem `builds`. Fica só:
+**5. A pasta `api/` da Vercel não implementa catch-all.**
+A tentação é nomear o handler `api/[...path].js` para receber todo `/api/*`.
+Isso é sintaxe do **roteador do Next.js**, não da convenção de funções. Fora do
+Next, `[...path]` vira um parâmetro de nome literal `...path`, e todo segmento
+dinâmico compila para `([^/]+)` — exatamente **um** segmento. A rota gerada era
+`^/api/([^/]+)$`.
+
+Resultado: `/api/ranking` chegava no Nest, `/api/auth/login` morria num 404 da
+plataforma. 12 das 13 rotas mortas, com build verde e nenhum erro no painel.
+
+A assinatura que denuncia, e que ficou à vista o tempo todo:
+
+```
+GET /api/a  ->  {"message":"Cannot GET /api/a?...path=a"}
+```
+
+Aquele `...path` como **nome de parâmetro** é a prova de que a Vercel leu os
+três pontos como parte do nome, não como marcador de catch-all.
+
+> ⚠️ Registro de um diagnóstico errado, porque o erro é convidativo: a primeira
+> explicação foi "as chaves de `functions` são globs e `[...]` é character
+> class, então a config nunca foi aplicada". Plausível — `minimatch` realmente
+> devolve `false` — mas **falso**: a Vercel testa `key === fileName` antes do
+> glob, e o ramo de igualdade exata casa. Prova independente: se a chave não
+> casasse, o deploy teria abortado com `unused_function`, e ele passou.
+> A config sempre esteve aplicada; o problema era só o roteamento.
+
+A solução é o padrão que a própria Vercel documenta para Express: handler em
+**`api/index.js`** (nome simples, glob casa) e roteamento por `rewrites`.
 
 ```json
 {
   "buildCommand": "pnpm build",
-  "functions": { "api/[...path].js": { "maxDuration": 30, "includeFiles": "dist/**" } }
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
+  "functions": {
+    "api/index.js": { "maxDuration": 30, "includeFiles": "dist/**" }
+  }
 }
 ```
+
+Funciona porque **rewrites são avaliados depois do sistema de arquivos** — a
+doc é explícita: *"precedence is given to the filesystem prior to rewrites
+being applied"*. Então `/api/auth/login` não casa com arquivo nenhum, cai na
+regra, e chega no handler com a **URL original** preservada em `req.url` — que
+é exatamente do que o `setGlobalPrefix("api")` do Nest depende. O destino é
+`/api` (a rota que o arquivo expõe), **não** `/api/index`.
 
 O `includeFiles: "dist/**"` é obrigatório: sem ele o `dist/` não vai junto e o
 `require("../dist/app.module")` falha em produção.

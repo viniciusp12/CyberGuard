@@ -12,8 +12,30 @@
  *
  * A saída é compilar com o `tsc` antes (ele emite o metadata como chamadas
  * `Reflect.metadata` no JavaScript) e apontar o handler para o resultado. O
- * `postinstall` do package.json roda essa compilação. Como este arquivo não
+ * script `build` do package.json roda essa compilação. Como este arquivo não
  * tem decorator nenhum, o esbuild processa sem problema.
+ *
+ * ⚠️ O nome do arquivo é `index.js`, e isso não é acidente.
+ *
+ * A tentação é usar o catch-all `[...path].js` para receber `/api/*`. Não
+ * funciona: a convenção da pasta `api/` da Vercel NÃO implementa catch-all —
+ * isso é coisa do roteador do Next.js, não da convenção de funções. Aqui
+ * `[...path]` vira um parâmetro de nome literal `...path`, e todo segmento
+ * dinâmico compila para `([^/]+)`, que casa exatamente UM segmento. A rota
+ * gerada era `^/api/([^/]+)$`: `/api/ranking` chegava, `/api/auth/login`
+ * morria num 404 da plataforma — 12 das 13 rotas mortas, com build verde e
+ * nenhum erro no painel.
+ *
+ * A produção deixou a assinatura do problema à vista: `/api/a` respondia
+ * `Cannot GET /api/a?...path=a`. Aquele `...path` como nome de parâmetro é a
+ * prova de que a Vercel leu os três pontos como parte do nome, e não como
+ * marcador de catch-all.
+ *
+ * O roteamento agora vem do `rewrites` no vercel.json — o padrão que a própria
+ * Vercel documenta para Express e afins. Rewrites são avaliados DEPOIS do
+ * sistema de arquivos, então `/api/auth/login` não casa com arquivo nenhum,
+ * cai na regra e chega aqui com a URL ORIGINAL preservada em `req.url`. É
+ * disso que o `setGlobalPrefix("api")` abaixo depende.
  *
  * `src/main.ts` continua servindo servidor tradicional. Os dois caminhos
  * compartilham o mesmo AppModule — nenhuma regra de negócio duplicada.
