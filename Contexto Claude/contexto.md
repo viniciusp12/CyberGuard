@@ -770,10 +770,35 @@ node ../../scripts/testar-handler.js .   # /api/auth/status → 200
 Quando finalmente rodei isso, o stack trace apontou a linha exata em segundos.
 **Reproduza local antes de interpretar erro de plataforma.**
 
+### Estado verificado em produção (22/08/2026)
+
+Medido com `node scripts/verificar-api.js`, nos dois caminhos:
+
+- `cyber-guard-api.vercel.app` — 5/5 rotas chegando no Nest (1, 2 e 3 segmentos)
+- `cyber-guard-jogo.vercel.app` — 5/5 pelo proxy do Next, e um `POST` de login
+  com corpo JSON atravessa o proxy, é validado pelo Zod e chega no serviço
+- Supabase conectando (o `/api/auth/status` faz `count` de verdade)
+
 ### Pendências conhecidas
 
+- 🔴 **`CORS_ORIGIN` não está setada em produção.** Medido: a API responde
+  `Access-Control-Allow-Origin` refletindo qualquer origem, com
+  `Allow-Credentials: true`. É o ramo `?? true` do `enableCors` em `main.ts`.
+- 🔴 **`JWT_SECRET` falha em silêncio.** `auth.module.ts:10` cai em
+  `"dev-only-insecure-secret-change-me"`, que está no repositório. Se a variável
+  faltar, tudo funciona igual e a sessão inteira fica assinada com segredo
+  público — não dá para detectar de fora, só no painel.
 - 🔴 **Rotacionar `JWT_SECRET` e a senha do Supabase.** Circularam fora de canal
   controlado; quem tiver o segredo antigo consegue forjar token de ADMIN.
+- ⏳ **O banco não tem nenhum usuário** (`needsBootstrap: true`). O primeiro
+  admin se cria pela própria tela de login do jogo, que troca de formulário
+  quando detecta isso. O `bootstrap-admin` só aceita ser chamado enquanto
+  `user.count() === 0`.
+- Cold start nunca foi cronometrado. A demo encadeia duas funções serverless
+  (proxy do Next → API) mais o `$connect()` do Prisma. Aquecer os dois com um
+  GET alguns minutos antes de apresentar.
+- `connection_limit=1` (forçado pelo `prisma.service.ts` no pooler) nunca foi
+  testado com vários jogadores simultâneos.
 - Conteúdo duplicado entre site e jogo (dois glossários; o `day-01.json` repete
   o caso de phishing que já está em `/golpe`).
 - Prisma 5.22 → 7 é upgrade maior, ainda não feito.
