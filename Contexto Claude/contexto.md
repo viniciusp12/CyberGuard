@@ -772,28 +772,31 @@ Quando finalmente rodei isso, o stack trace apontou a linha exata em segundos.
 
 ### Estado verificado em produção (22/08/2026)
 
-Medido com `node scripts/verificar-api.js`, nos dois caminhos:
+Medido, não presumido:
 
 - `cyber-guard-api.vercel.app` — 5/5 rotas chegando no Nest (1, 2 e 3 segmentos)
 - `cyber-guard-jogo.vercel.app` — 5/5 pelo proxy do Next, e um `POST` de login
   com corpo JSON atravessa o proxy, é validado pelo Zod e chega no serviço
 - Supabase conectando (o `/api/auth/status` faz `count` de verdade)
+- **CORS fechado**: `curl -H "Origin: https://qualquer-coisa.com"` não recebe
+  mais nenhum header `Access-Control-*`
+- **`JWT_SECRET` presente**: a API subir já é a prova — sem a variável, o
+  bootstrap lança em produção
+- O primeiro admin existe (`needsBootstrap: false`), e o `bootstrap-admin`
+  ficou trancado: uma segunda chamada responde 403
+
+Os três projetos na Vercel: `cyber-guard-api`, `cyber-guard-jogo` e
+`cyber-guard`. Só a API precisa de variáveis de ambiente — o jogo usa
+`API_ORIGIN` (opcional, tem fallback no `next.config.ts`) e o site não usa
+nenhuma, porque é 100% client-side.
 
 ### Pendências conhecidas
 
-- 🔴 **`CORS_ORIGIN` não está setada em produção.** Medido: a API responde
-  `Access-Control-Allow-Origin` refletindo qualquer origem, com
-  `Allow-Credentials: true`. É o ramo `?? true` do `enableCors` em `main.ts`.
-- 🔴 **`JWT_SECRET` falha em silêncio.** `auth.module.ts:10` cai em
-  `"dev-only-insecure-secret-change-me"`, que está no repositório. Se a variável
-  faltar, tudo funciona igual e a sessão inteira fica assinada com segredo
-  público — não dá para detectar de fora, só no painel.
 - 🔴 **Rotacionar `JWT_SECRET` e a senha do Supabase.** Circularam fora de canal
-  controlado; quem tiver o segredo antigo consegue forjar token de ADMIN.
-- ⏳ **O banco não tem nenhum usuário** (`needsBootstrap: true`). O primeiro
-  admin se cria pela própria tela de login do jogo, que troca de formulário
-  quando detecta isso. O `bootstrap-admin` só aceita ser chamado enquanto
-  `user.count() === 0`.
+  controlado junto com o `.env`; quem tiver aquele arquivo consegue forjar token
+  de ADMIN. Trocar é editar a variável no painel e redeployar — a variável fica
+  vinculada ao build, então mudá-la sem novo deploy não surte efeito.
+- ⏳ O site (`cyber-guard`) nunca foi verificado em produção; faltou a URL.
 - Cold start nunca foi cronometrado. A demo encadeia duas funções serverless
   (proxy do Next → API) mais o `$connect()` do Prisma. Aquecer os dois com um
   GET alguns minutos antes de apresentar.
