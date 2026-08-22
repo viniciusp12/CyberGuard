@@ -4,7 +4,11 @@
  * Todo request chega aqui, por `routes` no vercel.json — que substitui o
  * roteamento por sistema de arquivos, em vez de rodar depois dele.
  *
- * Duas tentativas anteriores falharam, e vale registrar para ninguém repetir:
+ * ⚠️ O vercel.json não aceita comentário nem chave extra: a Vercel valida o
+ * schema e recusa o build com "should NOT have additional property". Por isso
+ * a explicação da configuração mora aqui, e não lá.
+ *
+ * Tentativas anteriores que falharam, para ninguém repetir:
  *
  *  - `api/index.ts` com `rewrites` dava FUNCTION_INVOCATION_FAILED em qualquer
  *    rota sob `/api`, inclusive nas que nem tocam o banco: `rewrites` roda

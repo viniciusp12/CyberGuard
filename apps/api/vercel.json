@@ -1,19 +1,5 @@
 {
   "version": 2,
-
-  "//": [
-    "Roteamento explícito, de propósito.",
-    "",
-    "`routes` (legado) SUBSTITUI o roteamento por sistema de arquivos, enquanto",
-    "`rewrites` (moderno) roda DEPOIS dele. Essa diferença foi a causa de dois",
-    "deploys quebrados: com `rewrites`, a Vercel primeiro tentava resolver",
-    "/api/auth/status como um arquivo api/auth/status.ts, e só então aplicava a",
-    "regra — o conflito derrubava a função.",
-    "",
-    "Com `routes`, todo request vai direto para o handler. Não há convenção de",
-    "nome de arquivo envolvida, nada a adivinhar."
-  ],
-
   "builds": [
     {
       "src": "api/index.ts",
@@ -21,6 +7,5 @@
       "config": { "maxDuration": 30 }
     }
   ],
-
   "routes": [{ "src": "/.*", "dest": "/api/index.ts" }]
 }
