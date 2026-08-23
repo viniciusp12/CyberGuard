@@ -23,46 +23,67 @@ export interface CircularCarouselProps {
   className?: string;
 }
 
-const VISIBLE_COUNT = 5;
-
 /**
- * O raio horizontal era fixo em 220px. Num celular de 360px de largura os
- * cartões se espalhavam por 440px e vazavam a tela — foi o que apareceu como
- * cartões cortados nas bordas. Agora ele acompanha a largura disponível, com
- * teto no valor antigo para o desktop não mudar.
+ * Geometria do carrossel.
+ *
+ * A primeira tentativa de adaptar ao celular foi só encolher o raio. Não
+ * funcionou: os sete cartões continuaram sendo desenhados e, com pouco espaço,
+ * empilharam no centro num bolo ilegível. Espremer geometria circular não a
+ * torna adequada a uma tela estreita — o que muda é QUANTOS cartões existem.
+ *
+ * Então a contagem de visíveis é que responde à largura:
+ *   - tela larga  → cinco cartões, o efeito circular como foi desenhado
+ *   - tela média  → três
+ *   - celular     → um só, centralizado e legível, navegando pelas setas
+ *
+ * Com um cartão só o arco não faz sentido, então o deslocamento vertical
+ * também zera: ele fica reto no meio da pista.
  */
 const RADIUS_X_MAX = 220;
-const RADIUS_Y = 100;
+const RADIUS_Y_MAX = 100;
 
-function raioHorizontal(largura: number) {
-  if (!largura) return RADIUS_X_MAX;
-  return Math.min(RADIUS_X_MAX, largura * 0.32);
+type Geometria = { visiveis: number; raioX: number; raioY: number };
+
+function geometriaPara(largura: number): Geometria {
+  // Sem medida ainda (primeiro render): assume o layout completo.
+  if (!largura) return { visiveis: 5, raioX: RADIUS_X_MAX, raioY: RADIUS_Y_MAX };
+
+  if (largura < 520) {
+    return { visiveis: 1, raioX: 0, raioY: 0 };
+  }
+
+  if (largura < 720) {
+    return { visiveis: 3, raioX: Math.min(RADIUS_X_MAX, largura * 0.26), raioY: RADIUS_Y_MAX * 0.6 };
+  }
+
+  return { visiveis: 5, raioX: RADIUS_X_MAX, raioY: RADIUS_Y_MAX };
 }
 
 function getItemPosition(
   index: number,
   activeIndex: number,
   total: number,
-  raioX: number,
+  g: Geometria,
 ) {
   const offset = index - activeIndex;
-  const half = Math.floor(VISIBLE_COUNT / 2);
+  const half = Math.floor(g.visiveis / 2);
   let adjustedOffset = offset;
 
   if (offset > half) adjustedOffset = offset - total;
   if (offset < -half) adjustedOffset = offset + total;
 
-  if (Math.abs(adjustedOffset) > half * 2) return null;
+  // Com `visiveis: 1`, half é 0 e só o cartão ativo sobrevive a esta linha.
+  if (Math.abs(adjustedOffset) > half) return null;
 
-  const angle = (adjustedOffset / VISIBLE_COUNT) * Math.PI;
-  const x = Math.sin(angle) * raioX;
-  const y = -Math.cos(angle) * RADIUS_Y;
+  const angle = g.visiveis > 1 ? (adjustedOffset / g.visiveis) * Math.PI : 0;
+  const x = Math.sin(angle) * g.raioX;
+  const y = g.raioY ? -Math.cos(angle) * g.raioY + g.raioY : 0;
 
   const distance = Math.abs(adjustedOffset);
   const maxDistance = half + 1;
   const scale = Math.max(0, 1 - (distance / maxDistance) * 0.3);
   const opacity = Math.max(0.35, 1 - (distance / maxDistance) * 0.65);
-  const zIndex = VISIBLE_COUNT - distance;
+  const zIndex = g.visiveis - distance;
 
   return { x, y, scale, opacity, zIndex, adjustedOffset };
 }
@@ -93,6 +114,8 @@ export function CircularCarousel({
     observador.observe(el);
     return () => observador.disconnect();
   }, []);
+
+  const geometria = geometriaPara(larguraPista);
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -152,10 +175,14 @@ export function CircularCarousel({
         className,
       )}
     >
-      <div ref={pistaRef} className="relative h-[260px] w-full max-w-lg overflow-hidden">
+      <div
+        ref={pistaRef}
+        className="relative w-full max-w-lg overflow-hidden"
+        style={{ height: geometria.visiveis === 1 ? 210 : 260 }}
+      >
         <AnimatePresence mode="popLayout">
           {items.map((item, i) => {
-            const pos = getItemPosition(i, activeIndex, total, raioHorizontal(larguraPista));
+            const pos = getItemPosition(i, activeIndex, total, geometria);
             if (!pos) return null;
 
             const isActive = i === activeIndex;
@@ -179,7 +206,8 @@ export function CircularCarousel({
                 aria-selected={isActive}
                 role="option"
                 className={cn(
-                  "absolute left-1/2 top-1/2 flex h-32 w-48 -translate-x-1/2 -translate-y-1/2 cursor-pointer flex-col items-start justify-between rounded-lg border p-4 backdrop-blur-sm transition-shadow duration-300",
+                  "absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 cursor-pointer flex-col items-start justify-between rounded-lg border p-4 backdrop-blur-sm transition-shadow duration-300",
+                  geometria.visiveis === 1 ? "h-44 w-[17rem]" : "h-32 w-48",
                   "border-border bg-gradient-to-b from-surface to-surface-2",
                   isActive
                     ? "shadow-[0_16px_40px_-8px_rgba(0,0,0,0.35)]"
@@ -200,14 +228,19 @@ export function CircularCarousel({
                   <h3
                     className={cn(
                       "font-stencil leading-tight transition-colors duration-300",
-                      isActive ? "text-base text-text" : "text-sm text-text-muted",
+                      geometria.visiveis === 1
+                        ? "text-lg text-text"
+                        : isActive
+                          ? "text-base text-text"
+                          : "text-sm text-text-muted",
                     )}
                   >
                     {item.title}
                   </h3>
                   <p
                     className={cn(
-                      "mt-1 line-clamp-2 text-xs leading-relaxed transition-colors duration-300",
+                      "mt-1 text-xs leading-relaxed transition-colors duration-300",
+                      geometria.visiveis === 1 ? "line-clamp-4" : "line-clamp-2",
                       isActive ? "text-text-muted" : "text-text-muted/70",
                     )}
                   >
@@ -224,7 +257,12 @@ export function CircularCarousel({
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center"
+          className={cn(
+            "pointer-events-none absolute inset-0 flex-col items-center justify-center",
+            // Só faz sentido no arco: com um cartão só, o miolo é o cartão, e
+            // o número ficava impresso por cima do texto dele.
+            geometria.visiveis === 1 ? "hidden" : "flex",
+          )}
         >
           <span className="font-pixel text-2xl text-text/90">
             {String(activeIndex + 1).padStart(2, "0")}
