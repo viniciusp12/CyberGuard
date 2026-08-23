@@ -97,7 +97,7 @@ export default function RootLayout({
         <RegistrarServiceWorker />
         <LocaleProvider>
           <Providers>
-            <div className="fixed right-4 top-4 z-[70] flex items-center gap-2">
+            <div className="fixed right-4 top-4 z-[70] hidden items-center gap-2 md:flex">
               <LofiPlayer />
               <LanguageSelector />
               <ThemeToggle />

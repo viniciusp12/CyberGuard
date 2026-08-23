@@ -208,7 +208,7 @@ input {
 .glossary-book-cover:hover {
   box-shadow:
     0 25px 60px -12px rgba(0, 0, 0, 0.5),
-    0 0 40px rgba(61, 74, 46, 0.15);
+    0 0 40px color-mix(in srgb, var(--color-primary) 18%, transparent);
 }
 
 .animate-bounce-x {

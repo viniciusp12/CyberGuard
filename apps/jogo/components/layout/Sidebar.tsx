@@ -43,7 +43,7 @@ export function Sidebar() {
     <aside className="hidden md:flex w-60 shrink-0 flex-col border-r border-border bg-surface">
       <div className="flex items-center gap-2 px-5 py-5">
         <Image src="/logo.png" alt="" width={40} height={40} />
-        <span className="font-stencil text-lg font-semibold uppercase tracking-wide">The Hackudinhos</span>
+        <span className="font-stencil text-lg font-semibold uppercase tracking-wide">Hackudinhos</span>
       </div>
       <nav className="flex flex-1 flex-col gap-1 px-3">
         {navItems.map(({ href, labelKey, icon: Icon }) => {

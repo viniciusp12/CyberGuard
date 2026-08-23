@@ -18,6 +18,9 @@ import {
 import { cn } from "@/lib/utils";
 import { usePlayerProfile } from "@/lib/hooks/usePlayerProfile";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
+import { LofiPlayer } from "@/components/ui/lofi-player";
+import { LanguageSelector } from "@/components/ui/language-selector";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const NAV_ITEMS = [
   { href: "/", labelKey: "nav.home", icon: Home },
@@ -41,9 +44,22 @@ export function MobileTopBar() {
 
   return (
     <div className="md:hidden sticky top-0 z-20 border-b border-border bg-surface">
+      {/*
+        Os controles moram aqui no celular. Antes flutuavam em `fixed right-4
+        top-4` vindos do layout raiz, o que os punha por cima desta barra e os
+        cortava na borda da tela. `min-w-0` no nome deixa ele truncar em vez de
+        empurrar os botões para fora.
+      */}
       <div className="flex items-center gap-2 px-4 py-3">
-        <Image src="/logo.png" alt="" width={40} height={40} />
-        <span className="font-stencil font-semibold uppercase tracking-wide">The Hackudinhos</span>
+        <Image src="/logo.png" alt="" width={40} height={40} className="shrink-0" />
+        <span className="min-w-0 flex-1 truncate font-stencil font-semibold uppercase tracking-wide">
+          Hackudinhos
+        </span>
+        <div className="flex shrink-0 items-center gap-1">
+          <LofiPlayer />
+          <LanguageSelector />
+          <ThemeToggle />
+        </div>
       </div>
       <nav className="flex gap-1.5 overflow-x-auto px-3 pb-2.5">
         {navItems.map(({ href, labelKey, icon: Icon }) => {

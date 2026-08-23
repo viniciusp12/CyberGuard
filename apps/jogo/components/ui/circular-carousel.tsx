@@ -24,10 +24,27 @@ export interface CircularCarouselProps {
 }
 
 const VISIBLE_COUNT = 5;
-const RADIUS_X = 220;
+
+/**
+ * O raio horizontal era fixo em 220px. Num celular de 360px de largura os
+ * cartões se espalhavam por 440px e vazavam a tela — foi o que apareceu como
+ * cartões cortados nas bordas. Agora ele acompanha a largura disponível, com
+ * teto no valor antigo para o desktop não mudar.
+ */
+const RADIUS_X_MAX = 220;
 const RADIUS_Y = 100;
 
-function getItemPosition(index: number, activeIndex: number, total: number) {
+function raioHorizontal(largura: number) {
+  if (!largura) return RADIUS_X_MAX;
+  return Math.min(RADIUS_X_MAX, largura * 0.32);
+}
+
+function getItemPosition(
+  index: number,
+  activeIndex: number,
+  total: number,
+  raioX: number,
+) {
   const offset = index - activeIndex;
   const half = Math.floor(VISIBLE_COUNT / 2);
   let adjustedOffset = offset;
@@ -38,7 +55,7 @@ function getItemPosition(index: number, activeIndex: number, total: number) {
   if (Math.abs(adjustedOffset) > half * 2) return null;
 
   const angle = (adjustedOffset / VISIBLE_COUNT) * Math.PI;
-  const x = Math.sin(angle) * RADIUS_X;
+  const x = Math.sin(angle) * raioX;
   const y = -Math.cos(angle) * RADIUS_Y;
 
   const distance = Math.abs(adjustedOffset);
@@ -60,6 +77,22 @@ export function CircularCarousel({
 }: CircularCarouselProps) {
   const { t } = useLocale();
   const [internalIndex, setInternalIndex] = useState(0);
+
+  // Largura real da pista, para o raio dos cartões acompanhar a tela.
+  // ResizeObserver em vez de window.innerWidth porque o que importa é o
+  // espaço deste container, que muda também quando a barra lateral aparece.
+  const pistaRef = useRef<HTMLDivElement>(null);
+  const [larguraPista, setLarguraPista] = useState(0);
+
+  useEffect(() => {
+    const el = pistaRef.current;
+    if (!el) return;
+    const observador = new ResizeObserver(([entrada]) => {
+      setLarguraPista(entrada.contentRect.width);
+    });
+    observador.observe(el);
+    return () => observador.disconnect();
+  }, []);
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -119,10 +152,10 @@ export function CircularCarousel({
         className,
       )}
     >
-      <div className="relative h-[260px] w-full max-w-lg">
+      <div ref={pistaRef} className="relative h-[260px] w-full max-w-lg overflow-hidden">
         <AnimatePresence mode="popLayout">
           {items.map((item, i) => {
-            const pos = getItemPosition(i, activeIndex, total);
+            const pos = getItemPosition(i, activeIndex, total, raioHorizontal(larguraPista));
             if (!pos) return null;
 
             const isActive = i === activeIndex;
@@ -149,8 +182,8 @@ export function CircularCarousel({
                   "absolute left-1/2 top-1/2 flex h-32 w-48 -translate-x-1/2 -translate-y-1/2 cursor-pointer flex-col items-start justify-between rounded-lg border p-4 backdrop-blur-sm transition-shadow duration-300",
                   "border-border bg-gradient-to-b from-surface to-surface-2",
                   isActive
-                    ? "shadow-[0_16px_40px_-8px_rgba(43,42,32,0.35)]"
-                    : "shadow-[0_6px_16px_-4px_rgba(43,42,32,0.2)] hover:shadow-[0_10px_24px_-4px_rgba(43,42,32,0.3)]",
+                    ? "shadow-[0_16px_40px_-8px_rgba(0,0,0,0.35)]"
+                    : "shadow-[0_6px_16px_-4px_rgba(0,0,0,0.2)] hover:shadow-[0_10px_24px_-4px_rgba(0,0,0,0.3)]",
                   item.locked && "opacity-70",
                 )}
                 style={{ transformOrigin: "center center" }}

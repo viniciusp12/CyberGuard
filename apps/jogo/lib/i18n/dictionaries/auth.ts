@@ -1,7 +1,7 @@
 import type { DictionaryTable } from "../dictionary";
 
 export const auth: DictionaryTable = {
-  appName: { pt: "The Hackudinhos", en: "The Hackudinhos" },
+  appName: { pt: "Hackudinhos", en: "Hackudinhos" },
   loginTagline: {
     pt: "Treinamento de segurança da informação · Leroy Merlin",
     en: "Information security training · Leroy Merlin",
