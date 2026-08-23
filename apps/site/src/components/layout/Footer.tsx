@@ -30,7 +30,7 @@ export function Footer() {
       <div className="container-page py-14">
         <div className="grid gap-10 md:grid-cols-[minmax(0,1.3fr)_repeat(2,minmax(0,1fr))]">
           <div>
-            <p className="font-display text-base font-semibold">CIFRA</p>
+            <p className="font-display text-base font-semibold">Hackudinhos</p>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-papel-2">
               Um site sobre golpes digitais no Brasil, feito para ser lido por
               qualquer pessoa. Tudo que é interativo aqui roda dentro do seu
@@ -70,7 +70,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col gap-3 border-t border-chumbo-linha pt-6 md:flex-row md:items-center md:justify-between">
           <p className="text-xs leading-relaxed text-papel-3">
-            © {new Date().getFullYear()} CIFRA · Projeto acadêmico de
+            © {new Date().getFullYear()} Hackudinhos · Projeto acadêmico de
             Defesa Cibernética em parceria com a Leroy Merlin.
           </p>
           <p className="font-display text-xs text-papel-3">

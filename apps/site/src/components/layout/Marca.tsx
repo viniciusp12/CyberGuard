@@ -1,5 +1,5 @@
 /**
- * Símbolo da CIFRA — manual de identidade, seção 03.
+ * Símbolo dos Hackudinhos — manual de identidade, seção 03.
  *
  * "Um hexágono de linha fina cortado ao meio por um eixo vertical — o antes e
  * o depois do treinamento. No centro do eixo, um hexágono sólido em menta: o
@@ -55,7 +55,7 @@ export function Simbolo({
 /**
  * Lockup horizontal: símbolo mais o nome.
  *
- * O entreletramento largo de CIFRA é o tom institucional da marca — o manual
+ * O entreletramento largo do nome é o tom institucional da marca — o manual
  * proíbe expressamente apertá-lo.
  */
 export function Marca({
@@ -69,7 +69,7 @@ export function Marca({
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <Simbolo size={size} className="text-papel" />
       <span className="font-display text-lg font-semibold uppercase tracking-marca text-papel">
-        Cifra
+        Hackudinhos
       </span>
     </span>
   );

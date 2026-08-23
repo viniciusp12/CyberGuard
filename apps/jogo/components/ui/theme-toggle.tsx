@@ -10,9 +10,12 @@ export type Theme = "light" | "dark";
 
 const STORAGE_KEY = "hackudinhos-theme";
 const CURTAIN_MS = 480;
+// A cortina cobre a tela durante a troca de tema, entao precisa ser a cor de
+// fundo de destino. Sao os valores de --color-bg dos dois temas, repetidos
+// aqui porque a animacao roda antes da classe .dark trocar.
 const CURTAIN_COLOR: Record<Theme, string> = {
-  light: "#e8e1cc",
-  dark: "#0f1912",
+  light: "#F2F4F3", // papel
+  dark: "#1B1D21",  // chumbo
 };
 
 function applyThemeClass(theme: Theme) {
@@ -21,7 +24,7 @@ function applyThemeClass(theme: Theme) {
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { t } = useLocale();
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>("dark");
   const [phase, setPhase] = useState<"idle" | "falling" | "rising">("idle");
   const curtainColorRef = useRef(CURTAIN_COLOR.dark);
 

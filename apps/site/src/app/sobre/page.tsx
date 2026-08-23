@@ -6,7 +6,7 @@ import { Fonte } from "@/components/ui/Fonte";
 export const metadata: Metadata = {
   title: "Sobre o projeto",
   description:
-    "O que é a CIFRA, como o conteúdo é escrito, que regras de precisão o projeto segue e o que ele não faz.",
+    "O que são os Hackudinhos, como o conteúdo é escrito, que regras de precisão o projeto segue e o que ele não faz.",
 };
 
 const REGRAS = [
@@ -43,7 +43,7 @@ export default function SobrePage() {
       <PageHeader
         eyebrow="Sobre o projeto"
         title="Um site que prefere ser conferível a ser impressionante"
-        description="A CIFRA é um projeto acadêmico de Defesa Cibernética, desenvolvido no Challenge em parceria com a Leroy Merlin. Começou voltado para colaboradores e hoje fala primeiro com o público geral — porque o golpe que chega no trabalho é o mesmo que chega em casa."
+        description="Os Hackudinhos são um projeto acadêmico de Defesa Cibernética, desenvolvido no Challenge em parceria com a Leroy Merlin. Começou voltado para colaboradores e hoje fala primeiro com o público geral — porque o golpe que chega no trabalho é o mesmo que chega em casa."
       />
 
       <section className="py-14 md:py-20">
@@ -109,8 +109,8 @@ export default function SobrePage() {
             Não é orientação jurídica, não substitui o seu banco e não garante
             recuperação de dinheiro. Não vende produto, não indica serviço pago
             de proteção e não pede nenhum dado seu. Se em algum momento uma
-            página aqui pedir CPF, senha ou pagamento, você não está no
-            CIFRA.
+            página aqui pedir CPF, senha ou pagamento, você não está nos
+            Hackudinhos.
           </p>
 
           <div className="mt-12 border-t border-chumbo-linha pt-8">

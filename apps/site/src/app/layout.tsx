@@ -5,7 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
 /**
- * Manual de tipografia da CIFRA:
+ * Manual de tipografia dos Hackudinhos:
  * Barlow Condensed nomeia (título, etiqueta, botão), Barlow explica (corpo).
  * Sobre chumbo o corpo nunca desce de 400 — peso fino em fundo escuro fecha
  * o contorno da letra e cansa a leitura.
@@ -26,8 +26,8 @@ const barlowCondensed = Barlow_Condensed({
 
 export const metadata: Metadata = {
   title: {
-    default: "Você já está exposto — CIFRA",
-    template: "%s · CIFRA",
+    default: "Você já está exposto — Hackudinhos",
+    template: "%s · Hackudinhos",
   },
   description:
     "Golpes digitais no Brasil, explicados por dentro. Teste sua senha, aprenda a reconhecer uma fraude e veja o que fazer se já caiu em uma. Tudo roda no seu navegador.",

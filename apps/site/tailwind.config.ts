@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Identidade CIFRA — "Segurança que deixa registro."
+ * Identidade Hackudinhos — "Segurança que deixa registro."
  * Manual de identidade v2 · paleta v1 · rev. 08/26.
  *
  * REGRA DURA DO MANUAL: uma cor, uma função.
@@ -83,12 +83,12 @@ const config: Config = {
         touch: "2.75rem",
       },
       letterSpacing: {
-        // O respiro largo de CIFRA é o tom institucional da marca.
+        // O respiro largo do nome é o tom institucional da marca.
         marca: "0.32em",
         etiqueta: "0.14em",
       },
       transitionTimingFunction: {
-        cifra: "cubic-bezier(0.22, 1, 0.36, 1)",
+        marca: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
       keyframes: {
         caret: {

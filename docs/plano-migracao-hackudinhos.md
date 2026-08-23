@@ -1,6 +1,9 @@
 # Plano de Migração — Identidade visual e marca
 
-Documento de planejamento. **Nada foi alterado ainda.**
+> **Status: executado em 23/08/2026.** As etapas 1 a 5 foram aplicadas. O que
+> ficou de fora está registrado no fim do documento, na seção 9.
+
+Documento de planejamento, mantido como registro do que foi decidido e por quê.
 
 Objetivo: unificar a identidade visual do jogo com a do site, e padronizar o
 nome do produto como **Hackudinhos** em toda parte.
@@ -267,3 +270,66 @@ algo fora de `docs/` e do histórico, ainda há ponta solta.
 O trabalho é menor do que a descrição sugere, e a razão é estrutural: o jogo foi
 construído com tokens semânticos, e o nome final já está aplicado nele. O que
 resta é o site e a decisão sobre tema claro e cor de erro.
+
+
+---
+
+## 9. O que foi executado
+
+Aplicado em 23/08/2026, após a chegada do manual de identidade (v2, paleta v1).
+
+### Identidade visual
+
+- Tokens de cor do jogo reescritos em `apps/jogo/app/globals.css` com a paleta
+  do manual: chumbo no fundo, papel no texto, menta na ação, âmbar no alerta,
+  petróleo como campo institucional (token novo `--color-campo`).
+- **Escuro passou a ser o padrão.** O manual define o chumbo como "o fundo de
+  tudo" e a paleta só existe para fundo escuro. O tema claro continua
+  disponível para quem escolher, como inversão derivada.
+- **Tipografia trocada** para Barlow (corpo) e Barlow Condensed (títulos),
+  conforme a seção 05 do manual. O corpo passou de 18px para 16px — a fonte
+  anterior era estreita e pedia o tamanho maior.
+- `theme-toggle.tsx` usava as duas cores da paleta antiga como cor de cortina;
+  passou a usar papel e chumbo.
+
+### Decisão sobre a cor de erro
+
+O manual não define vermelho — resolve risco com âmbar em bloco cheio. Mas isso
+serve para "atenção", não para "você errou", e o jogo precisa dos dois. Foi
+escolhido `#F28B80`, verificado em contraste: **7,06** sobre o chumbo e **5,44**
+sobre o painel. O primeiro candidato (`#E8695E`) foi descartado por dar 4,10
+sobre o painel, abaixo do mínimo AA.
+
+Todos os pares texto/fundo dos dois temas foram verificados contra WCAG AA.
+
+### Renomeação
+
+Treze ocorrências no código-fonte do site, mais `package.json`, `README.md`,
+`Jogo/project.godot` e os comentários do `tailwind.config.ts`.
+
+A troca exigiu cuidado de concordância: "a CIFRA é um projeto" virou "os
+Hackudinhos são um projeto" — o nome mudou de feminino singular para masculino
+plural, e o verbo vai junto. Uma substituição cega teria deixado o texto errado.
+
+O token de easing `ease-cifra` virou `ease-marca`, por ser nome de marca dentro
+de um identificador técnico.
+
+### O que ficou de fora, e por quê
+
+| Item | Motivo |
+|---|---|
+| `language-selector.tsx` (6 hex) | São bandeiras do Brasil e dos EUA — cor de bandeira não se altera |
+| `glossary-manual.tsx` (40 hex) | Estética de pergaminho, deliberada; ver decisão pendente abaixo |
+| `lofi-player.tsx` (14 hex) | Tons sépia de player retrô; mesma decisão |
+| 37 usos de `font-pixel` | Press Start 2P mantida em HUD, placar e minijogos |
+| Renomear projetos na Vercel | Etapa de risco alto, opcional — as URLs seguem `cyber-guard-*` |
+
+### Decisões que continuam abertas
+
+1. **Os elementos de arcade ficam?** A Press Start 2P e as peças com estética
+   própria (manual de pergaminho, player sépia) mantêm o jogo com cara de jogo,
+   mas destoam da identidade institucional. Unificar tudo tornaria o jogo
+   visualmente idêntico ao site — o que é ganho de marca e perda de
+   personalidade lúdica. É escolha de produto, não técnica.
+2. **As URLs da Vercel.** Continuam `cyber-guard-*`. Ver seção B.1 para a ordem
+   segura, caso se decida mudar.

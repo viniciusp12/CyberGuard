@@ -1,4 +1,4 @@
-# CIFRA
+# Hackudinhos
 
 Projeto acadêmico do Challenge da Faculdade de Defesa Cibernética, em parceria
 com a Leroy Merlin. São duas frentes que se completam:

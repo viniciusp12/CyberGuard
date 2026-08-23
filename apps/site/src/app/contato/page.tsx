@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 export const metadata: Metadata = {
   title: "Contato",
   description:
-    "Como falar com a equipe da CIFRA — e para onde ir se você precisa de ajuda urgente com um golpe.",
+    "Como falar com a equipe dos Hackudinhos — e para onde ir se você precisa de ajuda urgente com um golpe.",
 };
 
 const CANAIS = [

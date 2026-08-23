@@ -119,7 +119,7 @@ export function TesteSenha() {
               aria-label={`Força estimada: ${Math.round(a.bits)} bits de entropia`}
             >
               <div
-                className={`h-full transition-all duration-300 ease-cifra ${forcaCor(a.bits, a.fraca)}`}
+                className={`h-full transition-all duration-300 ease-marca ${forcaCor(a.bits, a.fraca)}`}
                 style={{ width: `${preenchimento}%` }}
               />
             </div>

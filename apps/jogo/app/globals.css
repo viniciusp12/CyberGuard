@@ -1,34 +1,59 @@
 @import "tailwindcss";
 
+/*
+ * Identidade Hackudinhos — paleta CIFRA v1.
+ *
+ * Regra dura do manual: uma cor, uma função. Menta não abre alerta, âmbar não
+ * confirma nada, e o petróleo nunca é fundo de página inteira — ele é campo
+ * institucional, aparece como superfície de destaque.
+ *
+ * O manual é escuro por definição ("chumbo, o fundo de tudo"), então o tema
+ * escuro abaixo é a identidade à risca. O tema claro é uma inversão derivada,
+ * mantida para não remover um recurso que já existia: os mesmos papéis, com a
+ * menta e o âmbar escurecidos até passarem em contraste sobre fundo claro.
+ *
+ * Todos os pares texto/fundo foram verificados contra WCAG AA (4,5:1).
+ */
+
 :root {
-  --color-bg: #e8e1cc;
-  --color-surface: #f3ecd9;
-  --color-surface-2: #ddd3b4;
-  --color-surface-3: #cabe97;
-  --color-border: #b3a476;
-  --color-primary: #3a5a40;
-  --color-primary-hover: #2f4a34;
-  --color-success: #4c7a3d;
-  --color-danger: #963c30;
-  --color-warning: #a9781f;
-  --color-text: #2b2a20;
-  --color-text-muted: #6b6045;
+  --color-bg: #F2F4F3;          /* papel */
+  --color-surface: #FFFFFF;
+  --color-surface-2: #E4E8E7;
+  --color-surface-3: #D2D8D6;
+  --color-border: #C2C9C7;
+  --color-primary: #1A6B55;     /* menta 800 — a menta base não contrasta sobre claro */
+  --color-primary-hover: #124839;
+  --color-success: #1A6B55;
+  --color-danger: #A32B22;
+  --color-warning: #8A5A10;
+  --color-text: #1B1D21;        /* chumbo */
+  --color-text-muted: #5A6068;
+  --color-campo: #164752;       /* petróleo */
 }
 
 .dark {
-  --color-bg: #0f1912;
-  --color-surface: #16241a;
-  --color-surface-2: #1e3024;
-  --color-surface-3: #28402f;
-  --color-border: #3a5240;
-  --color-primary: #5fae5f;
-  --color-primary-hover: #7fc27f;
-  --color-success: #5fae5f;
-  --color-danger: #d97a68;
-  --color-warning: #d9a83f;
-  --color-text: #e8e1cc;
-  --color-text-muted: #a89f82;
+  --color-bg: #1B1D21;          /* chumbo */
+  --color-surface: #2E3138;     /* chumbo painel */
+  --color-surface-2: #383C44;   /* chumbo linha */
+  --color-surface-3: #4A4F59;   /* chumbo linha forte */
+  --color-border: #4A4F59;
+  --color-primary: #3ED6A4;     /* menta — ação, índice, concluído */
+  --color-primary-hover: #61DDB4;
+  --color-success: #3ED6A4;     /* concluído é menta, conforme o manual */
+  --color-danger: #F28B80;      /* fora do manual: ver nota abaixo */
+  --color-warning: #F2A93D;     /* âmbar — risco, em bloco cheio */
+  --color-text: #F2F4F3;        /* papel */
+  --color-text-muted: #A9AFAE;  /* papel 2 */
+  --color-campo: #164752;       /* petróleo — campo institucional */
 }
+
+/*
+ * Sobre o --color-danger: o manual não define cor de erro. Ele resolve risco
+ * com âmbar em bloco cheio, o que serve para "atenção", não para "você errou".
+ * O jogo precisa dos dois — resposta errada e falha de operação são eventos
+ * distintos de um alerta. O vermelho foi escolhido para conviver com a paleta
+ * e verificado em contraste: 7,06 sobre o chumbo e 5,44 sobre o painel.
+ */
 
 @theme inline {
   --color-bg: var(--color-bg);
@@ -43,6 +68,7 @@
   --color-warning: var(--color-warning);
   --color-text: var(--color-text);
   --color-text-muted: var(--color-text-muted);
+  --color-campo: var(--color-campo);
   --font-sans: var(--font-body);
   --font-mono: var(--font-pixel);
   --font-stencil: var(--font-heading);
@@ -50,11 +76,11 @@
 }
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
-html.dark {
-  color-scheme: dark;
+html:not(.dark) {
+  color-scheme: light;
 }
 
 body {
@@ -64,8 +90,9 @@ body {
   background-size: 3px 3px;
   color: var(--color-text);
   font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 18px;
-  line-height: 1.55;
+  /* 16px é o corpo do manual. A fonte anterior era estreita e pedia 18. */
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 button,

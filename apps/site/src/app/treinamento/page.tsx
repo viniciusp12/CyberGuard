@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 export const metadata: Metadata = {
   title: "Treinamento",
   description:
-    "A trilha gamificada da CIFRA: módulos com e-mails de phishing simulados, pontuação e ranking. Acesso com a credencial fornecida pela empresa.",
+    "A trilha gamificada dos Hackudinhos: módulos com e-mails de phishing simulados, pontuação e ranking. Acesso com a credencial fornecida pela empresa.",
 };
 
 /**
