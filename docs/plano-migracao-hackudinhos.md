@@ -229,11 +229,16 @@ risco alto do plano inteiro, e é opcional.
 
 ## 6. Achados laterais
 
-- **`deploy/` parece legado.** Contém `cyberguard-api.service`,
-  `cyberguard-web.service` e uma configuração nginx para
-  `play.mizanis.com.br`. São artefatos de uma hospedagem em servidor próprio,
-  anterior à Vercel. Vale confirmar com a equipe e provavelmente remover — hoje
-  eles só geram ocorrências falsas na busca por nomes.
+- **`deploy/` NÃO é legado — corrigido em 23/08/2026.** Este documento afirmava
+  que a pasta continha artefatos de uma hospedagem desativada. A verificação
+  mostrou o contrário: `play.mizanis.com.br` responde com `Server: nginx` e
+  serve o jogo. É uma hospedagem paralela **ativa**, em servidor próprio, com
+  versão anterior à da Vercel.
+  O sintoma apareceu na prática: o botão de treinamento do site levava para o
+  servidor próprio, que exibia a identidade antiga, enquanto o domínio da Vercel
+  já mostrava a nova. O site foi reapontado; **o servidor próprio segue no ar** e
+  precisa ser desativado ou atualizado, sob pena de as duas versões divergirem
+  de novo.
 - **O protótipo Godot** tem `config/name="CyberGuard"`. Como está fora do ar,
   entra junto por consistência, sem urgência.
 - **Nenhuma tabela ou coluna do banco carrega nome de marca**, o que significa

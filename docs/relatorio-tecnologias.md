@@ -131,6 +131,8 @@ As três tabelas de progresso apontam para o usuário com `onDelete: Cascade` �
 
 Cada aplicação é um projeto separado na Vercel, apontando para o mesmo repositório mas com uma pasta raiz diferente. Um `git push` na branch principal dispara os três deploys.
 
+Existe ainda uma hospedagem paralela em servidor próprio, com nginx e systemd (`deploy/`), servindo o jogo em `play.mizanis.com.br`. Ela é anterior à migração para a Vercel e **continua no ar**, o que exige atenção: as duas hospedagens podem divergir de versão, e foi o que aconteceu — o site apontava para o servidor próprio, que servia uma interface desatualizada, enquanto a Vercel recebia as atualizações. Manter dois destinos para o mesmo produto é uma fonte permanente desse tipo de confusão.
+
 A API roda como **função serverless**: em vez de um servidor ligado o tempo todo, o código é executado sob demanda a cada requisição. Isso reduz custo, mas impõe uma restrição importante — cada execução pode abrir sua própria conexão com o banco, e um PostgreSQL comum esgotaria o limite de conexões rapidamente.
 
 A solução é o **PgBouncer**, que fica entre a aplicação e o banco reaproveitando conexões. Ele exige que o Prisma seja avisado de sua presença: a URL de conexão precisa dos parâmetros `pgbouncer=true` e `connection_limit=1`, sem os quais o Prisma tenta usar *prepared statements*, que o PgBouncer em modo transação não suporta. Como essa URL costuma ser colada à mão num painel, o `prisma.service.ts` detecta a porta do pooler e completa os parâmetros automaticamente.

@@ -19,7 +19,21 @@ export const metadata: Metadata = {
  * de sessão no domínio dela; duplicar a tela criaria duas sessões e nenhuma
  * vantagem.
  */
-const URL_JOGO = process.env.NEXT_PUBLIC_JOGO_URL ?? "https://play.mizanis.com.br";
+/**
+ * Para onde o botão de entrar leva.
+ *
+ * O padrão aponta para o deploy na Vercel, que é o que recebe as atualizações.
+ * Havia aqui um endereço em servidor próprio (`play.mizanis.com.br`) que segue
+ * no ar servindo uma versão anterior — quem chegava pelo site via a identidade
+ * antiga, e quem entrava pela Vercel via a nova. Duas caras para o mesmo
+ * produto.
+ *
+ * `NEXT_PUBLIC_JOGO_URL` continua sobrescrevendo, para quando houver um
+ * subdomínio próprio (algo como jogo.hackudinhos.com.br) sem precisar de
+ * alteração de código.
+ */
+const URL_JOGO =
+  process.env.NEXT_PUBLIC_JOGO_URL ?? "https://cyber-guard-jogo.vercel.app";
 
 const O_QUE_TEM = [
   {
