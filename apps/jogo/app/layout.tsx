@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -53,6 +53,28 @@ const pixelFont = Press_Start_2P({
 export const metadata: Metadata = {
   title: "Hackudinhos | Leroy Merlin",
   description: "Treinamento de segurança da informação em formato de jogo.",
+
+  // O iOS ignora boa parte do manifesto; é por estas chaves que ele abre em
+  // tela cheia e usa o nome certo sob o ícone.
+  appleWebApp: {
+    capable: true,
+    title: "Hackudinhos",
+    statusBarStyle: "black-translucent",
+  },
+};
+
+export const viewport: Viewport = {
+  // `viewportFit: cover` faz a interface ocupar a área sob o notch quando
+  // instalada; sem isso sobram barras nas laterais no iPhone.
+  viewportFit: "cover",
+  width: "device-width",
+  initialScale: 1,
+  // Não travamos o zoom: bloquear o pinch quebra a acessibilidade de quem
+  // precisa aumentar o texto, e ganha pouco.
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#1B1D21" },
+    { media: "(prefers-color-scheme: light)", color: "#F2F4F3" },
+  ],
 };
 
 export default function RootLayout({
