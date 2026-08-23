@@ -1,4 +1,4 @@
-# Contexto do Projeto — CIFRA
+# Contexto do Projeto — Hackudinhos
 
 > Arquivo de referência para o Claude. Atualizar sempre que houver mudanças relevantes no projeto.
 
@@ -16,8 +16,24 @@ CIFRA/
 │   └── api/      NestJS 11 · Prisma · PostgreSQL
 ├── packages/shared/   engine, schemas e conteúdo dos módulos
 ├── Jogo/         protótipo Godot (à parte)
-└── deploy/       nginx/systemd da VPS antiga, como referência
+└── deploy/       nginx/systemd da VPS — ⚠️ AINDA ATIVA, ver aviso abaixo
 ```
+
+### ⚠️ Existem DUAS hospedagens do jogo no ar
+
+`play.mizanis.com.br` (nginx, VPS) e `cyber-guard-jogo.vercel.app` (Vercel).
+A VPS **não é legado** — chegou a ser descrita assim por engano, e serve uma
+versão anterior. Em 23/08/2026 o botão do `/treinamento` ainda apontava para
+ela, então quem chegava pelo site via a identidade antiga e quem entrava pela
+Vercel via a nova.
+
+O site foi reapontado (`NEXT_PUBLIC_JOGO_URL`, com padrão na Vercel), mas **a
+VPS continua no ar**. Enquanto isso não for resolvido — desligar, atualizar ou
+apontar o DNS para a Vercel — as duas versões voltam a divergir a cada deploy.
+
+O domínio `mizanis.com.br` não é do Vini; a decisão passa por quem o controla.
+O site já tem domínio próprio (`hackudinhos.com.br`), então o caminho natural é
+um subdomínio dele para o jogo.
 
 ### Comandos
 
@@ -43,11 +59,11 @@ O que salva é o **rewrite do Next** em `apps/jogo/next.config.ts`: ele roda no 
 
 ### A API em serverless
 
-`apps/api/api/index.ts` é o handler da Vercel: monta o mesmo `AppModule` sobre Express com `app.init()` (em vez de `app.listen()`) e guarda a instância em cache no escopo do módulo, com trava contra corrida no cold start.
+`apps/api/api/index.js` é o handler da Vercel: monta o mesmo `AppModule` sobre Express com `app.init()` (em vez de `app.listen()`) e guarda a instância em cache no escopo do módulo, com trava contra corrida no cold start.
 
 `src/main.ts` continua existindo e é o que roda em servidor tradicional. **Os dois compartilham o AppModule** — nenhuma regra de negócio foi duplicada.
 
-O `tsconfig.json` da API não inclui a pasta `api/` de propósito: ele emite para `dist/` com `rootDir: src`, e incluir o handler mudaria a estrutura da saída e quebraria `pnpm start`. Por isso existe o `tsconfig.typecheck.json`, que só confere tipos e cobre as duas pastas.
+O `tsconfig.json` da API não inclui a pasta `api/` de propósito: ele emite para `dist/` com `rootDir: src`, e incluir o handler mudaria a estrutura da saída e quebraria `pnpm start`. O handler é `.js` justamente por isso — e porque o esbuild da Vercel não emite metadados de decorador (ver a seção de deploy no fim do arquivo).
 
 ⚠️ **pnpm é estrito com dependências transitivas.** O handler importa `express`, que antes vinha só de carona pelo `@nestjs/platform-express` — precisou ser declarado explicitamente no `package.json` da API.
 
@@ -71,12 +87,12 @@ A página avisa duas coisas que evitam frustração: que **não há cadastro abe
 
 1. **Migrar o dump para o Supabase.** O `hackudinhos_dump.sql` tem 4 tabelas, 2 migrations e um usuário admin. É ação na conta do dev.
 2. **Rotacionar os segredos.** O `JWT_SECRET` e a senha do Postgres do colega circularam fora de canal controlado. Quem tem o `JWT_SECRET` forja token de ADMIN. O dev ficou de trocar.
-3. **Nome.** O jogo se chama "The Hackudinhos", o site é CIFRA. Falta decidir a marca guarda-chuva.
+3. ~~**Nome.**~~ ✅ **Resolvido em 23/08/2026: a marca é Hackudinhos.** O site foi renomeado (13 ocorrências), junto de `package.json`, README e `project.godot`. O cookie já era `hackudinhos_session`. As URLs da Vercel seguem `cyber-guard-*` — trocá-las é opcional e é a única etapa de risco.
 4. **Conteúdo duplicado.** `day-01.json` do jogo repete o caso de phishing da seção `/golpe`; há dois glossários (42 verbetes em `apps/site/src/lib/glossario.ts`, outro em `apps/jogo/lib/glossary.ts`). A sugestão é o jogo consumir a fonte do site.
 
 ### O que é o projeto do jogo
 
-**Nome: "The Hackudinhos | Leroy Merlin"** (diferente de CIFRA — precisa de decisão de marca).
+**Nome: "Hackudinhos | Leroy Merlin"** — a marca única do projeto desde 23/08/2026.
 
 Monorepo pnpm + turbo, já em produção em `play.mizanis.com.br` (nginx, Let's Encrypt, systemd):
 
@@ -88,24 +104,30 @@ Monorepo pnpm + turbo, já em produção em `play.mizanis.com.br` (nginx, Let's 
 
 ### Divergências técnicas com o site
 
-| | Site CIFRA | Jogo |
+*(atualizado em 23/08/2026 — o que restou de diferença depois da unificação)*
+
+| | Site | Jogo |
 |---|---|---|
 | Next | 15.5.23 | 16.2.12 |
 | Tailwind | 3 (config JS) | 4 (CSS-first, `@theme`) |
-| Pacotes | npm | pnpm + turbo |
-| Deploy | Vercel, estático | VPS nginx + systemd |
-| Tema | escuro fixo | claro **e** escuro |
-| Fontes | Barlow / Barlow Condensed | VT323, Pixelify Sans, Press Start 2P |
+| Deploy | Vercel | Vercel |
+| Tema | escuro fixo | escuro por padrão, claro opcional |
+| Fontes | Barlow / Barlow Condensed | idem, + Press Start 2P em HUD e minijogos |
+| Paleta | chumbo/papel/menta/âmbar | idem |
 
-### ⚠️ A API NestJS não roda na Vercel como está
+Pacotes: pnpm + turbo nos dois — o monorepo unificou isso.
 
-`apps/api/src/main.ts` faz `app.listen(porta)` — modelo de servidor com processo, incompatível com serverless. Adaptar exige reescrever o bootstrap **e** hospedar o Postgres num serviço acessível pela internet. Como já funciona na VPS, o plano acordado é: **Vercel serve o site e o front do jogo; a API e o banco ficam na VPS**.
+### ~~A API NestJS não roda na Vercel como está~~ — SUPERADO
+
+Este trecho dizia que a API não rodaria em serverless e que ficaria na VPS. **Foi feito o contrário, e funciona:** `apps/api/api/index.js` monta o mesmo `AppModule` com `app.init()` no lugar de `app.listen()`, e o Postgres foi para o Supabase. Os três projetos estão na Vercel.
+
+Fica o registro porque a objeção original não era boba — adaptar exigiu resolver decoradores, roteamento e pooler, tudo documentado na seção de deploy no fim deste arquivo.
 
 ### ✅ O que facilita muito a integração
 
 `apps/web/lib/api/client.ts` chama sempre `/api/*` na **própria origem**, e o `next.config.ts` reescreve para `${API_ORIGIN}/api/*`. Ou seja: **o front do jogo roda na Vercel sem alterar uma linha de código** — basta definir `API_ORIGIN`. O rewrite ainda resolve CORS de brinde.
 
-### Arquitetura combinada (a executar quando o projeto chegar)
+### Arquitetura combinada — ✅ executada em 21/08/2026
 
 ```
 CIFRA/
@@ -121,7 +143,10 @@ Dois projetos Vercel apontando para o mesmo repositório, com Root Directory dif
 
 ### Decisões de produto já tomadas
 
-- **Não aproximar visualmente as duas identidades por enquanto.** São opostas por construção: a CIFRA é registro técnico institucional; o jogo é pixel art retrô. Trocar só a cor do jogo não o tornaria CIFRA — a tipografia pixel continuaria dominando — e o manual da CIFRA proíbe justamente o que um jogo precisa (ilustração, gradiente, glitch).
+- ~~**Não aproximar visualmente as duas identidades.**~~ **Revertido em 23/08/2026 a pedido do Vini.** As duas identidades foram unificadas sob o manual (v2, paleta v1): o jogo recebeu chumbo, papel, menta e âmbar, e a tipografia passou a Barlow/Barlow Condensed.
+  A objeção antiga estava parcialmente certa e ficou resolvida assim: a Press Start 2P **continua**, restrita a HUD, placar e minijogos, onde comunica "isto é jogo". O que saiu foi a pixel no corpo do texto, que era o que realmente dominava a tela.
+  A troca custou pouco porque o jogo usa 419 tokens semânticos e **zero cor literal** — a identidade inteira mora em `apps/jogo/app/globals.css`.
+  O manual não define cor de erro (resolve risco com âmbar em bloco cheio, que é "atenção", não "errou"), então foi criado `#F28B80`, verificado em contraste: 7,06 sobre chumbo e 5,44 sobre painel.
 - **Nada de segundo login no site.** O jogo já autentica contra a API com JWT em cookie. O site ganha uma **porta**: página que apresenta o jogo e leva ao login dele.
 
 ### ⚠️ Dívida a resolver: conteúdo duplicado
