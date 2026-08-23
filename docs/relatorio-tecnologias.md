@@ -6,9 +6,15 @@ O CIFRA é composto por três aplicações web publicadas e um protótipo de jog
 
 | Aplicação | O que é | Endereço |
 |---|---|---|
-| Site | Conteúdo de conscientização sobre golpes digitais | `cyber-guard.vercel.app` |
+| Site | Conteúdo de conscientização sobre golpes digitais | `hackudinhos.com.br` |
 | Jogo | Plataforma gamificada de treinamento corporativo | `cyber-guard-jogo.vercel.app` |
 | API | Autenticação, progresso e ranking dos jogadores | `cyber-guard-api.vercel.app` |
+
+O site já tem domínio próprio. O jogo e a API seguem nos endereços gerados pela
+plataforma de hospedagem, herdados do nome anterior do projeto — funcionam
+normalmente, mas não carregam a marca. Apontar subdomínios (`jogo.` e `api.`)
+para eles é configuração de DNS, sem alteração de código: o endereço da API já
+é lido de variável de ambiente, e o do jogo também.
 
 A divisão em três projetos separados, e não um só, atende a uma diferença real de natureza: o site é conteúdo público que não guarda nada sobre quem o acessa, enquanto o jogo precisa de contas, progresso salvo e ranking. Manter os dois separados garante que o site continue funcionando mesmo que o banco de dados esteja fora do ar, e permite que cada um seja atualizado sem afetar o outro.
 
@@ -77,6 +83,56 @@ O **Zustand** guarda o estado da partida em andamento (`lib/stores/gameSessionSt
 O **Tone.js** (`lib/lofi-music.ts`) sintetiza a trilha sonora no próprio navegador, em vez de carregar arquivos de áudio prontos.
 
 > Nota sobre as versões: o site usa Next.js 15 com Tailwind 3, e o jogo usa Next.js 16 com Tailwind 4. A diferença existe porque os dois foram desenvolvidos por equipes distintas e depois integrados. Como cada projeto é compilado e publicado de forma independente, a diferença não causa conflito.
+
+### Identidade visual unificada
+
+As duas aplicações nasceram com identidades opostas — o site com a paleta
+institucional (chumbo, papel, menta, âmbar) e o jogo com um tema bege e verde,
+em fonte pixelada. Em agosto de 2026 elas foram unificadas sob o manual de
+identidade do projeto.
+
+A migração custou pouco por uma razão estrutural: os 57 componentes do jogo
+usam **419 referências a tokens semânticos** (`bg-surface`, `text-text-muted`) e
+**nenhuma cor literal**. Trocar a identidade inteira foi reescrever cerca de
+doze linhas de `globals.css`, sem tocar em componente algum. É o retorno de uma
+decisão tomada no início do desenvolvimento.
+
+A tipografia passou a Barlow no corpo e Barlow Condensed em títulos e etiquetas,
+conforme o manual. A fonte pixelada Press Start 2P permanece, restrita a HUD,
+placar e minijogos — onde comunica que aquilo é jogo, e não formulário.
+
+Um ponto exigiu decisão fora do manual: ele não define cor de erro, resolvendo
+risco com âmbar em bloco preenchido. Isso serve para "atenção", não para "você
+errou", e a plataforma precisa distinguir as duas coisas. Foi definido um
+vermelho verificado em contraste — 7,06 sobre o fundo e 5,44 sobre o painel,
+ambos acima do mínimo WCAG AA de 4,5.
+
+### Aplicativo instalável (PWA)
+
+A plataforma pode ser instalada na tela inicial do celular e aberta em tela
+cheia, sem barra de navegador. Não é um aplicativo de loja: a instalação
+acontece pelo próprio navegador.
+
+| Peça | Função |
+|---|---|
+| `app/manifest.ts` | Nome, ícones, cores e modo de exibição; o Next gera o manifesto |
+| `public/sw.js` | Service worker; é a peça que faz o navegador oferecer a instalação |
+| `components/ui/convite-instalar.tsx` | Convite próprio, com botão visível |
+
+O convite próprio existe por um motivo concreto: o prompt automático do Chrome
+tem heurística de engajamento — só aparece depois que a pessoa tocou na página e
+passou cerca de trinta segundos nela. Quem abre e sai nunca vê a opção. E no
+iOS não existe prompt algum; instalar é sempre manual. O componente captura o
+evento quando ele existe e, quando não vem, exibe a instrução do caminho manual
+adaptada ao sistema.
+
+O service worker adota estratégia de **rede primeiro**: o cache serve apenas
+como reserva para quando falta conexão, nunca como fonte primária. Um service
+worker mal configurado é uma das poucas coisas capazes de servir uma versão
+antiga da aplicação depois de uma publicação nova. As rotas da API ficam
+inteiramente fora do cache, porque progresso, ranking e sessão precisam ser
+sempre atuais — e armazenar resposta autenticada é como um usuário acabaria
+vendo dados de outro.
 
 ## 5. API e persistência de dados
 
@@ -209,12 +265,38 @@ O segundo era mais sutil: o segredo que assina os tokens de sessão tinha um val
 
 Ambos foram corrigidos invertendo o padrão: sem configuração explícita, a API não libera origem externa alguma, e em produção recusa iniciar sem o segredo definido. O princípio adotado é que **falha visível é preferível a funcionamento incorreto silencioso** — especialmente num projeto cujo tema é segurança.
 
+### Adaptação ao celular: o que a medição não pega
+
+Depois de instalada no celular, a plataforma revelou três defeitos que nenhum
+teste automatizado apontaria — todos visíveis só no aparelho real.
+
+O primeiro foi conteúdo vazando pela lateral da tela. A causa é sutil e comum:
+um contêiner com `flex flex-1` sem `min-w-0`. Em CSS flexbox, o valor padrão de
+`min-width` é `auto`, o que impede o elemento de encolher abaixo do próprio
+conteúdo — qualquer filho largo estica o contêiner e rompe a largura da tela.
+
+O segundo foi um grupo de controles posicionado com `position: fixed` no canto
+superior direito, vindo do layout raiz. No computador ele flutua sobre a
+página; no celular caía exatamente sobre a barra de navegação, cortado pela
+borda.
+
+O terceiro foi o carrossel de fases. Ele posiciona os cartões em arco, com raio
+horizontal fixo de 220 pixels — em um aparelho de 360 pixels de largura, os
+cartões se espalhavam por 440 pixels. A primeira tentativa de correção apenas
+reduziu o raio, e não resolveu: os sete cartões continuavam sendo desenhados e,
+com pouco espaço, empilharam no centro. **Espremer uma geometria circular não a
+torna adequada a uma tela estreita.** A correção real foi fazer a quantidade de
+cartões visíveis responder à largura: cinco no computador, três em telas
+médias, e apenas um no celular.
+
 ## 10. Quadro-resumo
 
 | Categoria | Tecnologias |
 |---|---|
 | Linguagens | TypeScript, JavaScript, GDScript, SQL |
 | Front-end | Next.js 15 e 16, React 19, Tailwind CSS 3 e 4, Radix UI, Framer Motion, Lucide, Tone.js |
+| Tipografia | Barlow, Barlow Condensed, Press Start 2P |
+| Aplicativo | PWA: manifesto, service worker, ícones adaptativos |
 | Estado e dados | TanStack React Query, Zustand, Zod |
 | Back-end | NestJS 11, Express 5, Prisma 5, JWT, bcryptjs |
 | Banco de dados | PostgreSQL, PgBouncer, Prisma Migrate |
@@ -224,4 +306,4 @@ Ambos foram corrigidos invertendo o padrão: sem configuração explícita, a AP
 | Build | tsc, tsup, tsx, PostCSS |
 | Jogo (protótipo) | Godot Engine 4.7 |
 
-Ao todo, o projeto reúne aproximadamente **45 bibliotecas e ferramentas distintas**, distribuídas em quatro workspaces, três aplicações publicadas e um protótipo.
+Ao todo, o projeto reúne aproximadamente **48 bibliotecas e ferramentas distintas**, distribuídas em quatro workspaces, três aplicações publicadas e um protótipo.
