@@ -7,6 +7,7 @@ import { LanguageSelector } from "@/components/ui/language-selector";
 import { LofiPlayer } from "@/components/ui/lofi-player";
 import { GlossaryManual } from "@/components/ui/glossary-manual";
 import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
+import { RegistrarServiceWorker } from "@/components/RegistrarServiceWorker";
 
 const THEME_INIT_SCRIPT = `
 (function () {
@@ -92,6 +93,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body className="min-h-full flex flex-col bg-bg text-text">
+        <RegistrarServiceWorker />
         <LocaleProvider>
           <Providers>
             <div className="fixed right-4 top-4 z-[70] flex items-center gap-2">
