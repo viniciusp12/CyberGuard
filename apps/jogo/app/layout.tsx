@@ -8,6 +8,7 @@ import { LofiPlayer } from "@/components/ui/lofi-player";
 import { GlossaryManual } from "@/components/ui/glossary-manual";
 import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 import { RegistrarServiceWorker } from "@/components/RegistrarServiceWorker";
+import { ConviteInstalar } from "@/components/ui/convite-instalar";
 
 const THEME_INIT_SCRIPT = `
 (function () {
@@ -102,6 +103,7 @@ export default function RootLayout({
               <ThemeToggle />
             </div>
             <GlossaryManual />
+            <ConviteInstalar />
             {children}
           </Providers>
         </LocaleProvider>
