@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Essencial } from "@/components/ui/Essencial";
 import { Fonte } from "@/components/ui/Fonte";
 import { TermosRelacionados } from "@/components/ui/TermosRelacionados";
 import { TesteSenha } from "./TesteSenha";
@@ -20,6 +21,18 @@ export default function SenhaPage() {
         title="Quanto tempo a sua senha aguenta?"
         description="Digite e veja o número despencar. A conta é feita aqui dentro, no seu navegador, e revela uma coisa que quase todo mundo aprendeu errado: o que protege é o comprimento, não os símbolos decorados."
       />
+
+      <section className="pt-10 md:pt-12">
+        <div className="container-read">
+          <Essencial
+            itens={[
+              "O que quebra uma senha não é ela ser curta, é ser previsível — nome, data e sequência caem primeiro.",
+              "Tamanho vale mais que símbolos: quatro palavras aleatórias vencem P@ssw0rd!",
+              "O teste desta página roda no seu navegador; nada é enviado nem gravado.",
+            ]}
+          />
+        </div>
+      </section>
 
       <section className="py-14 md:py-20">
         <div className="container-page">

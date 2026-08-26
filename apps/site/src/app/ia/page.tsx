@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Essencial } from "@/components/ui/Essencial";
 import { TermosRelacionados } from "@/components/ui/TermosRelacionados";
 import { MUDANCAS, DEFESAS } from "@/lib/ia";
 import { Triagem } from "./Triagem";
@@ -21,6 +22,18 @@ export default function IaPage() {
         title="O que a IA mudou — e o que você entrega ao conversar com uma"
         description="Duas coisas diferentes num assunto só: o que acontece com o que você digita numa IA, e o que ela mudou na mecânica dos golpes. A boa notícia está no fim: as defesas que funcionavam continuam funcionando, e dá para explicar por quê."
       />
+
+      <section className="pt-10 md:pt-12">
+        <div className="container-read">
+          <Essencial
+            itens={[
+              "O que você digita num chatbot sai do seu aparelho e pode ser usado para treinar o modelo.",
+              "Voz e rosto já são imitáveis o bastante para enganar quem conhece a pessoa.",
+              "As defesas que sobrevivem não dependem de você perceber a imitação: palavra-código, retornar pelo canal conhecido, ler o nome no PIX e verificação em duas etapas.",
+            ]}
+          />
+        </div>
+      </section>
 
       {/* Parte 1 — privacidade */}
       <section className="py-14 md:py-20">

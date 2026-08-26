@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Essencial } from "@/components/ui/Essencial";
 import { TermosRelacionados } from "@/components/ui/TermosRelacionados";
 import { Fonte } from "@/components/ui/Fonte";
 import { CATEGORIAS, PASSOS_INCIDENTE, TOTAL_GOLPES } from "@/lib/trabalho";
@@ -38,6 +39,18 @@ export default function NoTrabalhoPage() {
         title="Os mesmos golpes, quando você está no trabalho"
         description="Muda o alvo, não o método. No expediente a pressa vem da hierarquia e do fechamento do mês, o dinheiro não é seu, e o prejuízo respinga em cliente e colega."
       />
+
+      <section className="pt-10 md:pt-12">
+        <div className="container-read">
+          <Essencial
+            itens={[
+              "No trabalho o golpe mira processo, não pessoa: pagamento, acesso e cadeia de fornecedores.",
+              "Cultura de reporte importa mais que treinamento — quem tem medo de avisar esconde o incidente.",
+              "A LGPD dá prazo para comunicar vazamento à ANPD; o relógio começa a correr na descoberta.",
+            ]}
+          />
+        </div>
+      </section>
 
       <section className="py-14 md:py-20">
         <div className="container-page">

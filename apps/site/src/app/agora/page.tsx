@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Essencial } from "@/components/ui/Essencial";
 import { TermosRelacionados } from "@/components/ui/TermosRelacionados";
 import { Checklist } from "./Checklist";
 
@@ -19,6 +20,19 @@ export default function AgoraPage() {
         title="Oito ajustes, e o motivo de cada um"
         description="Nenhum deles depende de entender de tecnologia. Todos estão explicados com o que muda na prática — porque uma recomendação sem o porquê não sobrevive à primeira vez em que dá trabalho."
       />
+
+      <section className="pt-10 md:pt-12">
+        <div className="container-read">
+          <Essencial
+            itens={[
+              "Ative verificação em duas etapas no e-mail primeiro — é a conta que recupera todas as outras.",
+              "Use um gerenciador de senhas. Senha repetida é o que transforma um vazamento em vários.",
+              "Cadastre uma senha no seu chip com a operadora, contra troca de SIM.",
+              "Combine uma palavra-código com a família para pedidos de dinheiro por telefone.",
+            ]}
+          />
+        </div>
+      </section>
 
       <section className="py-14 md:py-20">
         <div className="container-read">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Essencial } from "@/components/ui/Essencial";
 import { TermosRelacionados } from "@/components/ui/TermosRelacionados";
 import { LinhaDoTempo } from "./LinhaDoTempo";
 
@@ -19,6 +20,18 @@ export default function AnatomiaPage() {
         title="Clonagem de WhatsApp, passo a passo, do outro lado"
         description="Entender o mecanismo protege mais do que decorar regra. Quando você sabe de onde vem cada peça, reconhece o golpe mesmo quando ele muda de roupa."
       />
+
+      <section className="pt-10 md:pt-12">
+        <div className="container-read">
+          <Essencial
+            itens={[
+              "Um golpe tem etapas, e cada etapa tem um ponto onde ele pode ser interrompido.",
+              "A parte técnica é a menor: o trabalho pesado do golpista é o roteiro, não o código.",
+              "Entender a mecânica é o que permite reconhecer um golpe que você nunca viu.",
+            ]}
+          />
+        </div>
+      </section>
 
       <section className="py-14 md:py-20">
         <div className="container-page">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Essencial } from "@/components/ui/Essencial";
 import { TermosRelacionados } from "@/components/ui/TermosRelacionados";
 import { QualEGolpe } from "./QualEGolpe";
 
@@ -19,6 +20,18 @@ export default function GolpePage() {
         title="Você recebe as duas no mesmo dia. Qual é a fraude?"
         description="Quatro pares de mensagens do cotidiano brasileiro. Escolha e o site marca os sinais dentro do próprio texto — inclusive os da mensagem legítima, porque saber por que algo é confiável importa tanto quanto reconhecer a fraude."
       />
+
+      <section className="pt-10 md:pt-12">
+        <div className="container-read">
+          <Essencial
+            itens={[
+              "Os golpes mais comuns no Brasil não exploram falha técnica — exploram pressa e confiança.",
+              "O sinal que se repete em quase todos: urgência somada a um canal que você não escolheu.",
+              "Reconhecer o formato vale mais que decorar casos: eles mudam de roupa toda semana.",
+            ]}
+          />
+        </div>
+      </section>
 
       <section className="py-14 md:py-20">
         <div className="container-page">
