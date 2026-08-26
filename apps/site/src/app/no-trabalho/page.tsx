@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Essencial } from "@/components/ui/Essencial";
+import { Aprofundar } from "@/components/ui/Aprofundar";
 import { TermosRelacionados } from "@/components/ui/TermosRelacionados";
 import { Fonte } from "@/components/ui/Fonte";
 import { CATEGORIAS, PASSOS_INCIDENTE, TOTAL_GOLPES } from "@/lib/trabalho";
@@ -113,35 +114,41 @@ export default function NoTrabalhoPage() {
                         {g.titulo}
                       </h3>
 
-                      <div className="mt-5 grid gap-6 md:grid-cols-2">
-                        <div>
-                          <p className="etiqueta">Como chega</p>
-                          <p className="mt-2 text-sm leading-relaxed text-papel-2">
-                            {g.comoChega}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="etiqueta">Por que funciona</p>
-                          <p className="mt-2 text-sm leading-relaxed text-papel-2">
-                            {g.porQueFunciona}
-                          </p>
-                        </div>
+                      {/*
+                        Dos quatro textos que cada golpe tinha, dois ficam
+                        visíveis e dois recolhem. A escolha não é arbitrária:
+                        "como chega" é o que faz reconhecer, e "onde quebra" é
+                        o que faz agir. Esses dois resolvem a página sozinhos.
+
+                        "Por que funciona" e "o que fazer" explicam e
+                        aprofundam — valiosos para quem quer entender, mas é
+                        deles a densidade que fez a empresa achar massante.
+                      */}
+                      <div className="mt-5">
+                        <p className="etiqueta">Como chega</p>
+                        <p className="mt-2 text-sm leading-relaxed text-papel-2">
+                          {g.comoChega}
+                        </p>
                       </div>
 
                       <div className="mt-5 border-l-2 border-menta py-2 pl-4">
-                        <p className="etiqueta-risco">
-                          Onde o golpe quebra
-                        </p>
+                        <p className="etiqueta-risco">Onde o golpe quebra</p>
                         <p className="mt-1.5 text-body leading-relaxed text-papel text-pretty">
                           {g.pontoDeQuebra}
                         </p>
                       </div>
 
                       <div className="mt-4">
-                        <p className="etiqueta">O que fazer</p>
-                        <p className="mt-1.5 text-sm leading-relaxed text-papel-2">
-                          {g.oQueFazer}
-                        </p>
+                        <Aprofundar rotulo="Por que funciona e o que fazer">
+                          <p className="etiqueta">Por que funciona</p>
+                          <p className="mt-2 text-sm leading-relaxed text-papel-2">
+                            {g.porQueFunciona}
+                          </p>
+                          <p className="etiqueta mt-5">O que fazer</p>
+                          <p className="mt-2 text-sm leading-relaxed text-papel-2">
+                            {g.oQueFazer}
+                          </p>
+                        </Aprofundar>
                       </div>
                     </li>
                   ))}
