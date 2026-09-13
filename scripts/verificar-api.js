@@ -29,11 +29,23 @@ const SONDAS = [
 ];
 
 function classificar(status, corpo, headers) {
-  if (headers.get("x-vercel-error") || /^\s*(NOT_FOUND|The page could not be found)/.test(corpo)) {
+  // A ordem importa. Uma função que quebra ao iniciar TAMBÉM responde com o
+  // cabeçalho x-vercel-error, então testar o cabeçalho primeiro fazia todo
+  // FUNCTION_INVOCATION_FAILED ser relatado como "rewrite não pegou" — e
+  // mandava procurar o problema no roteamento, que estava funcionando.
+  const erroVercel = headers.get("x-vercel-error") ?? "";
+  if (erroVercel === "FUNCTION_INVOCATION_FAILED" || /FUNCTION_INVOCATION_FAILED/.test(corpo)) {
+    return {
+      ok: false,
+      quem: "FUNCAO",
+      detalhe: "chegou na API, mas ela quebra ao iniciar — banco pausado ou fora do ar, ou variável de ambiente faltando",
+    };
+  }
+  if (erroVercel === "NOT_FOUND" || /^\s*(NOT_FOUND|The page could not be found)/.test(corpo)) {
     return { ok: false, quem: "PLATAFORMA", detalhe: "o rewrite não pegou — a requisição nunca chegou no Nest" };
   }
-  if (status === 500 && /FUNCTION_INVOCATION_FAILED/.test(corpo)) {
-    return { ok: false, quem: "PLATAFORMA", detalhe: "roteou certo, mas o Nest não sobe (env var faltando? Supabase pausado?)" };
+  if (erroVercel) {
+    return { ok: false, quem: "PLATAFORMA", detalhe: `erro da Vercel: ${erroVercel}` };
   }
   try {
     const j = JSON.parse(corpo);
