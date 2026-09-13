@@ -8,34 +8,35 @@ import { GameHud } from "@/components/hud/GameHud";
 import { EmailViewer } from "@/components/email/EmailViewer";
 import { EmailActionBar } from "@/components/email/EmailActionBar";
 import { InvestigationBench } from "@/components/investigation-bench/InvestigationBench";
-import { EventBannerStack } from "@/components/events/EventBanner";
-import { EventOverlay, hasScreenGlitch } from "@/components/events/EventOverlay";
 import { DecisionStamp } from "@/components/game/DecisionStamp";
 import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils";
 import { useGameTimer } from "@/lib/hooks/useGameTimer";
 import { useInvestigation } from "@/lib/hooks/useInvestigation";
-import { useDayEvents } from "@/lib/hooks/useDayEvents";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 
 const STAMP_DELAY_MS = 650;
 
+/**
+ * Tela da partida.
+ *
+ * Saíram os eventos aleatórios (pop-up do chefe, enxurrada de e-mails e a
+ * tela tremendo de "lag"). Eles existiam para roubar tempo de um cronômetro que
+ * não existe mais — e, sem ele, sobrava só a interrupção.
+ *
+ * O `useGameTimer` continua ligado: ele não mostra nada nem encerra a fase, só
+ * mede quanto a pessoa levou, que é gravado no resultado.
+ */
 export function PlayingScreen({
   state,
   dispatch,
-  playerLevel,
-  reputation,
 }: {
   state: PlayingState;
   dispatch: (action: PhaseAction) => void;
-  playerLevel: number;
-  reputation: number;
 }) {
   const { t } = useLocale();
   const [benchOpen, setBenchOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState<PlayerAction | null>(null);
   useGameTimer(true, dispatch);
-  useDayEvents(state, dispatch);
 
   const currentEmail = state.emails[state.currentEmailIndex]!;
   const { decide, toolsUsed } = useInvestigation(currentEmail);
@@ -50,24 +51,14 @@ export function PlayingScreen({
     }, STAMP_DELAY_MS);
   }
 
-  const glitching = hasScreenGlitch(state.activeEvents);
-
   return (
-    <div className={cn("flex min-h-dvh flex-col bg-bg pt-14", glitching && "animate-screen-glitch")}>
-      <EventOverlay events={state.activeEvents} />
+    <div className="flex min-h-dvh flex-col bg-bg pt-14">
       <GameHud
         dayNumber={state.day.dayNumber}
-        timeRemaining={state.timeRemaining}
-        money={state.money}
         xp={state.xp}
-        level={playerLevel}
-        combo={state.combo}
-        security={state.security}
-        reputation={reputation}
-        emailsRemaining={state.emails.length - state.currentEmailIndex}
+        emailAtual={state.currentEmailIndex + 1}
         totalEmails={state.emails.length}
       />
-      <EventBannerStack events={state.activeEvents} />
 
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-4 px-4 py-6">
         <div className="relative">

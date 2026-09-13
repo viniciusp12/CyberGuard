@@ -6,7 +6,6 @@ import Link from "next/link";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
 import { usePhase } from "@/lib/hooks/usePhase";
 import { usePlayerProfile } from "@/lib/hooks/usePlayerProfile";
-import { levelForXp } from "@repo/shared/engine";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { PlayingScreen } from "@/components/game/PlayingScreen";
@@ -69,7 +68,6 @@ export default function PlayDayPage() {
             <p className="text-xs text-text-muted">
               {t("phasesGame.emailsAndMinutes", {
                 count: day.emailIds.length,
-                minutes: Math.round(day.timeLimitSeconds / 60),
               })}
             </p>
             <Button size="lg" className="mt-2 w-full" onClick={() => dispatch({ type: "START" })}>
@@ -83,12 +81,7 @@ export default function PlayDayPage() {
 
   if (state.status === "playing") {
     return (
-      <PlayingScreen
-        state={state}
-        dispatch={dispatch}
-        playerLevel={levelForXp(profile.xp)}
-        reputation={profile.reputation}
-      />
+      <PlayingScreen state={state} dispatch={dispatch} />
     );
   }
 

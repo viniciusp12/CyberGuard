@@ -1,60 +1,42 @@
-import { nextCombo } from "./combo";
+/**
+ * Pontuação dos minijogos.
+ *
+ * Mesma simplificação do jogo principal: acertou ganha, errou não perde. Sem
+ * cronômetro, sem bônus por velocidade, sem combo.
+ *
+ * O quiz premiava responder rápido (6 pontos por segundo restante), e o
+ * caça-phishing tirava 25 pontos por erro dentro de um relógio de 75 segundos.
+ * Os dois recompensavam a reação por impulso — que é o que faz alguém clicar
+ * num link falso. Tirar o tempo não deixou os jogos mais fáceis de acertar; só
+ * parou de premiar a pressa.
+ */
 
 export const ARCADE_CONFIG = {
-  timeLimitSeconds: 75,
   correctPoints: 40,
-  wrongPenalty: -25,
-  comboStepMultiplier: 0.08,
-  comboMaxMultiplier: 2,
 } as const;
 
 export interface ArcadeHitResult {
+  correct: boolean;
   points: number;
-  combo: number;
-  comboMultiplier: number;
 }
 
-export function scoreArcadeHit(currentCombo: number, isCorrectHit: boolean): ArcadeHitResult {
-  if (!isCorrectHit) {
-    return { points: ARCADE_CONFIG.wrongPenalty, combo: 0, comboMultiplier: 1 };
-  }
-  const combo = nextCombo(currentCombo, true);
-  const comboMultiplier = Math.min(
-    ARCADE_CONFIG.comboMaxMultiplier,
-    1 + currentCombo * ARCADE_CONFIG.comboStepMultiplier,
-  );
-  return { points: Math.round(ARCADE_CONFIG.correctPoints * comboMultiplier), combo, comboMultiplier };
+export function scoreArcadeHit(isCorrectHit: boolean): ArcadeHitResult {
+  return isCorrectHit
+    ? { correct: true, points: ARCADE_CONFIG.correctPoints }
+    : { correct: false, points: 0 };
 }
 
 export const QUIZ_CONFIG = {
-  secondsPerQuestion: 15,
   basePoints: 100,
-  timeBonusPerSecond: 6,
-  comboStepMultiplier: 0.1,
-  comboMaxMultiplier: 2,
 } as const;
 
 export interface QuizAnswerResult {
   correct: boolean;
   points: number;
-  combo: number;
-  comboMultiplier: number;
 }
 
-export function scoreQuizAnswer(
-  correct: boolean,
-  secondsRemaining: number,
-  currentCombo: number,
-): QuizAnswerResult {
-  if (!correct) {
-    return { correct: false, points: 0, combo: 0, comboMultiplier: 1 };
-  }
-  const combo = nextCombo(currentCombo, true);
-  const comboMultiplier = Math.min(
-    QUIZ_CONFIG.comboMaxMultiplier,
-    1 + currentCombo * QUIZ_CONFIG.comboStepMultiplier,
-  );
-  const timeBonus = Math.max(0, secondsRemaining) * QUIZ_CONFIG.timeBonusPerSecond;
-  const points = Math.round((QUIZ_CONFIG.basePoints + timeBonus) * comboMultiplier);
-  return { correct: true, points, combo, comboMultiplier };
+export function scoreQuizAnswer(correct: boolean): QuizAnswerResult {
+  return correct
+    ? { correct: true, points: QUIZ_CONFIG.basePoints }
+    : { correct: false, points: 0 };
 }

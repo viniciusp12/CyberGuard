@@ -43,14 +43,5 @@
     "criteria": { "kind": "perfect_emails_total", "count": 100 },
     "xpReward": 500,
     "moneyReward": 250
-  },
-  {
-    "id": "ach-combo-x30",
-    "title": "Combo x30",
-    "description": "Reach a combo of 30 consecutive correct answers.",
-    "icon": "flame",
-    "criteria": { "kind": "combo_reached", "combo": 30 },
-    "xpReward": 400,
-    "moneyReward": 200
   }
 ]

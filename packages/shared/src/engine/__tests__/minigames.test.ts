@@ -1,41 +1,27 @@
 import { describe, expect, it } from "vitest";
-import { scoreArcadeHit, scoreQuizAnswer, ARCADE_CONFIG, QUIZ_CONFIG } from "../minigames";
+import { ARCADE_CONFIG, QUIZ_CONFIG, scoreArcadeHit, scoreQuizAnswer } from "../minigames";
 
 describe("scoreArcadeHit", () => {
-  it("awards points and increases combo on a correct hit", () => {
-    const result = scoreArcadeHit(0, true);
-    expect(result.points).toBe(ARCADE_CONFIG.correctPoints);
-    expect(result.combo).toBe(1);
+  it("dá os pontos fixos num acerto", () => {
+    expect(scoreArcadeHit(true)).toEqual({ correct: true, points: ARCADE_CONFIG.correctPoints });
   });
 
-  it("applies the combo multiplier on later correct hits", () => {
-    const result = scoreArcadeHit(5, true);
-    expect(result.comboMultiplier).toBeGreaterThan(1);
-    expect(result.points).toBeGreaterThan(ARCADE_CONFIG.correctPoints);
+  it("não tira pontos num erro", () => {
+    expect(scoreArcadeHit(false)).toEqual({ correct: false, points: 0 });
   });
 
-  it("penalizes and resets combo on a wrong hit", () => {
-    const result = scoreArcadeHit(5, false);
-    expect(result.points).toBe(ARCADE_CONFIG.wrongPenalty);
-    expect(result.combo).toBe(0);
+  it("vale o mesmo no primeiro e no décimo acerto — não há mais combo", () => {
+    const acertos = Array.from({ length: 10 }, () => scoreArcadeHit(true).points);
+    expect(new Set(acertos).size).toBe(1);
   });
 });
 
 describe("scoreQuizAnswer", () => {
-  it("gives zero points and resets combo on a wrong answer", () => {
-    const result = scoreQuizAnswer(false, 10, 4);
-    expect(result.points).toBe(0);
-    expect(result.combo).toBe(0);
+  it("dá os pontos fixos numa resposta certa", () => {
+    expect(scoreQuizAnswer(true)).toEqual({ correct: true, points: QUIZ_CONFIG.basePoints });
   });
 
-  it("rewards faster correct answers with more points", () => {
-    const slow = scoreQuizAnswer(true, 1, 0);
-    const fast = scoreQuizAnswer(true, 14, 0);
-    expect(fast.points).toBeGreaterThan(slow.points);
-  });
-
-  it("caps the combo multiplier", () => {
-    const result = scoreQuizAnswer(true, 5, 100);
-    expect(result.comboMultiplier).toBe(QUIZ_CONFIG.comboMaxMultiplier);
+  it("não pontua numa resposta errada", () => {
+    expect(scoreQuizAnswer(false)).toEqual({ correct: false, points: 0 });
   });
 });

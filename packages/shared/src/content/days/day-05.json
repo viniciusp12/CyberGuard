@@ -193,9 +193,9 @@
       "difficulty": 5,
       "investigationHints": [
         {
-          "toolId": "domain_inspect",
+          "toolId": "sender_address",
           "revealsField": "sender.domain",
-          "summaryText": "Domínio oficial da empresa, sem nenhuma variação suspeita."
+          "summaryText": "Vem do endereço oficial da empresa, escrito do jeito certo, sem letra trocada."
         },
         {
           "toolId": "header_inspect",

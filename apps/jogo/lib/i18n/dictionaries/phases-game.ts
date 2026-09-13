@@ -24,8 +24,8 @@ export const phasesGame: DictionaryTable = {
   loadingPhase: { pt: "Carregando fase...", en: "Loading phase..." },
   dayNumber: { pt: "Dia {{number}}", en: "Day {{number}}" },
   emailsAndMinutes: {
-    pt: "{{count}} emails · {{minutes}} minutos",
-    en: "{{count}} emails · {{minutes}} minutes",
+    pt: "{{count}} e-mails · sem tempo limite",
+    en: "{{count}} emails · no time limit",
   },
   startShift: { pt: "Começar o expediente", en: "Start the shift" },
   finalizingPhase: { pt: "Finalizando fase...", en: "Finalizing phase..." },
@@ -35,8 +35,6 @@ export const phasesGame: DictionaryTable = {
   reviewPerformance: { pt: "Confira como você se saiu.", en: "Check out how you did." },
   correctLabel: { pt: "Acertos", en: "Correct" },
   wrongLabel: { pt: "Erros", en: "Wrong" },
-  bestComboLabel: { pt: "Melhor combo", en: "Best combo" },
-  timeUsedLabel: { pt: "Tempo usado", en: "Time used" },
   coinsLabel: { pt: "moedas", en: "coins" },
   scoreLabel: { pt: "Pontuação:", en: "Score:" },
   practiceModeNotice: {

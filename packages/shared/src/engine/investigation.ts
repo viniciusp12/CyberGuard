@@ -1,4 +1,5 @@
 import type { Email, InvestigationHint, InvestigationToolId } from "../schemas/email.schema";
+import { ferramentaVisivel } from "./gameConfig";
 
 export interface RevealedInvestigation {
   hint: InvestigationHint;
@@ -37,6 +38,14 @@ export function revealInvestigation(
   return { hint, value: resolveFieldPath(email, hint.revealsField) };
 }
 
+/**
+ * Ferramentas oferecidas para este e-mail: as que têm pista E estão em cena.
+ *
+ * O filtro mora aqui, e não só na interface, para que a regra valha em qualquer
+ * lugar que pergunte "o que dá para investigar neste e-mail" — inclusive nos
+ * testes de conteúdo, que usam esta mesma função para garantir que nenhum
+ * e-mail fique sem pista visível.
+ */
 export function availableToolIds(email: Email): InvestigationToolId[] {
-  return email.investigationHints.map((hint) => hint.toolId);
+  return email.investigationHints.map((hint) => hint.toolId).filter(ferramentaVisivel);
 }

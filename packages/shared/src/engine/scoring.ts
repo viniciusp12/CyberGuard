@@ -1,78 +1,51 @@
-import type { Email, InvestigationToolId, PlayerAction } from "../schemas/email.schema";
-import { GAME_CONFIG, toolTimeCost } from "./gameConfig";
+import type { Email, PlayerAction } from "../schemas/email.schema";
+import { GAME_CONFIG } from "./gameConfig";
+
+/**
+ * Pontuação de um e-mail: acertou ganha, errou não ganha.
+ *
+ * A versão anterior tinha penalidade por segundo investigado, bônus de
+ * velocidade que decaía com o tempo e multiplicador de combo. Somadas, essas
+ * regras produziam um efeito que ninguém tinha planejado: **a estratégia que
+ * mais pontuava era decidir sem investigar nada**. Usar ferramenta custava
+ * ponto, e não usar nenhuma dava o bônus máximo. Havia inclusive um teste
+ * garantindo que a pontuação caísse conforme a pessoa checava mais pistas.
+ *
+ * Num treinamento de segurança, isso ensina o oposto do objetivo — o
+ * comportamento que se quer é justamente parar e conferir antes de clicar.
+ *
+ * Ao simplificar a pedido da empresa ("jogos bem mais simples"), a regra passou
+ * a ser a única que cabe numa frase e não pune a cautela. Investigar é livre.
+ */
 
 export interface EmailAttemptInput {
   email: Pick<Email, "difficulty" | "correctAction">;
   playerAction: PlayerAction;
-  toolsUsed: InvestigationToolId[];
-  currentCombo: number;
 }
 
 export interface EmailAttemptResult {
   correct: boolean;
-  timeSpentInvestigating: number;
-  rawScore: number;
-  timePenalty: number;
-  speedBonus: number;
-  comboMultiplier: number;
   finalScore: number;
   xpEarned: number;
   moneyEarned: number;
-  securityDamage: number;
-}
-
-export function totalInvestigationTime(toolsUsed: InvestigationToolId[]): number {
-  return toolsUsed.reduce((sum, tool) => sum + toolTimeCost(tool), 0);
 }
 
 export function scoreEmailAttempt(input: EmailAttemptInput): EmailAttemptResult {
-  const { email, playerAction, toolsUsed, currentCombo } = input;
+  const { email, playerAction } = input;
   const correct = playerAction === email.correctAction;
-  const timeSpentInvestigating = totalInvestigationTime(toolsUsed);
 
   if (!correct) {
-    return {
-      correct: false,
-      timeSpentInvestigating,
-      rawScore: GAME_CONFIG.wrongDecisionPenalty,
-      timePenalty: 0,
-      speedBonus: 0,
-      comboMultiplier: 1,
-      finalScore: GAME_CONFIG.wrongDecisionPenalty,
-      xpEarned: 0,
-      moneyEarned: 0,
-      securityDamage: GAME_CONFIG.wrongDecisionSecurityDamage,
-    };
+    // Errar não tira pontos. Quem erra já recebe a explicação do porquê; somar
+    // punição a isso só desestimula tentar de novo.
+    return { correct: false, finalScore: 0, xpEarned: 0, moneyEarned: 0 };
   }
 
-  const basePoints = GAME_CONFIG.basePointsByDifficulty(email.difficulty);
-  const timePenalty = timeSpentInvestigating * GAME_CONFIG.pointPenaltyPerSecondInvestigated;
-  const speedBonus =
-    toolsUsed.length === 0
-      ? GAME_CONFIG.speedBonusMax
-      : Math.max(
-          0,
-          GAME_CONFIG.speedBonusMax - timeSpentInvestigating * GAME_CONFIG.speedBonusDecayPerSecond,
-        );
-
-  const comboMultiplier = Math.min(
-    GAME_CONFIG.comboMaxMultiplier,
-    1 + currentCombo * GAME_CONFIG.comboStepMultiplier,
-  );
-
-  const rawScore = Math.max(GAME_CONFIG.minRawScore, basePoints - timePenalty);
-  const finalScore = Math.round(rawScore * comboMultiplier + speedBonus);
+  const finalScore = GAME_CONFIG.basePointsByDifficulty(email.difficulty);
 
   return {
     correct: true,
-    timeSpentInvestigating,
-    rawScore,
-    timePenalty,
-    speedBonus,
-    comboMultiplier,
     finalScore,
     xpEarned: Math.round(finalScore * GAME_CONFIG.xpConversionRate),
     moneyEarned: Math.round(finalScore * GAME_CONFIG.moneyConversionRate),
-    securityDamage: 0,
   };
 }

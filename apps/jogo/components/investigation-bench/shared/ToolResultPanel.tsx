@@ -4,7 +4,7 @@ import { Lightbulb, Lock } from "lucide-react";
 import type { RevealedInvestigation } from "@repo/shared/engine";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 
-export function ToolNotUsedPlaceholder({ onRun, costSeconds }: { onRun: () => void; costSeconds: number }) {
+export function ToolNotUsedPlaceholder({ onRun }: { onRun: () => void }) {
   const { t } = useLocale();
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-3 py-16 text-center text-text-muted">
@@ -14,7 +14,7 @@ export function ToolNotUsedPlaceholder({ onRun, costSeconds }: { onRun: () => vo
         onClick={onRun}
         className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover"
       >
-        {t("investigation.runButton", { cost: costSeconds })}
+        {t("investigation.runButton")}
       </button>
     </div>
   );

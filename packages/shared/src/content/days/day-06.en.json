@@ -226,9 +226,9 @@
       "difficulty": 6,
       "investigationHints": [
         {
-          "toolId": "domain_inspect",
+          "toolId": "sender_address",
           "revealsField": "sender.domain",
-          "summaryText": "Company's official domain, with no external links or attachments."
+          "summaryText": "It comes from the company's official address, with no links or attachments."
         },
         {
           "toolId": "header_inspect",

@@ -1,56 +1,64 @@
 import type { DictionaryTable } from "../dictionary";
 
+/**
+ * Textos dos minijogos.
+ *
+ * Reescritos junto com a retirada do cronômetro e do combo. A versão anterior
+ * falava em "treinar seus reflexos", "antes do tempo acabar", "cada erro custa
+ * pontos e quebra seu combo" e "respostas mais rápidas valem mais pontos" — e
+ * soltava "MFA" numa descrição sem explicar.
+ *
+ * Duas regras para quem editar:
+ *  1. Nada de pressa. Golpe funciona justamente quando a pessoa reage rápido
+ *     demais; o jogo não pode pedir o mesmo reflexo que quer desfazer.
+ *  2. Nada de sigla. Se a palavra precisa de explicação, troque pela explicação.
+ */
 export const minigames: DictionaryTable = {
-  // /minigames (list)
+  // /minigames (lista)
   listTitle: { pt: "Mini-jogos", en: "Minigames" },
   listDescription: {
-    pt: "Desafios rápidos para treinar seus reflexos entre uma fase e outra.",
-    en: "Quick challenges to sharpen your reflexes between phases.",
+    pt: "Jogos curtos para praticar o que você aprendeu.",
+    en: "Short games to practice what you've learned.",
   },
-  cacaPhishingTitle: { pt: "Caça-Phishing", en: "Phishing Hunt" },
+  cacaPhishingTitle: { pt: "Caça-Golpe", en: "Scam Hunt" },
   cacaPhishingDescription: {
-    pt: "Uma leva de emails aparece na tela. Clique nos suspeitos antes do tempo acabar — cada erro custa pontos e quebra seu combo.",
-    en: "A batch of emails appears on screen. Click the suspicious ones before time runs out — every mistake costs points and breaks your combo.",
+    pt: "Uma lista de e-mails. Toque nos que são golpe. Quando terminar, confira o resultado.",
+    en: "A list of emails. Tap the ones that are scams. When you're done, check your result.",
   },
-  cacaPhishingMeta: { pt: "75 segundos · reflexo e atenção", en: "75 seconds · reflexes and attention" },
+  cacaPhishingMeta: { pt: "Sem tempo · no seu ritmo", en: "No timer · at your own pace" },
   quizTitle: { pt: "Quiz de Segurança", en: "Security Quiz" },
   quizDescription: {
-    pt: "Perguntas rápidas sobre tudo que você já aprendeu: phishing, MFA, PIX falso, boletos adulterados e mais.",
-    en: "Quick questions about everything you've learned so far: phishing, MFA, fake instant payments, tampered invoices, and more.",
+    pt: "Perguntas simples sobre como reconhecer um golpe: e-mail falso, PIX falso, boleto trocado e mais.",
+    en: "Simple questions about spotting a scam: fake email, fake payment, swapped invoice, and more.",
   },
-  quizMeta: { pt: "18 perguntas · 15s cada", en: "18 questions · 15s each" },
+  quizMeta: { pt: "Sem tempo · no seu ritmo", en: "No timer · at your own pace" },
   play: { pt: "Jogar", en: "Play" },
 
-  // caça-phishing intro
-  cacaIntroPart1: {
-    pt: "{{count}} emails vão aparecer na tela. Clique nos que forem",
-    en: "{{count}} emails will appear on screen. Click the ones that are",
+  // caça-golpe: abertura
+  cacaIntro: {
+    pt: "Vão aparecer {{count}} e-mails. Toque só nos que você acha que são golpe. Não tem tempo: leia com calma e, quando terminar, toque em Conferir.",
+    en: "{{count}} emails will appear. Tap only the ones you think are scams. There's no timer: read calmly and, when you're done, tap Check.",
   },
-  cacaIntroPhishingWord: { pt: "phishing", en: "phishing" },
-  cacaIntroPart2: {
-    pt: "antes do tempo acabar. Clicar em um email legítimo custa pontos e quebra seu combo — deixe os seguros em paz.",
-    en: "before time runs out. Clicking a legitimate email costs points and breaks your combo — leave the safe ones alone.",
-  },
-  totalSeconds: { pt: "{{seconds}} segundos no total", en: "{{seconds}} seconds total" },
   start: { pt: "Começar", en: "Start" },
+  check: { pt: "Conferir", en: "Check" },
 
-  // results (shared by both minigames)
-  gameOver: { pt: "Fim de jogo", en: "Game over" },
+  // resultado (comum aos dois)
+  gameOver: { pt: "Resultado", en: "Result" },
   correct: { pt: "Acertos", en: "Correct" },
   wrong: { pt: "Erros", en: "Wrong" },
-  missed: { pt: "Não pegos", en: "Missed" },
-  bestCombo: { pt: "Melhor combo", en: "Best combo" },
-  score: { pt: "Pontuação:", en: "Score:" },
-  playAgain: { pt: "Jogar novamente", en: "Play again" },
+  missed: { pt: "Golpes que passaram", en: "Scams you missed" },
+  score: { pt: "Pontos:", en: "Points:" },
+  playAgain: { pt: "Jogar de novo", en: "Play again" },
 
-  // HUD labels
-  remaining: { pt: "Restam", en: "Left" },
+  // painel
   points: { pt: "Pontos", en: "Points" },
   question: { pt: "Pergunta", en: "Question" },
+  next: { pt: "Próxima pergunta", en: "Next question" },
+  seeResult: { pt: "Ver resultado", en: "See result" },
 
-  // quiz intro
+  // quiz: abertura
   quizIntroDescription: {
-    pt: "{{count}} perguntas sobre tudo que você já aprendeu. Você tem {{seconds}} segundos por pergunta — respostas mais rápidas valem mais pontos.",
-    en: "{{count}} questions about everything you've learned so far. You have {{seconds}} seconds per question — faster answers are worth more points.",
+    pt: "São {{count}} perguntas. Não tem tempo: leia com calma. Depois de cada resposta, você vê a explicação.",
+    en: "There are {{count}} questions. There's no timer: read calmly. After each answer, you'll see the explanation.",
   },
 };

@@ -3,21 +3,27 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Brain, CheckCircle2, Flame, Lightbulb, XCircle } from "lucide-react";
+import { ArrowLeft, Brain, CheckCircle2, Lightbulb, XCircle } from "lucide-react";
 import { getQuizQuestions } from "@repo/shared/content";
-import { scoreQuizAnswer, QUIZ_CONFIG, GAME_CONFIG } from "@repo/shared/engine";
+import { scoreQuizAnswer, GAME_CONFIG } from "@repo/shared/engine";
 import type { QuizQuestion } from "@repo/shared/schemas";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { MeterBadge } from "@/components/hud/MeterBadge";
-import { ComboMeter } from "@/components/hud/ComboMeter";
-import { TimerDisplay } from "@/components/hud/TimerDisplay";
 import { useSavePhaseResult } from "@/lib/hooks/usePlayerProfile";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 
 const DAY_ID = "quiz-seguranca";
-const FEEDBACK_MS = 2200;
+
+/*
+ * Sem cronômetro por pergunta, sem bônus por velocidade e sem combo.
+ *
+ * E uma mudança que não era de mecânica, mas pesava tanto quanto: a explicação
+ * aparecia por 2,2 segundos e o quiz avançava sozinho. A parte que ensina — o
+ * porquê da resposta — sumia antes de dar tempo de ler. Agora a pessoa avança
+ * quando quiser, pelo botão.
+ */
 
 function shuffle<T>(arr: T[]): T[] {
   const copy = [...arr];
@@ -34,17 +40,15 @@ export default function QuizPage() {
   const savePhaseResult = useSavePhaseResult();
   const quizQuestions = getQuizQuestions(locale);
   const hasSavedRef = useRef(false);
-  const rafRef = useRef<number | null>(null);
-  const feedbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Início da partida, para gravar o tempo real — antes gravava-se
+  // "perguntas × 15s", que era o limite, não o tempo usado.
+  const inicioRef = useRef(0);
 
   const [phase, setPhase] = useState<"intro" | "playing" | "results">("intro");
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [secondsRemaining, setSecondsRemaining] = useState<number>(QUIZ_CONFIG.secondsPerQuestion);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [combo, setCombo] = useState(0);
-  const [bestCombo, setBestCombo] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
   const [conceptCorrectCounts, setConceptCorrectCounts] = useState<Record<string, number>>({});
@@ -55,11 +59,8 @@ export default function QuizPage() {
   function start() {
     setQuestions(shuffle(quizQuestions));
     setCurrentIndex(0);
-    setSecondsRemaining(QUIZ_CONFIG.secondsPerQuestion);
     setSelectedIndex(null);
     setScore(0);
-    setCombo(0);
-    setBestCombo(0);
     setCorrectCount(0);
     setWrongCount(0);
     setConceptCorrectCounts({});
@@ -67,14 +68,19 @@ export default function QuizPage() {
     setPhase("playing");
   }
 
-  function answer(index: number | null) {
+  // Marca o início quando a partida entra em jogo. Fica num efeito, e não em
+  // start(), porque ler o relógio durante a renderização não é puro — e o
+  // lint do React não tem como provar que start() só roda num clique.
+  useEffect(() => {
+    if (phase === "playing") inicioRef.current = Date.now();
+  }, [phase]);
+
+  function answer(index: number) {
     if (isAnswered || !currentQuestion) return;
-    setSelectedIndex(index ?? -1);
+    setSelectedIndex(index);
     const correct = index === currentQuestion.correctIndex;
-    const result = scoreQuizAnswer(correct, secondsRemaining, combo);
+    const result = scoreQuizAnswer(correct);
     setScore((s) => s + result.points);
-    setCombo(result.combo);
-    setBestCombo((b) => Math.max(b, result.combo));
     if (correct) {
       setCorrectCount((c) => c + 1);
       setConceptCorrectCounts((prev) => ({
@@ -84,50 +90,18 @@ export default function QuizPage() {
     } else {
       setWrongCount((c) => c + 1);
     }
-
-    feedbackTimeoutRef.current = setTimeout(() => {
-      setCurrentIndex((i) => {
-        const next = i + 1;
-        if (next >= questions.length) {
-          setPhase("results");
-          return i;
-        }
-        setSecondsRemaining(QUIZ_CONFIG.secondsPerQuestion);
-        setSelectedIndex(null);
-        return next;
-      });
-    }, FEEDBACK_MS);
   }
 
-  useEffect(() => {
-    if (phase !== "playing" || isAnswered) return;
-    let last: number | null = null;
-    function tick(ts: number) {
-      if (last !== null) {
-        const delta = (ts - last) / 1000;
-        setSecondsRemaining((t) => Math.max(0, t - delta));
-      }
-      last = ts;
-      rafRef.current = requestAnimationFrame(tick);
-    }
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, [phase, isAnswered, currentIndex]);
+  const ehUltima = currentIndex + 1 >= questions.length;
 
-  useEffect(() => {
-    if (phase === "playing" && !isAnswered && secondsRemaining <= 0) {
-      answer(null);
+  function avancar() {
+    if (ehUltima) {
+      setPhase("results");
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [secondsRemaining]);
-
-  useEffect(() => {
-    return () => {
-      if (feedbackTimeoutRef.current) clearTimeout(feedbackTimeoutRef.current);
-    };
-  }, []);
+    setCurrentIndex((i) => i + 1);
+    setSelectedIndex(null);
+  }
 
   useEffect(() => {
     if (phase !== "results" || hasSavedRef.current) return;
@@ -135,7 +109,7 @@ export default function QuizPage() {
 
     const xpEarned = Math.max(0, score);
     const moneyEarned = Math.round(xpEarned * GAME_CONFIG.moneyConversionRate);
-    const timeUsedSeconds = questions.length * QUIZ_CONFIG.secondsPerQuestion;
+    const timeUsedSeconds = Math.round((Date.now() - inicioRef.current) / 1000);
 
     savePhaseResult.mutate({
       dayId: DAY_ID,
@@ -145,7 +119,8 @@ export default function QuizPage() {
       xpEarned,
       moneyEarned,
       timeUsedSeconds,
-      bestCombo,
+      // Sempre 0: o combo saiu, mas a API ainda exige o campo.
+      bestCombo: 0,
       conceptCorrectCounts,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -161,10 +136,7 @@ export default function QuizPage() {
               {t("minigames.quizTitle")}
             </h1>
             <p className="text-sm text-text-muted">
-              {t("minigames.quizIntroDescription", {
-                count: quizQuestions.length,
-                seconds: QUIZ_CONFIG.secondsPerQuestion,
-              })}
+              {t("minigames.quizIntroDescription", { count: quizQuestions.length })}
             </p>
             <Button size="lg" className="mt-2 w-full" onClick={start}>
               {t("minigames.start")}
@@ -190,7 +162,7 @@ export default function QuizPage() {
             </h1>
             <p className="mt-1 text-text-muted">{t("minigames.quizTitle")}</p>
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             <Card>
               <CardContent className="flex flex-col items-center gap-1 py-4">
                 <CheckCircle2 className="h-6 w-6 text-success" />
@@ -203,13 +175,6 @@ export default function QuizPage() {
                 <XCircle className="h-6 w-6 text-danger" />
                 <span className="font-pixel text-lg">{wrongCount}</span>
                 <span className="text-xs text-text-muted">{t("minigames.wrong")}</span>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="flex flex-col items-center gap-1 py-4">
-                <Flame className="h-6 w-6 text-warning" />
-                <span className="font-pixel text-lg">{bestCombo}</span>
-                <span className="text-xs text-text-muted">{t("minigames.bestCombo")}</span>
               </CardContent>
             </Card>
           </div>
@@ -238,13 +203,11 @@ export default function QuizPage() {
   return (
     <div className="min-h-dvh bg-bg pt-14">
       <div className="flex flex-wrap items-center gap-2 border-b border-border bg-surface px-4 py-3">
-        <TimerDisplay secondsRemaining={secondsRemaining} />
         <MeterBadge
           icon={Brain}
           label={t("minigames.question")}
           value={`${currentIndex + 1}/${questions.length}`}
         />
-        <ComboMeter combo={combo} />
         <div className="ml-auto">
           <MeterBadge icon={CheckCircle2} label={t("minigames.points")} value={score} colorClassName="text-primary" />
         </div>
@@ -285,10 +248,15 @@ export default function QuizPage() {
         </div>
 
         {isAnswered && (
-          <div className="flex gap-2 rounded-lg border border-warning/30 bg-warning/10 p-3 text-sm text-text">
-            <Lightbulb className="h-4 w-4 shrink-0 text-warning" />
-            <p>{currentQuestion.explanation}</p>
-          </div>
+          <>
+            <div className="flex gap-2 rounded-lg border border-warning/30 bg-warning/10 p-3 text-sm text-text">
+              <Lightbulb className="h-4 w-4 shrink-0 text-warning" />
+              <p>{currentQuestion.explanation}</p>
+            </div>
+            <Button size="lg" onClick={avancar}>
+              {ehUltima ? t("minigames.seeResult") : t("minigames.next")}
+            </Button>
+          </>
         )}
       </div>
     </div>

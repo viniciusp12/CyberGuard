@@ -3,20 +3,29 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { AlertTriangle, ArrowLeft, CheckCircle2, Flame, XCircle } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
 import { getArcadeItems } from "@repo/shared/content";
-import { scoreArcadeHit, ARCADE_CONFIG, GAME_CONFIG } from "@repo/shared/engine";
+import { scoreArcadeHit, GAME_CONFIG } from "@repo/shared/engine";
 import type { ArcadeItem } from "@repo/shared/schemas";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { MeterBadge } from "@/components/hud/MeterBadge";
-import { ComboMeter } from "@/components/hud/ComboMeter";
-import { TimerDisplay } from "@/components/hud/TimerDisplay";
 import { useSavePhaseResult } from "@/lib/hooks/usePlayerProfile";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 
+// O id fica como está: é a chave gravada nos resultados já salvos no banco.
 const DAY_ID = "arcade-caca-phishing";
+
+/*
+ * Sem cronômetro e sem combo.
+ *
+ * Detalhe que obrigou a acrescentar o botão "Conferir": a partida só terminava
+ * quando o tempo zerava OU quando todos os e-mails tinham sido tocados. Como o
+ * jogador só toca nos golpes, os legítimos nunca eram tocados — então, na
+ * prática, o único fim possível era o relógio. Sem relógio, sem o botão, o jogo
+ * não acabaria nunca.
+ */
 
 type ItemStatus = "pending" | "correct" | "wrong";
 type PlayItem = ArcadeItem & { status: ItemStatus };
@@ -36,24 +45,18 @@ export default function CacaPhishingPage() {
   const savePhaseResult = useSavePhaseResult();
   const arcadeItems = getArcadeItems(locale);
   const hasSavedRef = useRef(false);
-  const rafRef = useRef<number | null>(null);
+  const inicioRef = useRef(0);
 
   const [phase, setPhase] = useState<"intro" | "playing" | "results">("intro");
   const [items, setItems] = useState<PlayItem[]>([]);
-  const [timeRemaining, setTimeRemaining] = useState<number>(ARCADE_CONFIG.timeLimitSeconds);
   const [score, setScore] = useState(0);
-  const [combo, setCombo] = useState(0);
-  const [bestCombo, setBestCombo] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
   const [conceptCorrectCounts, setConceptCorrectCounts] = useState<Record<string, number>>({});
 
   function start() {
     setItems(shuffle(arcadeItems).map((i) => ({ ...i, status: "pending" as const })));
-    setTimeRemaining(ARCADE_CONFIG.timeLimitSeconds);
     setScore(0);
-    setCombo(0);
-    setBestCombo(0);
     setCorrectCount(0);
     setWrongCount(0);
     setConceptCorrectCounts({});
@@ -61,37 +64,20 @@ export default function CacaPhishingPage() {
     setPhase("playing");
   }
 
+  // Marca o início quando a partida entra em jogo. Fica num efeito, e não em
+  // start(), porque ler o relógio durante a renderização não é puro — e o
+  // lint do React não tem como provar que start() só roda num clique.
   useEffect(() => {
-    if (phase !== "playing") return;
-    let last: number | null = null;
-    function tick(ts: number) {
-      if (last !== null) {
-        const delta = (ts - last) / 1000;
-        setTimeRemaining((t) => Math.max(0, t - delta));
-      }
-      last = ts;
-      rafRef.current = requestAnimationFrame(tick);
-    }
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
+    if (phase === "playing") inicioRef.current = Date.now();
   }, [phase]);
 
-  useEffect(() => {
-    if (phase !== "playing") return;
-    const allResolved = items.length > 0 && items.every((i) => i.status !== "pending");
-    if (timeRemaining <= 0 || allResolved) {
-      setPhase("results");
-    }
-  }, [timeRemaining, items, phase]);
 
   useEffect(() => {
     if (phase !== "results" || hasSavedRef.current) return;
     hasSavedRef.current = true;
 
     const missedCount = items.filter((i) => i.status === "pending" && i.isPhishing).length;
-    const timeUsedSeconds = Math.round(ARCADE_CONFIG.timeLimitSeconds - timeRemaining);
+    const timeUsedSeconds = Math.round((Date.now() - inicioRef.current) / 1000);
     const xpEarned = Math.max(0, score);
     const moneyEarned = Math.round(xpEarned * GAME_CONFIG.moneyConversionRate);
 
@@ -103,7 +89,8 @@ export default function CacaPhishingPage() {
       xpEarned,
       moneyEarned,
       timeUsedSeconds,
-      bestCombo,
+      // Sempre 0: o combo saiu, mas a API ainda exige o campo.
+      bestCombo: 0,
       conceptCorrectCounts,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,10 +98,8 @@ export default function CacaPhishingPage() {
 
   function handleHit(item: PlayItem) {
     if (phase !== "playing" || item.status !== "pending") return;
-    const result = scoreArcadeHit(combo, item.isPhishing);
+    const result = scoreArcadeHit(item.isPhishing);
     setScore((s) => s + result.points);
-    setCombo(result.combo);
-    setBestCombo((b) => Math.max(b, result.combo));
     setItems((prev) =>
       prev.map((i) => (i.id === item.id ? { ...i, status: item.isPhishing ? "correct" : "wrong" } : i)),
     );
@@ -136,12 +121,7 @@ export default function CacaPhishingPage() {
               {t("minigames.cacaPhishingTitle")}
             </h1>
             <p className="text-sm text-text-muted">
-              {t("minigames.cacaIntroPart1", { count: arcadeItems.length })}{" "}
-              <strong>{t("minigames.cacaIntroPhishingWord")}</strong>{" "}
-              {t("minigames.cacaIntroPart2")}
-            </p>
-            <p className="text-xs text-text-muted">
-              {t("minigames.totalSeconds", { seconds: ARCADE_CONFIG.timeLimitSeconds })}
+              {t("minigames.cacaIntro", { count: arcadeItems.length })}
             </p>
             <Button size="lg" className="mt-2 w-full" onClick={start}>
               {t("minigames.start")}
@@ -168,7 +148,7 @@ export default function CacaPhishingPage() {
             </h1>
             <p className="mt-1 text-text-muted">{t("minigames.cacaPhishingTitle")}</p>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-3 gap-3">
             <Card>
               <CardContent className="flex flex-col items-center gap-1 py-4">
                 <CheckCircle2 className="h-6 w-6 text-success" />
@@ -188,13 +168,6 @@ export default function CacaPhishingPage() {
                 <AlertTriangle className="h-6 w-6 text-warning" />
                 <span className="font-pixel text-lg">{missedCount}</span>
                 <span className="text-xs text-text-muted">{t("minigames.missed")}</span>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="flex flex-col items-center gap-1 py-4">
-                <Flame className="h-6 w-6 text-warning" />
-                <span className="font-pixel text-lg">{bestCombo}</span>
-                <span className="text-xs text-text-muted">{t("minigames.bestCombo")}</span>
               </CardContent>
             </Card>
           </div>
@@ -218,22 +191,18 @@ export default function CacaPhishingPage() {
     );
   }
 
-  const remaining = items.filter((i) => i.status === "pending").length;
-
   return (
     <div className="min-h-dvh bg-bg pt-14">
+      {/*
+        O contador "Restam" saiu: ele contava também os e-mails legítimos, que o
+        jogador não deve tocar — então nunca chegava a zero e confundia mais do
+        que ajudava.
+      */}
       <div className="flex flex-wrap items-center gap-2 border-b border-border bg-surface px-4 py-3">
-        <TimerDisplay secondsRemaining={timeRemaining} />
-        <MeterBadge
-          icon={AlertTriangle}
-          label={t("minigames.remaining")}
-          value={remaining}
-          colorClassName="text-warning"
-        />
-        <ComboMeter combo={combo} />
-        <div className="ml-auto">
-          <MeterBadge icon={CheckCircle2} label={t("minigames.points")} value={score} colorClassName="text-primary" />
-        </div>
+        <MeterBadge icon={CheckCircle2} label={t("minigames.points")} value={score} colorClassName="text-primary" />
+        <Button size="sm" className="ml-auto" onClick={() => setPhase("results")}>
+          {t("minigames.check")}
+        </Button>
       </div>
 
       <div className="mx-auto grid max-w-4xl grid-cols-1 gap-2 p-4 sm:grid-cols-2">

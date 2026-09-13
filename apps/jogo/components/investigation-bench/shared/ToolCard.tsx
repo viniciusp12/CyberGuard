@@ -4,14 +4,12 @@ import { cn } from "@/lib/utils";
 export function ToolCard({
   icon: Icon,
   label,
-  costSeconds,
   isUsed,
   isSelected,
   onClick,
 }: {
   icon: LucideIcon;
   label: string;
-  costSeconds: number;
   isUsed: boolean;
   isSelected: boolean;
   onClick: () => void;
@@ -26,13 +24,8 @@ export function ToolCard({
     >
       <Icon className={cn("h-4 w-4 shrink-0", isUsed ? "text-success" : "text-text-muted")} />
       <span className="flex-1 font-medium text-text">{label}</span>
-      {isUsed ? (
-        <CheckCircle2 className="h-4 w-4 shrink-0 text-success" />
-      ) : (
-        <span className="shrink-0 rounded bg-surface-3 px-1.5 py-0.5 text-xs text-text-muted">
-          -{costSeconds}s
-        </span>
-      )}
+      {/* O selo de custo ("-3s") saiu com a mecânica de tempo: conferir é livre. */}
+      {isUsed && <CheckCircle2 className="h-4 w-4 shrink-0 text-success" />}
     </button>
   );
 }

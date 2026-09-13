@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const AchievementCriteriaSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("perfect_emails_total"), count: z.number().int().positive() }),
-  z.object({ kind: z.literal("combo_reached"), combo: z.number().int().positive() }),
   z.object({
     kind: z.literal("concept_mastered"),
     concept: z.string(),

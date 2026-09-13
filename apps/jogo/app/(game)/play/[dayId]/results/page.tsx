@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { CheckCircle2, XCircle, Coins, Star, Flame, Clock, Trophy } from "lucide-react";
+import { CheckCircle2, XCircle, Coins, Star, Trophy } from "lucide-react";
 import { usePhase } from "@/lib/hooks/usePhase";
 import { useSavePhaseResult } from "@/lib/hooks/usePlayerProfile";
 import { getEmailsForDay } from "@repo/shared/content";
@@ -76,7 +76,13 @@ export default function PhaseResultsPage() {
           <p className="mt-1 text-text-muted">{t("phasesGame.reviewPerformance")}</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {/*
+          Eram quatro indicadores: acertos, erros, melhor combo e tempo usado.
+          Combo saiu com a mecânica. Tempo saiu porque, sem cronômetro, exibi-lo
+          só convida a comparar quem foi mais rápido — a pressão que acabou de
+          ser removida. O tempo continua sendo medido e gravado; só não é placar.
+        */}
+        <div className="grid grid-cols-2 gap-3">
           <Card>
             <CardContent className="flex flex-col items-center gap-1 py-4">
               <CheckCircle2 className="h-6 w-6 text-success" />
@@ -89,20 +95,6 @@ export default function PhaseResultsPage() {
               <XCircle className="h-6 w-6 text-danger" />
               <span className="font-pixel text-lg">{totals.wrongCount}</span>
               <span className="text-xs text-text-muted">{t("phasesGame.wrongLabel")}</span>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="flex flex-col items-center gap-1 py-4">
-              <Flame className="h-6 w-6 text-warning" />
-              <span className="font-pixel text-lg">{totals.bestCombo}</span>
-              <span className="text-xs text-text-muted">{t("phasesGame.bestComboLabel")}</span>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="flex flex-col items-center gap-1 py-4">
-              <Clock className="h-6 w-6 text-text-muted" />
-              <span className="font-pixel text-lg">{Math.round(totals.timeUsedSeconds)}s</span>
-              <span className="text-xs text-text-muted">{t("phasesGame.timeUsedLabel")}</span>
             </CardContent>
           </Card>
         </div>

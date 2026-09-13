@@ -1,84 +1,80 @@
 import { describe, expect, it } from "vitest";
 import { scoreEmailAttempt } from "../scoring";
 import { GAME_CONFIG } from "../gameConfig";
-import { makeEmail } from "./fixtures";
+import { phaseReducer, type PlayingState } from "../phaseMachine";
+import { makeDay, makeEmail } from "./fixtures";
 
 describe("scoreEmailAttempt", () => {
-  it("dá o bônus de velocidade máximo ao acertar sem investigar nada", () => {
-    const email = makeEmail({ difficulty: 2, correctAction: "accept" });
-    const result = scoreEmailAttempt({
-      email,
-      playerAction: "accept",
-      toolsUsed: [],
-      currentCombo: 0,
-    });
+  it("dá os pontos da dificuldade ao acertar", () => {
+    const email = makeEmail({ difficulty: 2, correctAction: "delete", riskLevel: "malicious" });
+    const r = scoreEmailAttempt({ email, playerAction: "delete" });
 
-    expect(result.correct).toBe(true);
-    expect(result.timeSpentInvestigating).toBe(0);
-    expect(result.speedBonus).toBe(GAME_CONFIG.speedBonusMax);
-    expect(result.finalScore).toBeGreaterThan(0);
+    expect(r.correct).toBe(true);
+    expect(r.finalScore).toBe(GAME_CONFIG.basePointsByDifficulty(2));
+    expect(r.xpEarned).toBe(r.finalScore);
+    expect(r.moneyEarned).toBe(Math.round(r.finalScore * GAME_CONFIG.moneyConversionRate));
   });
 
-  it("reduz a pontuação quanto mais ferramentas de investigação forem usadas", () => {
-    const email = makeEmail({ difficulty: 2, correctAction: "report" });
+  it("não tira pontos ao errar — quem erra já recebe a explicação", () => {
+    const email = makeEmail({ difficulty: 2, correctAction: "report", riskLevel: "malicious" });
+    const r = scoreEmailAttempt({ email, playerAction: "accept" });
 
-    const cheap = scoreEmailAttempt({
-      email,
-      playerAction: "report",
-      toolsUsed: ["sender_address"],
-      currentCombo: 0,
-    });
-    const expensive = scoreEmailAttempt({
-      email,
-      playerAction: "report",
-      toolsUsed: ["sender_address", "domain_inspect", "sandbox_execution", "ai_assistant"],
-      currentCombo: 0,
-    });
-
-    expect(expensive.timeSpentInvestigating).toBeGreaterThan(cheap.timeSpentInvestigating);
-    expect(expensive.finalScore).toBeLessThan(cheap.finalScore);
+    expect(r).toEqual({ correct: false, finalScore: 0, xpEarned: 0, moneyEarned: 0 });
   });
+});
 
-  it("aplica penalidade fixa e dano de segurança em caso de erro, sem XP/dinheiro", () => {
+/**
+ * O teste que mais importa neste arquivo.
+ *
+ * A versão anterior tinha um teste chamado "reduz a pontuação quanto mais
+ * ferramentas de investigação forem usadas" — a regra que fazia a estratégia
+ * vencedora ser decidir sem conferir nada. Este garante o contrário, pelo
+ * caminho completo da máquina de fases: quem investiga tudo antes de decidir
+ * pontua exatamente o mesmo que quem não investiga.
+ */
+describe("investigar é livre", () => {
+  function jogarUmEmail(ferramentas: Parameters<typeof phaseReducer>[1][]) {
     const email = makeEmail({
-      difficulty: 3,
-      correctAction: "report",
+      difficulty: 2,
+      correctAction: "delete",
+      riskLevel: "malicious",
       investigationHints: [
-        { toolId: "sender_address", revealsField: "sender.domain", summaryText: "dominio ok" },
-        { toolId: "domain_inspect", revealsField: "sender.domain", summaryText: "dominio recente" },
+        { toolId: "sender_address", revealsField: "sender.domain", summaryText: "a" },
+        { toolId: "link_hover", revealsField: "links", summaryText: "b" },
+        { toolId: "internal_db_lookup", revealsField: "sender", summaryText: "c" },
       ],
     });
-    const result = scoreEmailAttempt({
-      email,
-      playerAction: "accept",
-      toolsUsed: [],
-      currentCombo: 5,
-    });
+    let s = phaseReducer({ status: "intro", day: makeDay(), emails: [email] }, { type: "START" });
+    for (const a of ferramentas) s = phaseReducer(s, a);
+    return phaseReducer(s, { type: "DECIDE", action: "delete" });
+  }
 
-    expect(result.correct).toBe(false);
-    expect(result.finalScore).toBe(GAME_CONFIG.wrongDecisionPenalty);
-    expect(result.xpEarned).toBe(0);
-    expect(result.moneyEarned).toBe(0);
-    expect(result.securityDamage).toBe(GAME_CONFIG.wrongDecisionSecurityDamage);
+  it("usar todas as ferramentas não custa pontos", () => {
+    const semInvestigar = jogarUmEmail([]);
+    const investigandoTudo = jogarUmEmail([
+      { type: "USE_TOOL", toolId: "sender_address" },
+      { type: "USE_TOOL", toolId: "link_hover" },
+      { type: "USE_TOOL", toolId: "internal_db_lookup" },
+    ]);
+
+    expect(semInvestigar.status).toBe("phase_summary");
+    expect(investigandoTudo.status).toBe("phase_summary");
+    if (semInvestigar.status !== "phase_summary" || investigandoTudo.status !== "phase_summary") return;
+
+    expect(investigandoTudo.totals.totalScore).toBe(semInvestigar.totals.totalScore);
+    expect(investigandoTudo.totals.totalScore).toBeGreaterThan(0);
   });
 
-  it("aumenta a pontuação com o multiplicador de combo, até o teto configurado", () => {
-    const email = makeEmail({ difficulty: 2, correctAction: "accept" });
-
-    const noCombo = scoreEmailAttempt({
-      email,
-      playerAction: "accept",
-      toolsUsed: ["sender_address"],
-      currentCombo: 0,
+  it("não aceita registrar ferramenta que saiu de cena", () => {
+    const email = makeEmail({
+      investigationHints: [
+        { toolId: "sender_address", revealsField: "sender.domain", summaryText: "a" },
+        { toolId: "header_inspect", revealsField: "headers", summaryText: "b" },
+      ],
     });
-    const highCombo = scoreEmailAttempt({
-      email,
-      playerAction: "accept",
-      toolsUsed: ["sender_address"],
-      currentCombo: 50,
-    });
+    let s = phaseReducer({ status: "intro", day: makeDay(), emails: [email] }, { type: "START" });
+    s = phaseReducer(s, { type: "USE_TOOL", toolId: "header_inspect" });
 
-    expect(highCombo.comboMultiplier).toBe(GAME_CONFIG.comboMaxMultiplier);
-    expect(highCombo.finalScore).toBeGreaterThan(noCombo.finalScore);
+    expect((s as PlayingState).toolsUsedThisEmail).toEqual([]);
   });
 });

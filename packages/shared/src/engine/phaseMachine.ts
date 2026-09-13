@@ -1,8 +1,25 @@
-import type { Day, GameEvent } from "../schemas/phase.schema";
+import type { Day } from "../schemas/phase.schema";
 import type { Email, InvestigationToolId, PlayerAction } from "../schemas/email.schema";
 import { scoreEmailAttempt, type EmailAttemptResult } from "./scoring";
-import { nextCombo } from "./combo";
-import { toolTimeCost } from "./gameConfig";
+import { ferramentaVisivel } from "./gameConfig";
+
+/**
+ * Máquina de estados de um dia de jogo.
+ *
+ * Simplificada a pedido da empresa. O que saiu, e por quê:
+ *
+ *  - **Cronômetro que encerra o dia.** Ao zerar, a fase terminava e os e-mails
+ *    restantes eram perdidos. Pressa é justamente o que o golpista explora; um
+ *    treinamento que pune quem vai com calma treina o reflexo errado.
+ *  - **Custo de tempo por ferramenta.** Consequência direta do item acima.
+ *  - **Eventos aleatórios** (pop-up do chefe, enxurrada de e-mails, "lag").
+ *    Existiam para roubar tempo, e sem cronômetro não têm o que roubar.
+ *  - **Combo e barra de segurança.** Mais dois números para acompanhar enquanto
+ *    se tenta ler um e-mail.
+ *
+ * O tempo continua sendo *medido* (`TICK` acumula `secondsElapsed`), porque o
+ * resultado da fase é gravado com ele. Só deixou de ser *limite*.
+ */
 
 export interface PhaseTotals {
   correctCount: number;
@@ -11,6 +28,11 @@ export interface PhaseTotals {
   xpEarned: number;
   moneyEarned: number;
   timeUsedSeconds: number;
+  /**
+   * Sempre 0. O combo foi removido, mas a API e a tabela `PhaseResult` exigem
+   * o campo. Mantido para não arrastar migração de banco junto com a
+   * simplificação; pode sair numa limpeza posterior do contrato.
+   */
   bestCombo: number;
 }
 
@@ -19,16 +41,12 @@ export interface PlayingState {
   day: Day;
   emails: Email[];
   currentEmailIndex: number;
-  timeRemaining: number;
+  secondsElapsed: number;
   toolsUsedThisEmail: InvestigationToolId[];
-  combo: number;
-  bestCombo: number;
   score: number;
   money: number;
   xp: number;
-  security: number;
   results: EmailAttemptResult[];
-  activeEvents: GameEvent[];
 }
 
 export type PhaseState =
@@ -43,27 +61,23 @@ export type PhaseAction =
   | { type: "TICK"; deltaSeconds: number }
   | { type: "USE_TOOL"; toolId: InvestigationToolId }
   | { type: "DECIDE"; action: PlayerAction }
-  | { type: "TRIGGER_EVENT"; event: GameEvent }
-  | { type: "CLEAR_EVENT"; eventId: string }
   | { type: "PAUSE" }
   | { type: "RESUME" }
   | { type: "FINISH_PHASE" };
-
-const INITIAL_SECURITY = 100;
 
 export function createIntroState(day: Day, emails: Email[]): PhaseState {
   return { status: "intro", day, emails };
 }
 
-function buildTotals(results: EmailAttemptResult[], timeUsedSeconds: number, bestCombo: number): PhaseTotals {
+function buildTotals(results: EmailAttemptResult[], timeUsedSeconds: number): PhaseTotals {
   return {
     correctCount: results.filter((r) => r.correct).length,
     wrongCount: results.filter((r) => !r.correct).length,
     totalScore: results.reduce((sum, r) => sum + r.finalScore, 0),
     xpEarned: results.reduce((sum, r) => sum + r.xpEarned, 0),
     moneyEarned: results.reduce((sum, r) => sum + r.moneyEarned, 0),
-    timeUsedSeconds,
-    bestCombo,
+    timeUsedSeconds: Math.round(timeUsedSeconds),
+    bestCombo: 0,
   };
 }
 
@@ -76,38 +90,28 @@ export function phaseReducer(state: PhaseState, action: PhaseAction): PhaseState
         day: state.day,
         emails: state.emails,
         currentEmailIndex: 0,
-        timeRemaining: state.day.timeLimitSeconds,
+        secondsElapsed: 0,
         toolsUsedThisEmail: [],
-        combo: 0,
-        bestCombo: 0,
         score: 0,
         money: 0,
         xp: 0,
-        security: INITIAL_SECURITY,
         results: [],
-        activeEvents: [],
       };
     }
 
     case "TICK": {
       if (state.status !== "playing") return state;
-      const timeRemaining = Math.max(0, state.timeRemaining - action.deltaSeconds);
-      if (timeRemaining <= 0) {
-        const totals = buildTotals(state.results, state.day.timeLimitSeconds, state.bestCombo);
-        return { status: "phase_summary", day: state.day, results: state.results, totals };
-      }
-      return { ...state, timeRemaining };
+      // Só mede. Nunca encerra a fase.
+      return { ...state, secondsElapsed: state.secondsElapsed + action.deltaSeconds };
     }
 
     case "USE_TOOL": {
       if (state.status !== "playing") return state;
+      // Ferramenta fora de cena não é registrada, mesmo que alguém dispare a
+      // ação por outro caminho: o jogo não deve contar pista que não mostrou.
+      if (!ferramentaVisivel(action.toolId)) return state;
       if (state.toolsUsedThisEmail.includes(action.toolId)) return state;
-      const cost = toolTimeCost(action.toolId);
-      return {
-        ...state,
-        timeRemaining: Math.max(0, state.timeRemaining - cost),
-        toolsUsedThisEmail: [...state.toolsUsedThisEmail, action.toolId],
-      };
+      return { ...state, toolsUsedThisEmail: [...state.toolsUsedThisEmail, action.toolId] };
     }
 
     case "DECIDE": {
@@ -115,59 +119,27 @@ export function phaseReducer(state: PhaseState, action: PhaseAction): PhaseState
       const currentEmail = state.emails[state.currentEmailIndex];
       if (!currentEmail) return state;
 
-      const attempt = scoreEmailAttempt({
-        email: currentEmail,
-        playerAction: action.action,
-        toolsUsed: state.toolsUsedThisEmail,
-        currentCombo: state.combo,
-      });
-
-      const combo = nextCombo(state.combo, attempt.correct);
-      const bestCombo = Math.max(state.bestCombo, combo);
-      const security = Math.max(0, Math.min(100, state.security - attempt.securityDamage));
+      const attempt = scoreEmailAttempt({ email: currentEmail, playerAction: action.action });
       const results = [...state.results, attempt];
       const nextIndex = state.currentEmailIndex + 1;
 
-      const partial = {
+      if (nextIndex >= state.emails.length) {
+        return {
+          status: "phase_summary",
+          day: state.day,
+          results,
+          totals: buildTotals(results, state.secondsElapsed),
+        };
+      }
+
+      return {
         ...state,
-        combo,
-        bestCombo,
-        security,
         score: state.score + attempt.finalScore,
         money: state.money + attempt.moneyEarned,
         xp: state.xp + attempt.xpEarned,
         results,
-      };
-
-      if (nextIndex >= state.emails.length) {
-        const timeUsed = state.day.timeLimitSeconds - state.timeRemaining;
-        const totals = buildTotals(results, timeUsed, bestCombo);
-        return { status: "phase_summary", day: state.day, results, totals };
-      }
-
-      return {
-        ...partial,
         currentEmailIndex: nextIndex,
         toolsUsedThisEmail: [],
-      };
-    }
-
-    case "TRIGGER_EVENT": {
-      if (state.status !== "playing") return state;
-      const timeAdjust =
-        action.event.effect.kind === "timer_penalty" ? action.event.effect.seconds : 0;
-      return {
-        ...state,
-        timeRemaining: Math.max(0, state.timeRemaining - timeAdjust),
-        activeEvents: [...state.activeEvents, action.event],
-      };
-    }
-
-    case "CLEAR_EVENT": {
-      if (state.status !== "playing") return state;
-      return {
-        ...state,
-        activeEvents: state.activeEvents.filter((e) => e.id !== action.eventId),
       };
     }
 

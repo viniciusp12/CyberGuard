@@ -17,7 +17,7 @@ export const mainPages: DictionaryTable = {
   comingSoonTag: { pt: "Em breve", en: "Coming soon" },
   dayNumber: { pt: "Dia {{number}}", en: "Day {{number}}" },
   completed: { pt: "Concluído", en: "Completed" },
-  emailsAndMinutes: { pt: "{{count}} emails · {{minutes}} min", en: "{{count}} emails · {{minutes}} min" },
+  emailsAndMinutes: { pt: "{{count}} e-mails", en: "{{count}} emails" },
   completePreviousDay: { pt: "Complete o dia anterior", en: "Complete the previous day" },
   playAgain: { pt: "Jogar novamente", en: "Play again" },
   start: { pt: "Iniciar", en: "Start" },

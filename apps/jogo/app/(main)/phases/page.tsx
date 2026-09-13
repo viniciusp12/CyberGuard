@@ -77,7 +77,6 @@ export default function PhasesPage() {
               <p className="text-xs text-text-muted">
                 {t("mainPages.emailsAndMinutes", {
                   count: selectedDay.emailIds.length,
-                  minutes: Math.round(selectedDay.timeLimitSeconds / 60),
                 })}
               </p>
               {selectedItem?.locked ? (

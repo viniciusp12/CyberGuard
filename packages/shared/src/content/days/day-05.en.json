@@ -193,9 +193,9 @@
       "difficulty": 5,
       "investigationHints": [
         {
-          "toolId": "domain_inspect",
+          "toolId": "sender_address",
           "revealsField": "sender.domain",
-          "summaryText": "Company's official domain, with no suspicious variation."
+          "summaryText": "It comes from the company's official address, spelled correctly, with no swapped letters."
         },
         {
           "toolId": "header_inspect",

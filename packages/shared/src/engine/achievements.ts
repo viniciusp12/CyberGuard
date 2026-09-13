@@ -8,10 +8,6 @@ function isAchievementMet(achievement: Achievement, profile: PlayerProfile): boo
       const total = profile.phaseHistory.reduce((sum, r) => sum + r.correctCount, 0);
       return total >= criteria.count;
     }
-    case "combo_reached": {
-      const best = profile.phaseHistory.reduce((max, r) => Math.max(max, r.bestCombo), 0);
-      return best >= criteria.combo;
-    }
     case "concept_mastered": {
       const total = profile.phaseHistory.reduce(
         (sum, r) => sum + (r.conceptCorrectCounts[criteria.concept] ?? 0),

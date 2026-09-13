@@ -12,6 +12,5 @@ export interface ToolRegistryEntry {
   id: InvestigationToolId;
   label: string;
   icon: LucideIcon;
-  costSeconds: number;
   Component: (props: InvestigationToolProps) => React.ReactElement;
 }

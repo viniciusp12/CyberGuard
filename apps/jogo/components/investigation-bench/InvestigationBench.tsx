@@ -50,7 +50,6 @@ export function InvestigationBench({
                   key={tool.id}
                   icon={tool.icon}
                   label={tool.label}
-                  costSeconds={tool.costSeconds}
                   isUsed={toolsUsed.includes(tool.id)}
                   isSelected={tool.id === selectedToolId}
                   onClick={() => setSelectedToolId(tool.id)}
@@ -68,7 +67,6 @@ export function InvestigationBench({
                 />
               ) : (
                 <ToolNotUsedPlaceholder
-                  costSeconds={selectedEntry.costSeconds}
                   onRun={() => runTool(selectedEntry.id)}
                 />
               )}
