@@ -110,7 +110,7 @@
       ],
       "explanation": {
         "short": "Sinais suspeitos com explicação real — nem toda bandeira amarela é um ataque.",
-        "detailed": "SPF neutro e um servidor de origem diferente do habitual pareceriam suspeitos à primeira vista — mas aqui há uma explicação real (migração de provedor de email), confirmada de forma independente por telefone. DKIM e DMARC continuam válidos, o anexo é limpo, e a confirmação por outro canal fecha o caso. Depois de tantos dias vendo fornecedores comprometidos, é tentador reportar ou excluir por precaução — mas isso também tem custo: atrasa pagamentos legítimos e sobrecarrega o TI com falsos alarmes. Investigar direito, aqui, significa reconhecer quando está tudo bem.",
+        "detailed": "Uma das checagens do e-mail veio neutra e ele saiu de um servidor diferente do de sempre — o que pareceria suspeito. Mas há uma explicação real (troca de provedor de e-mail), confirmada por telefone. O resto das checagens está certo, o anexo está limpo, e a confirmação por outro canal fecha o caso. Depois de tantos fornecedores invadidos, dá vontade de reportar por precaução. Mas isso também custa: atrasa pagamento de verdade e enche a TI de alarme falso. Investigar direito, aqui, é reconhecer quando está tudo bem.",
         "conceptGlossaryId": "fornecedor_comprometido"
       },
       "idealInvestigationSeconds": 16
@@ -186,7 +186,7 @@
       ],
       "explanation": {
         "short": "Pedido de desativar controle de segurança, disfarçado de áudio urgente do diretor.",
-        "detailed": "O pedido em si já deveria soar o alarme: desativar um firewall por pedido de email é exatamente o tipo de decisão que nunca deveria depender só de uma mensagem urgente. O 'áudio' é na verdade um executável com extensão dupla, o domínio do remetente é recente e imita o nome da diretoria, e a sandbox confirma comportamento malicioso. Pedidos para desativar controles de segurança sempre exigem confirmação por múltiplos canais — nunca só o que está escrito no próprio email suspeito.",
+        "detailed": "O pedido já deveria acender o alerta: desligar a proteção da rede por causa de um e-mail é o tipo de decisão que nunca pode depender só de uma mensagem urgente. O 'áudio' é, na verdade, um programa disfarçado; o endereço de quem enviou é recente e imita o nome da diretoria; e o teste confirma que é perigoso. Pedido para desligar proteção de segurança sempre exige confirmar por mais de um canal — nunca só pelo que está escrito no próprio e-mail suspeito.",
         "conceptGlossaryId": "deepfake"
       },
       "idealInvestigationSeconds": 18
@@ -238,7 +238,7 @@
       ],
       "explanation": {
         "short": "Comunicado interno de RH, sem links, sem urgência artificial, sem anexos.",
-        "detailed": "Depois de tantos ataques sofisticados, vale lembrar que a maioria dos emails do dia a dia é normal. Este não pede nenhuma ação fora do comum, não tem anexos nem links externos, e vem de um domínio confirmado. Tratar todo email com o mesmo nível de desconfiança de um ataque direcionado também tem custo — o objetivo é reconhecer o padrão, não desconfiar de tudo indiscriminadamente.",
+        "detailed": "Depois de tantos ataques elaborados, vale lembrar: a maioria dos e-mails do dia a dia é normal. Este não pede nada fora do comum, não tem anexo nem link externo, e vem de um endereço confirmado. Desconfiar de todo e-mail como se fosse ataque também custa. A ideia é reconhecer o padrão, não desconfiar de tudo.",
         "conceptGlossaryId": "phishing_urgencia"
       },
       "idealInvestigationSeconds": 8
@@ -308,8 +308,8 @@
         }
       ],
       "explanation": {
-        "short": "Spear phishing personalizado: cita um colega real para ganhar confiança, com planilha maliciosa.",
-        "detailed": "Este é um ataque direcionado (spear phishing): o atacante pesquisou detalhes reais da empresa (o nome de uma colega do financeiro) para parecer legítimo e pedir sigilo, o que também serve para evitar que a vítima confirme com outras pessoas. O anexo é uma planilha com macro habilitada — um método clássico para executar código malicioso assim que o usuário clica em 'habilitar conteúdo'. A sandbox confirma alteração de registro, típica de malware que quer rodar automaticamente sempre que o computador ligar.",
+        "short": "Golpe sob medida: cita uma colega de verdade para ganhar confiança, com planilha perigosa.",
+        "detailed": "Este é um ataque sob medida: o golpista pesquisou dados reais da empresa (o nome de uma colega do financeiro) para parecer de verdade e pedir segredo — o que também impede a vítima de confirmar com outras pessoas. O anexo é uma planilha que, ao abrir, pede para 'habilitar conteúdo': é aí que o programa perigoso roda. O teste confirma que ele se instala para rodar sempre que o computador liga.",
         "conceptGlossaryId": "anexo_perigoso"
       },
       "idealInvestigationSeconds": 18
@@ -379,8 +379,8 @@
         }
       ],
       "explanation": {
-        "short": "Falsa intimação judicial usando medo de consequências legais para instalar ransomware.",
-        "detailed": "Esse golpe explora o medo de problemas jurídicos para pressionar a vítima a abrir o anexo sem pensar. O domínio imita um tribunal real, mas domínios oficiais do Judiciário brasileiro usam '.jus.br' — nunca '.org'. O anexo usa extensão dupla para disfarçar um executável, e a sandbox revela que é um ransomware capaz de se espalhar por compartilhamentos de rede, o que o torna especialmente perigoso em um ambiente corporativo.",
+        "short": "Falsa intimação da Justiça usando medo de processo para instalar um vírus que tranca arquivos.",
+        "detailed": "Esse golpe usa o medo de problema na Justiça para você abrir o anexo sem pensar. O endereço imita um tribunal de verdade, mas site oficial da Justiça no Brasil usa '.jus.br' — nunca '.org'. O anexo esconde um programa disfarçado, e o teste mostra que é um vírus que tranca seus arquivos e pede dinheiro, capaz de se espalhar pela rede da empresa.",
         "conceptGlossaryId": "certificado_nao_garante_legitimidade"
       },
       "idealInvestigationSeconds": 16

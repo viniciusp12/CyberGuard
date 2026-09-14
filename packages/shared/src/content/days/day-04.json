@@ -71,12 +71,12 @@
         {
           "toolId": "internal_db_lookup",
           "revealsField": "internalDbRecord",
-          "summaryText": "Domínio registrado há apenas 2 dias — muito recente para ser uma comunicação oficial de TI."
+          "summaryText": "Endereço criado há só 2 dias. Recente demais para ser um aviso de verdade da TI."
         }
       ],
       "explanation": {
-        "short": "Domínio homógrafo ('1' no lugar de 'l') pedindo instalação de executável.",
-        "detailed": "À primeira vista 'leroymer1in.com.br' parece idêntico ao domínio oficial — a troca do 'l' por '1' é o tipo de homógrafo mais fácil de passar despercebido em uma leitura rápida. Combinado com um prazo curto ('antes das 18h') e um link que baixa um .exe disfarçado de atualização de VPN, este é um ataque de phishing bem construído. Sempre confira o domínio letra por letra quando o pedido envolver instalar algo.",
+        "short": "Endereço com letra trocada ('1' no lugar de 'l') pedindo para instalar um programa.",
+        "detailed": "À primeira vista, 'leroymer1in.com.br' parece igual ao endereço oficial: a troca do 'l' por '1' passa fácil numa leitura rápida. Junte o prazo curto ('antes das 18h') e um link que baixa um programa disfarçado de atualização, e é um golpe bem feito. Sempre confira o endereço letra por letra quando pedirem para instalar algo.",
         "conceptGlossaryId": "dominio_falso"
       },
       "idealInvestigationSeconds": 12
@@ -137,8 +137,8 @@
         }
       ],
       "explanation": {
-        "short": "Golpe de fraude do CEO (BEC): nome de um diretor, email pessoal, pedido urgente e sigiloso.",
-        "detailed": "SPF e DKIM passam porque o email realmente veio de um Gmail de verdade — só que não é o do diretor. Esse é o golpe clássico de 'fraude do CEO' (Business Email Compromise): urgência, sigilo, e um pedido que evita qualquer verificação (cartões-presente são praticamente impossíveis de rastrear ou reverter). A única forma confiável de resolver isso é confirmar por outro canal — uma ligação para o número já conhecido do diretor, nunca respondendo no mesmo email.",
+        "short": "Golpe do pagamento falso em nome de chefe: nome de um diretor, e-mail pessoal, pedido urgente e secreto.",
+        "detailed": "As checagens do e-mail passam porque ele veio mesmo de um Gmail de verdade. Só que não é o do diretor. É o golpe do pagamento falso em nome do chefe: pressa, segredo e um pedido que foge de qualquer conferência (cartão-presente é quase impossível de rastrear ou recuperar). O único jeito seguro é confirmar por outro canal: ligar para o número que você já tem do diretor, nunca responder no mesmo e-mail.",
         "conceptGlossaryId": "bec"
       },
       "idealInvestigationSeconds": 14
@@ -210,7 +210,7 @@
       ],
       "explanation": {
         "short": "Comunicação legítima de um fornecedor de confiança.",
-        "detailed": "Depois do golpe do 'nota_fiscal_2854.pdf.exe', é natural desconfiar de qualquer email desse fornecedor — mas nem todo contato dele é malicioso. Aqui o anexo é um PDF real, o certificado é confiável, e o histórico da conta é consistente. Investigar e confirmar que está tudo certo também é uma vitória: reportar ou excluir comunicações legítimas atrapalha o trabalho e gera ruído desnecessário para o time de segurança.",
+        "detailed": "Depois do golpe do 'nota_fiscal_2854.pdf.exe', dá para desconfiar de qualquer e-mail desse fornecedor. Mas nem todo contato dele é golpe. Aqui o anexo é um PDF de verdade, o site é confiável e o histórico da conta bate. Conferir e ver que está tudo certo também é acerto: reportar ou apagar e-mail de verdade atrapalha o trabalho.",
         "conceptGlossaryId": "fornecedor_comprometido"
       },
       "idealInvestigationSeconds": 8
@@ -257,7 +257,7 @@
         {
           "toolId": "qr_preview",
           "revealsField": "qrCode.decodedUrl",
-          "summaryText": "O QR Code aponta para um domínio parecido com o oficial, mas registrado fora da empresa."
+          "summaryText": "O QR Code leva a um endereço parecido com o oficial, mas que não é da empresa."
         },
         {
           "toolId": "domain_inspect",
@@ -267,12 +267,12 @@
         {
           "toolId": "internal_db_lookup",
           "revealsField": "internalDbRecord",
-          "summaryText": "Domínio recém-criado. RH nunca pede dados bancários dessa forma."
+          "summaryText": "Endereço criado há pouco. RH nunca pede dados do banco assim."
         }
       ],
       "explanation": {
-        "short": "QR Code disfarçando um link de phishing para roubo de dados bancários.",
-        "detailed": "QR Codes escondem a URL de destino da visão direta, o que os torna perfeitos para phishing — a vítima só vê o resultado depois de escanear. Aqui, o domínio por trás do QR Code é uma variação do domínio oficial da empresa, registrada há poucos dias especificamente para esse golpe. Nenhum processo de RH legítimo pede dados bancários sensíveis por QR Code em um prazo apertado.",
+        "short": "QR Code escondendo um link de golpe para roubar dados do banco.",
+        "detailed": "O QR Code esconde aonde ele leva: você só descobre depois de ler. Aqui, o endereço por trás dele é uma imitação do endereço oficial da empresa, criada há poucos dias só para esse golpe. RH de verdade nunca pede dados do banco por QR Code com prazo apertado.",
         "conceptGlossaryId": "qr_falso"
       },
       "idealInvestigationSeconds": 10
@@ -338,12 +338,12 @@
         {
           "toolId": "internal_db_lookup",
           "revealsField": "internalDbRecord",
-          "summaryText": "Não existe essa área com esse domínio. Segurança física não distribui arquivos por email."
+          "summaryText": "Não existe essa área com esse endereço. Segurança nunca manda arquivo por e-mail."
         }
       ],
       "explanation": {
-        "short": "Pretexto de 'pendrive achado' usando engenharia social para justificar um anexo malicioso.",
-        "detailed": "Esse é um clássico ataque de engenharia social conhecido como 'USB drop', adaptado para email: em vez de deixar um pendrive infectado no chão esperando alguém conectar por curiosidade, o atacante finge já ter feito isso e envia o 'conteúdo' por email — pulando a etapa de precisar de acesso físico. A extensão dupla '.pdf.scr' esconde um executável, e a sandbox confirma o comportamento malicioso. Como é um ataque direcionado e deliberado contra a empresa, vale reportar ao TI, não só excluir.",
+        "short": "Desculpa do 'pen drive achado' para justificar um anexo perigoso.",
+        "detailed": "É a velha história do pen drive largado no chão, agora por e-mail: em vez de deixar um pen drive com vírus esperando alguém espetar, o golpista finge que achou e manda o 'conteúdo' por e-mail. O arquivo '.pdf.scr' esconde um programa, e o teste confirma que é perigoso. Como é um ataque de propósito contra a empresa, vale reportar à TI, não só apagar.",
         "conceptGlossaryId": "usb_infectado"
       },
       "idealInvestigationSeconds": 14

@@ -71,12 +71,12 @@
         {
           "toolId": "internal_db_lookup",
           "revealsField": "internalDbRecord",
-          "summaryText": "Domain registered only 2 days ago — too recent to be an official IT communication."
+          "summaryText": "Address created only 2 days ago. Far too recent to be a real IT notice."
         }
       ],
       "explanation": {
-        "short": "Homograph domain ('1' instead of 'l') requesting the installation of an executable.",
-        "detailed": "At first glance, 'leroymer1in.com.br' looks identical to the official domain — swapping 'l' for '1' is the kind of homograph that's easiest to miss on a quick read. Combined with a short deadline ('before 6pm') and a link that downloads a .exe disguised as a VPN update, this is a well-constructed phishing attack. Always check the domain letter by letter when the request involves installing something.",
+        "short": "Address with a swapped letter ('1' instead of 'l') asking you to install a program.",
+        "detailed": "At first glance, 'leroymer1in.com.br' looks like the official address: swapping 'l' for '1' slips right past a quick read. Add a short deadline ('before 6pm') and a link that downloads a program disguised as an update, and it's a well-made scam. Always check the address letter by letter when someone asks you to install something.",
         "conceptGlossaryId": "dominio_falso"
       },
       "idealInvestigationSeconds": 12
@@ -137,8 +137,8 @@
         }
       ],
       "explanation": {
-        "short": "CEO fraud scam (BEC): a director's name, a personal email, an urgent and confidential request.",
-        "detailed": "SPF and DKIM pass because the email really did come from a real Gmail account — it just isn't the director's. This is the classic 'CEO fraud' scam (Business Email Compromise): urgency, secrecy, and a request that avoids any verification (gift cards are practically impossible to trace or reverse). The only reliable way to resolve this is to confirm through a different channel — a call to the director's already-known number, never replying on the same email.",
+        "short": "Fake-payment scam in a boss's name: a director's name, a personal email, an urgent and secret request.",
+        "detailed": "The email's checks pass because it really did come from a real Gmail account. It just isn't the director's. It's the fake-payment scam in a boss's name: rush, secrecy, and a request that dodges any check (gift cards are nearly impossible to trace or recover). The only safe way is to confirm through another channel: call the director's number that you already have, never reply on the same email.",
         "conceptGlossaryId": "bec"
       },
       "idealInvestigationSeconds": 14
@@ -210,7 +210,7 @@
       ],
       "explanation": {
         "short": "Legitimate communication from a trusted vendor.",
-        "detailed": "After the 'invoice_2854.pdf.exe' scam, it's natural to be suspicious of any email from this vendor — but not every contact from them is malicious. Here the attachment is a real PDF, the certificate is trustworthy, and the account's history is consistent. Investigating and confirming that everything is fine is also a win: reporting or deleting legitimate communications disrupts the work and creates unnecessary noise for the security team.",
+        "detailed": "After the 'invoice_2854.pdf.exe' scam, you can be suspicious of any email from this vendor. But not every contact from them is a scam. Here the attachment is a real PDF, the site is trustworthy, and the account's history matches. Checking and finding everything is fine is also a win: reporting or deleting real email disrupts the work.",
         "conceptGlossaryId": "fornecedor_comprometido"
       },
       "idealInvestigationSeconds": 8
@@ -257,7 +257,7 @@
         {
           "toolId": "qr_preview",
           "revealsField": "qrCode.decodedUrl",
-          "summaryText": "The QR code points to a domain that looks similar to the official one, but was registered outside the company."
+          "summaryText": "The QR code leads to an address that looks like the official one, but isn't the company's."
         },
         {
           "toolId": "domain_inspect",
@@ -267,12 +267,12 @@
         {
           "toolId": "internal_db_lookup",
           "revealsField": "internalDbRecord",
-          "summaryText": "Recently created domain. HR never asks for bank details this way."
+          "summaryText": "Recently created address. HR never asks for bank details this way."
         }
       ],
       "explanation": {
-        "short": "QR code disguising a phishing link to steal bank details.",
-        "detailed": "QR codes hide the destination URL from direct view, which makes them perfect for phishing — the victim only sees the result after scanning. Here, the domain behind the QR code is a variation of the company's official domain, registered just a few days ago specifically for this scam. No legitimate HR process asks for sensitive bank details via QR code under a tight deadline.",
+        "short": "QR code hiding a scam link to steal bank details.",
+        "detailed": "A QR code hides where it leads: you only find out after you scan it. Here, the address behind it is an imitation of the company's official address, created a few days ago just for this scam. Real HR never asks for bank details through a QR code with a tight deadline.",
         "conceptGlossaryId": "qr_falso"
       },
       "idealInvestigationSeconds": 10
@@ -338,12 +338,12 @@
         {
           "toolId": "internal_db_lookup",
           "revealsField": "internalDbRecord",
-          "summaryText": "There is no such department with this domain. Physical security doesn't distribute files by email."
+          "summaryText": "There is no such department with this address. Security never sends files by email."
         }
       ],
       "explanation": {
-        "short": "'Found USB drive' pretext using social engineering to justify a malicious attachment.",
-        "detailed": "This is a classic social engineering attack known as a 'USB drop,' adapted for email: instead of leaving an infected USB drive on the floor hoping someone connects it out of curiosity, the attacker pretends to have already done that and sends the 'content' by email — skipping the step of needing physical access. The double extension '.pdf.scr' hides an executable, and the sandbox confirms the malicious behavior. Since this is a targeted, deliberate attack against the company, it's worth reporting to IT, not just deleting.",
+        "short": "'Found USB drive' excuse to justify a dangerous attachment.",
+        "detailed": "It's the old story of a USB drive left on the floor, now by email: instead of leaving an infected drive hoping someone plugs it in, the scammer pretends they found it and sends the 'content' by email. The file '.pdf.scr' hides a program, and the test confirms it's dangerous. Since it's a deliberate attack against the company, it's worth reporting to IT, not just deleting.",
         "conceptGlossaryId": "usb_infectado"
       },
       "idealInvestigationSeconds": 14

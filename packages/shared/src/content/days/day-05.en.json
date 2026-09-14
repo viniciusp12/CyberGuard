@@ -89,7 +89,7 @@
       ],
       "explanation": {
         "short": "Subdomain trick + fabricated video call image to lend credibility to a PIX request.",
-        "detailed": "'leroymerlin.corp-mail.com' looks like it has 'leroymerlin' in the name, but the real domain is 'corp-mail.com' — the company appears only as a subdomain, a trick designed to fool a quick reader. The attached 'confirmation' is just an image, easy to fabricate or pull from another context. Urgent, confidential transfer requests that bypass the normal process are the classic pattern of CEO fraud — the only real defense is to confirm through a different channel, such as a call to the person's already-known number.",
+        "detailed": "'leroymerlin.corp-mail.com' looks like it has 'leroymerlin' in the name, but the real address is 'corp-mail.com' — the company shows up only as decoration, to fool a quick reader. The attached 'confirmation' is just an image, easy to fake. An urgent, secret transfer request that bypasses the normal process is the fake-payment scam in a boss's name. The only real defense is to confirm through another channel, like calling the number you already have for the person.",
         "conceptGlossaryId": "deepfake"
       },
       "idealInvestigationSeconds": 16
@@ -204,8 +204,8 @@
         }
       ],
       "explanation": {
-        "short": "Legitimate MFA alert, from the official domain, with a safe option to ignore it.",
-        "detailed": "Unlike phishing scams, this email doesn't ask you to click anything or create artificial urgency — it just provides a code and clearly explains what to do if you don't recognize the attempt. The domain, SPF, DKIM, and DMARC confirm the legitimate origin. Real MFA alerts work like this: informative, with no links, and with a safe way out for anyone who doesn't recognize the login attempt.",
+        "short": "A real two-step verification alert, from the official address, with a safe option to ignore it.",
+        "detailed": "Unlike a scam, this email doesn't ask you to click anything or rush you. It just gives a code and explains what to do if you don't recognize the sign-in. The address and the email's checks confirm it's real. A real two-step verification alert works like this: it informs, has no link, and gives a safe way out for anyone who doesn't recognize the sign-in.",
         "conceptGlossaryId": "mfa"
       },
       "idealInvestigationSeconds": 8
@@ -250,7 +250,7 @@
         {
           "toolId": "link_hover",
           "revealsField": "links[0].actualUrl",
-          "summaryText": "The link leads to a generic financial-scam domain, unrelated to any real bank."
+          "summaryText": "The link leads to a random financial-scam address, unrelated to any real bank."
         },
         {
           "toolId": "domain_inspect",
@@ -336,7 +336,7 @@
       ],
       "explanation": {
         "short": "The vendor's real account was compromised to swap the invoice's bank details.",
-        "detailed": "This is the 'tampered invoice' scam in its most dangerous form: the email really does come from the vendor's real account (which is why SPF/DKIM/DMARC pass and the certificate is technically valid), because the account was compromised. Changing bank payee details with no advance notice through an already-established channel is always a reason to confirm outside of email before paying anything — and it was exactly that confirmation that exposed the fraud.",
+        "detailed": "This is the 'swapped invoice' scam at its worst: the email really does come from the vendor's real account (which is why the checks pass), because the account was hacked. A change of payment account, with no notice through the usual channel, is always a reason to confirm outside of email before paying. It was that confirmation that exposed the scam.",
         "conceptGlossaryId": "boleto_adulterado"
       },
       "idealInvestigationSeconds": 14
@@ -381,7 +381,7 @@
         {
           "toolId": "link_hover",
           "revealsField": "links[0].actualUrl",
-          "summaryText": "Generic spam domain ('mega-descontos-vip.shop'), with no connection to the company."
+          "summaryText": "A random scam-ad address ('mega-descontos-vip.shop'), with no connection to the company."
         },
         {
           "toolId": "header_inspect",
@@ -391,7 +391,7 @@
       ],
       "explanation": {
         "short": "Generic promotional spam with artificial urgency, with no specific target.",
-        "detailed": "Artificial urgency ('only for the next 2 hours') and an offer too good to be true are classic signs of low-effort spam/phishing, blasted out in bulk to any email list, with no specific connection to the company. It doesn't represent a targeted threat requiring IT action — the right move here is simply to delete it.",
+        "detailed": "Pressure ('only for the next 2 hours') and an offer too good to be true are the face of a scam blasted out in bulk, to any email list, with no connection to the company. It isn't a targeted attack that needs IT. The right move here is simply to delete it.",
         "conceptGlossaryId": "phishing_urgencia"
       },
       "idealInvestigationSeconds": 6

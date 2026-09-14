@@ -50,13 +50,13 @@
       "tags": ["phishing", "link_malicioso"],
       "difficulty": 3,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Repare com atenção: o domínio usa um 'I' maiúsculo no lugar do 'l' minúsculo — um ataque de homógrafos que engana o olho." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Repare: o endereço usa um 'I' maiúsculo no lugar do 'l' minúsculo. É o truque da letra trocada, que engana o olho." },
         { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM e DMARC falharam todos." },
-        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Domínio visualmente idêntico ao oficial, mas registrado há apenas 3 dias." }
+        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Endereço igualzinho ao oficial na aparência, mas criado há só 3 dias." }
       ],
       "explanation": {
         "short": "Ataque de homógrafos: 'I' maiúsculo no lugar de 'l' minúsculo.",
-        "detailed": "Em muitas fontes, a letra 'I' maiúscula é quase indistinguível de 'l' minúsculo. Este email usa 'leroymerIin.com.br' em vez de 'leroymerlin.com.br' — visualmente idêntico, mas um domínio completamente diferente e registrado há apenas 3 dias. Isso é chamado de ataque de homógrafos.",
+        "detailed": "A letra 'I' maiúscula parece um 'l' minúsculo em muitas letras. Este e-mail usa 'leroymerIin.com.br' no lugar de 'leroymerlin.com.br': parece igual, mas é outro endereço, criado há só 3 dias. É o truque da letra trocada.",
         "conceptGlossaryId": "ataque_homografos"
       },
       "idealInvestigationSeconds": 10
@@ -96,13 +96,13 @@
       "tags": ["pix_falso", "bec", "engenharia_social"],
       "difficulty": 3,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'leroymerlin-corp.com' não é o domínio oficial da empresa." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'leroymerlin-corp.com' não é o endereço oficial da empresa." },
         { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF e DMARC falharam." },
         { "toolId": "ai_assistant", "revealsField": "aiAssistantHint", "summaryText": "A IA identifica um padrão clássico de fraude de PIX/BEC com alta confiança." }
       ],
       "explanation": {
-        "short": "Fraude de PIX urgente (BEC) se passando por diretoria.",
-        "detailed": "Pedidos de pagamento urgente por PIX, sem processo formal de aprovação e criando pressão emocional ('estou em reunião', 'não perder a condição'), são a marca registrada de fraudes de Business Email Compromise (BEC). O domínio do remetente confirma: não é o oficial da empresa. Pagamentos urgentes sempre devem ser confirmados por outro canal antes de executados.",
+        "short": "Golpe do pagamento falso: PIX urgente fingindo ser a diretoria.",
+        "detailed": "Pedido de PIX urgente, sem aprovação, com pressão ('estou em reunião', 'não perca a condição'): é o golpe do pagamento falso. O endereço de quem enviou não é o oficial da empresa. Pagamento urgente sempre deve ser confirmado por outro canal antes de ser feito.",
         "conceptGlossaryId": "bec_pix_urgente"
       },
       "idealInvestigationSeconds": 8
@@ -154,7 +154,7 @@
       ],
       "explanation": {
         "short": "Fornecedor real, mas boleto com beneficiário adulterado.",
-        "detailed": "Este é o cenário mais perigoso: remetente real, domínio real, autenticação de email real (SPF/DKIM/DMARC todos passam). O golpe está dentro do PDF — o beneficiário do boleto foi trocado para uma conta diferente da cadastrada. A defesa aqui não é técnica, é processual: sempre confirmar mudanças de forma de pagamento por telefone com um contato já conhecido do fornecedor, nunca só pelo email.",
+        "detailed": "Este é o caso mais perigoso: remetente de verdade, endereço de verdade, checagens do e-mail todas certas. O golpe está dentro do PDF: quem recebe o boleto foi trocado por outra conta. A defesa aqui não é técnica. Sempre confirme mudança de forma de pagamento por telefone, com um contato que você já conhece do fornecedor. Nunca só pelo e-mail.",
         "conceptGlossaryId": "boleto_adulterado_fornecedor_real"
       },
       "idealInvestigationSeconds": 12
@@ -200,13 +200,13 @@
       "tags": ["microsoft_falso", "phishing", "link_malicioso"],
       "difficulty": 3,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'micros0ft-online.com' usa o número zero no lugar da letra 'o' — não é um domínio da Microsoft." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'micros0ft-online.com' usa o número zero no lugar da letra 'o'. Não é um endereço da Microsoft." },
         { "toolId": "certificate_view", "revealsField": "certificate", "summaryText": "O certificado é tecnicamente válido, mas emitido para o domínio falso, não para a Microsoft real." },
         { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM e DMARC falharam." }
       ],
       "explanation": {
-        "short": "Domínio da Microsoft falsificado com número no lugar de letra.",
-        "detailed": "'micros0ft-online.com' substitui o 'o' por um zero — um truque comum de domínio parecido (typosquatting). O certificado HTTPS é tecnicamente válido, o que prova apenas que a conexão é criptografada, não que o site é da Microsoft. A Microsoft real nunca usaria esse domínio, e a falha total de SPF/DKIM/DMARC confirma a falsificação.",
+        "short": "Endereço da Microsoft falso, com número no lugar de letra.",
+        "detailed": "'micros0ft-online.com' troca o 'o' por um zero: é o truque do endereço parecido. O cadeado do site funciona, mas isso só diz que a conexão é segura, não que o site é da Microsoft. A Microsoft de verdade nunca usaria esse endereço, e as checagens do e-mail falharam.",
         "conceptGlossaryId": "microsoft_falso_typosquatting"
       },
       "idealInvestigationSeconds": 9
@@ -257,7 +257,7 @@
       ],
       "explanation": {
         "short": "Conta de fornecedor real comprometida para desviar pagamentos.",
-        "detailed": "Tudo aqui parece legítimo tecnicamente: domínio real, autenticação de email real. O golpe é a mudança de dados bancários solicitada só por email, sem nenhum processo formal — sinal clássico de conta de fornecedor comprometida (fornecedor real, mas invadido). Toda mudança de dados bancários de fornecedores deve ser confirmada por telefone com um contato já conhecido, nunca apenas pelo email recebido.",
+        "detailed": "Tudo aqui parece de verdade: endereço real, checagens do e-mail certas. O golpe é a troca de dados bancários pedida só por e-mail, sem processo nenhum. É sinal de fornecedor de verdade, mas com a conta invadida. Toda troca de dados bancários de fornecedor deve ser confirmada por telefone, com um contato que você já conhece. Nunca só pelo e-mail.",
         "conceptGlossaryId": "fornecedor_comprometido_troca_bancaria"
       },
       "idealInvestigationSeconds": 8
@@ -303,12 +303,12 @@
       "tags": ["phishing"],
       "difficulty": 3,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Domínio oficial da empresa." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Endereço oficial da empresa." },
         { "toolId": "attachment_analysis", "revealsField": "attachments[0].actualType", "summaryText": "PDF legítimo, extensão e tipo real coincidem, sem macro." }
       ],
       "explanation": {
         "short": "Comunicado interno legítimo com anexo seguro.",
-        "detailed": "Domínio oficial, autenticação de email correta, e o anexo é um PDF real sem sinais de adulteração ou malware. Nem todo anexo é perigoso — o importante é sempre verificar antes de assumir.",
+        "detailed": "Endereço oficial, checagens do e-mail certas, e o anexo é um PDF de verdade, sem sinal de vírus. Nem todo anexo é perigoso: o importante é conferir antes de decidir.",
         "conceptGlossaryId": "nem_todo_anexo_e_perigoso"
       },
       "idealInvestigationSeconds": 4

@@ -4,21 +4,21 @@
     "question": "An email asks you to click a link to 'avoid your account being blocked in 24 hours.' What does this indicate?",
     "options": [
       "It's always legitimate, accounts really do get blocked quickly",
-      "Artificial urgency is a classic social engineering technique",
-      "It's only phishing if it comes from an unknown sender",
+      "Forced pressure is a classic scam technique",
+      "It's only a scam if it comes from an unknown sender",
       "It doesn't indicate anything, it's just a writing style"
     ],
     "correctIndex": 1,
     "concept": "engenharia_social",
     "difficulty": 1,
-    "explanation": "Creating a sense of urgency to reduce your reflection time before acting is a classic social engineering tactic."
+    "explanation": "Creating pressure so you act without thinking is a classic scam tactic."
   },
   {
     "id": "quiz-02",
     "question": "What is a homograph attack?",
     "options": [
       "A virus that replicates across multiple machines",
-      "Using visually similar characters (like an uppercase 'I' instead of a lowercase 'l') to fake a domain",
+      "Using similar-looking letters (like an uppercase 'I' instead of a lowercase 'l') to imitate an address",
       "Sending the same email to many people",
       "A type of scam carried out only by phone"
     ],
@@ -39,21 +39,21 @@
     "correctIndex": 2,
     "concept": "pix_falso",
     "difficulty": 3,
-    "explanation": "Urgent, secretive payment requests are the hallmark of BEC fraud — always confirm through another channel."
+    "explanation": "An urgent, secret payment request is the mark of the fake-payment scam — always confirm through another channel."
   },
   {
     "id": "quiz-04",
-    "question": "Why should you never disable two-factor authentication (MFA) at an email's request?",
+    "question": "Why should you never turn off two-step verification at an email's request?",
     "options": [
-      "Because MFA is optional and makes no difference",
+      "Because two-step verification is optional and makes no difference",
       "Because it removes one of the main protections against account takeover",
       "Because it only works on Android phones",
-      "Because disabling MFA is illegal"
+      "Because turning off two-step verification is illegal"
     ],
     "correctIndex": 1,
     "concept": "mfa",
     "difficulty": 2,
-    "explanation": "MFA is one of the most important defenses against account takeover — no legitimate IT team asks you to disable it."
+    "explanation": "Two-step verification is one of the best defenses against account takeover — a real IT team never asks you to turn it off."
   },
   {
     "id": "quiz-05",
@@ -71,7 +71,7 @@
   },
   {
     "id": "quiz-06",
-    "question": "A valid HTTPS certificate (green padlock) on a website means:",
+    "question": "A padlock (secure connection) on a website means:",
     "options": [
       "The site is 100% trustworthy and safe",
       "The connection is encrypted, but that doesn't guarantee the content is legitimate",
@@ -81,7 +81,7 @@
     "correctIndex": 1,
     "concept": "phishing",
     "difficulty": 3,
-    "explanation": "HTTPS only guarantees the connection is encrypted — fake sites can also have a valid certificate."
+    "explanation": "The padlock only guarantees the connection is secure — a fake site can have a padlock too."
   },
   {
     "id": "quiz-07",
@@ -102,7 +102,7 @@
     "question": "Which sign MOST indicates that a 'WhatsApp' email asking for session confirmation is fake?",
     "options": [
       "The logo is green",
-      "The sender's domain has no relation to Meta/WhatsApp",
+      "The sender's address has no relation to Meta/WhatsApp",
       "The email arrived in the morning",
       "The subject line has an emoji"
     ],
@@ -141,7 +141,7 @@
   },
   {
     "id": "quiz-11",
-    "question": "What characterizes a 'CEO Fraud' / BEC (Business Email Compromise) scam?",
+    "question": "What is the fake-payment scam in a boss's name?",
     "options": [
       "A virus that specifically attacks executives",
       "A scammer impersonating an executive to induce payments or urgent actions",
@@ -151,21 +151,21 @@
     "correctIndex": 1,
     "concept": "bec",
     "difficulty": 4,
-    "explanation": "BEC/CEO Fraud uses an executive's perceived authority to pressure the victim into acting without verifying."
+    "explanation": "This scam uses a boss's authority to pressure the victim into acting without checking."
   },
   {
     "id": "quiz-12",
-    "question": "Why should a domain like 'microsoft-support-verification.com' raise suspicion?",
+    "question": "Why should an address like 'microsoft-support-verification.com' raise suspicion?",
     "options": [
       "Because it's too long",
-      "Because it's not Microsoft's official domain, it just contains the word 'microsoft'",
+      "Because it's not Microsoft's official address, it just has the word 'microsoft' in it",
       "Because it uses a hyphen",
       "Domains like this are always legitimate partners"
     ],
     "correctIndex": 1,
     "concept": "microsoft_falso",
     "difficulty": 2,
-    "explanation": "Containing a brand name doesn't make a domain official — anyone can register a domain like this."
+    "explanation": "Having a brand name doesn't make an address official — anyone can create an address like this."
   },
   {
     "id": "quiz-13",
@@ -186,14 +186,14 @@
     "question": "A text message warns that a package is being held and asks you to click a link to release it. This is:",
     "options": [
       "Always true, packages get held frequently",
-      "Possible SMS phishing (smishing), especially if you weren't expecting a package",
+      "Possibly an SMS scam, especially if you weren't expecting a package",
       "Only a scam if it comes from an international number",
       "Safe, as long as the link starts with 'https'"
     ],
     "correctIndex": 1,
     "concept": "sms_falso",
     "difficulty": 2,
-    "explanation": "SMS scams (smishing) use the same social engineering as email phishing, with urgency and fake links."
+    "explanation": "SMS scams use the same manipulation as email scams, with pressure and fake links."
   },
   {
     "id": "quiz-15",
@@ -211,11 +211,11 @@
   },
   {
     "id": "quiz-16",
-    "question": "The system's 'Corporate AI' flags only a 40% probability of phishing for an email that is actually malicious. This means:",
+    "question": "The support tool flags only a 40% chance of a scam for an email that is actually dangerous. This means:",
     "options": [
       "The AI never makes mistakes, so the email is safe",
       "AI tools are a support, but they can be wrong — human judgment is still necessary",
-      "40% is already enough proof that it's phishing",
+      "40% is already enough proof that it's a scam",
       "The tool should be disabled"
     ],
     "correctIndex": 1,
@@ -235,11 +235,11 @@
     "correctIndex": 1,
     "concept": "engenharia_social",
     "difficulty": 1,
-    "explanation": "Reducing the victim's reflection time is one of the most commonly used tactics in social engineering scams."
+    "explanation": "Reducing the victim's time to think is one of the most commonly used tactics in scams."
   },
   {
     "id": "quiz-18",
-    "question": "What should you do if you suspect an email is phishing, even without absolute certainty?",
+    "question": "What should you do if you suspect an email is a scam, even without total certainty?",
     "options": [
       "Ignore it and delete it without reporting",
       "Report it to IT/information security for analysis",

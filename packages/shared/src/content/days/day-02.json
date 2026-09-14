@@ -50,8 +50,8 @@
       "tags": ["whatsapp_falso", "phishing", "link_malicioso"],
       "difficulty": 2,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "O WhatsApp não envia notificações por um domínio próprio como este — é um domínio genérico não relacionado à Meta." },
-        { "toolId": "link_hover", "revealsField": "links[0].actualUrl", "summaryText": "O link não leva ao WhatsApp Web oficial (web.whatsapp.com), e sim a um domínio desconhecido." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "O WhatsApp não avisa por um endereço como este. É um endereço qualquer, sem ligação com o WhatsApp." },
+        { "toolId": "link_hover", "revealsField": "links[0].actualUrl", "summaryText": "O link não leva ao WhatsApp Web oficial (web.whatsapp.com), e sim a um endereço desconhecido." },
         { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Remetente nunca utilizado antes." }
       ],
       "explanation": {
@@ -93,12 +93,12 @@
       "tags": ["sms_falso", "phishing", "link_malicioso"],
       "difficulty": 2,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Nenhuma operadora de telefonia usa este domínio genérico '.info' para notificações." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Nenhuma operadora de celular usa um endereço '.info' qualquer como este para avisar você." },
         { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM e DMARC falharam todos — o servidor de origem não está autorizado." }
       ],
       "explanation": {
         "short": "Central de SMS falsa criando urgência com 'mensagem será apagada'.",
-        "detailed": "Operadoras de telefonia não retêm SMS para visualização via link de email. A urgência ('será apagada permanentemente') é engenharia social clássica, e a falha total de SPF/DKIM/DMARC confirma que o remetente não está autorizado a enviar em nome de nenhuma operadora real.",
+        "detailed": "Operadora de celular não guarda SMS para você ver por um link de e-mail. A pressa ('será apagada para sempre') é para você não pensar. E as checagens automáticas do e-mail falharam: não veio de operadora nenhuma.",
         "conceptGlossaryId": "sms_falso"
       },
       "idealInvestigationSeconds": 5
@@ -135,13 +135,13 @@
       "tags": ["link_malicioso", "phishing"],
       "difficulty": 2,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'rh-leroymerlin.com' não é o domínio oficial da empresa — é um domínio separado criado só para parecer relacionado ao RH." },
-        { "toolId": "link_hover", "revealsField": "links[0].actualUrl", "summaryText": "O link leva ao mesmo domínio falso, não ao portal interno real." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'rh-leroymerlin.com' não é o endereço oficial da empresa. Foi criado só para parecer que é do RH." },
+        { "toolId": "link_hover", "revealsField": "links[0].actualUrl", "summaryText": "O link leva ao mesmo endereço falso, não ao portal de verdade." },
         { "toolId": "domain_inspect", "revealsField": "sender.domain", "summaryText": "Domínio registrado separadamente do domínio oficial da empresa, sem qualquer relação corporativa real." }
       ],
       "explanation": {
-        "short": "Domínio parecido, mas separado do oficial.",
-        "detailed": "Um domínio como 'rh-leroymerlin.com' pode parecer relacionado à empresa à primeira vista, mas é um domínio totalmente independente — qualquer pessoa pode registrar um domínio contendo o nome de uma empresa. O link de 'acessar portal' confirma: aponta para esse mesmo domínio falso.",
+        "short": "Endereço parecido, mas não é o oficial.",
+        "detailed": "Um endereço como 'rh-leroymerlin.com' parece ser da empresa, mas não é. Qualquer um pode criar um endereço com o nome de uma empresa dentro. O link de 'acessar portal' leva para esse mesmo endereço falso.",
         "conceptGlossaryId": "link_malicioso_dominio_parecido"
       },
       "idealInvestigationSeconds": 7
@@ -151,7 +151,7 @@
       "dayId": "day-02",
       "order": 4,
       "subject": "Ação necessária: desative temporariamente sua verificação em duas etapas",
-      "bodyHtml": "<p>Durante a migração do nosso sistema de autenticação, pedimos que desative temporariamente a verificação em duas etapas (MFA) da sua conta para evitar bloqueios. Reative após 24h.</p>",
+      "bodyHtml": "<p>Durante a migração do nosso sistema, pedimos que desative por um tempo a verificação em duas etapas da sua conta para evitar bloqueios. Reative após 24h.</p>",
       "sender": {
         "displayName": "TI Corporativo",
         "emailAddressRaw": "ti@suporte-corporativo-ti.com",
@@ -183,13 +183,13 @@
       "tags": ["mfa", "engenharia_social", "phishing"],
       "difficulty": 2,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "O domínio não pertence à empresa nem a nenhum fornecedor de TI conhecido." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "O endereço não é da empresa nem de nenhum fornecedor de TI conhecido." },
         { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF e DKIM falharam." },
         { "toolId": "ai_assistant", "revealsField": "aiAssistantHint", "summaryText": "A IA aponta alta probabilidade de phishing de forma confiável." }
       ],
       "explanation": {
-        "short": "Nenhuma equipe de TI legítima pede para desativar o MFA.",
-        "detailed": "A verificação em duas etapas (MFA) é uma das defesas mais importantes contra invasão de contas. Nenhuma equipe de TI legítima jamais pede para desativá-la por email — isso remove justamente a proteção que impede um invasor de usar uma senha vazada. Combine isso com o domínio não oficial e a falha de autenticação do servidor.",
+        "short": "Equipe de TI de verdade nunca pede para desligar a confirmação em duas etapas.",
+        "detailed": "A confirmação em duas etapas é uma das melhores defesas contra invasão de conta. Equipe de TI de verdade nunca pede para desligá-la por e-mail — isso tira justo a proteção que impede alguém de usar uma senha vazada. Some isso ao endereço que não é o oficial.",
         "conceptGlossaryId": "mfa_nunca_desativar"
       },
       "idealInvestigationSeconds": 6
@@ -242,7 +242,7 @@
       ],
       "explanation": {
         "short": "Isca clássica de 'USB perdido' adaptada para email.",
-        "detailed": "O golpe do 'pendrive perdido' normalmente envolve deixar um USB infectado em local público para alguém conectar por curiosidade; aqui a isca chega direto por email, com um arquivo disfarçado de fotos. O 'zip' é na verdade um executável, e a sandbox confirma comportamento malicioso — criação de um processo com nome quase idêntico a um processo legítimo do Windows para passar despercebido.",
+        "detailed": "O golpe do 'pen drive perdido' costuma ser deixar um pen drive com vírus num lugar público, para alguém espetar por curiosidade. Aqui a isca vem por e-mail, num arquivo que finge ser fotos. O 'zip' é, na verdade, um programa perigoso disfarçado.",
         "conceptGlossaryId": "usb_infectado"
       },
       "idealInvestigationSeconds": 9
@@ -288,12 +288,12 @@
       "tags": ["phishing"],
       "difficulty": 2,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Domínio oficial da empresa." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Endereço oficial da empresa." },
         { "toolId": "certificate_view", "revealsField": "certificate", "summaryText": "Certificado válido e confiável, emitido para o domínio oficial." }
       ],
       "explanation": {
         "short": "Comunicado interno legítimo.",
-        "detailed": "Domínio oficial, link para o portal interno real, certificado válido e emitido para o domínio correto, sem urgência artificial nem pedido de dados sensíveis — todos os sinais apontam para um email legítimo.",
+        "detailed": "Endereço oficial, link para o portal de verdade, sem pressa e sem pedir dados. Todos os sinais mostram um e-mail de verdade.",
         "conceptGlossaryId": "nem_tudo_e_phishing"
       },
       "idealInvestigationSeconds": 4

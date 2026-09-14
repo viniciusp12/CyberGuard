@@ -89,7 +89,7 @@
       ],
       "explanation": {
         "short": "Truque de subdomínio + imagem forjada de videochamada para dar credibilidade a um pedido de PIX.",
-        "detailed": "'leroymerlin.corp-mail.com' parece ter 'leroymerlin' no nome, mas o domínio de verdade é 'corp-mail.com' — a empresa aparece só como subdomínio, um truque para enganar quem lê rápido. A 'confirmação' anexada é só uma imagem, fácil de forjar ou tirar de outro contexto. Pedidos de transferência urgente, sigilosa e fora do processo normal são o padrão clássico de fraude de CEO — a única defesa real é confirmar por um canal diferente, como uma ligação para o número já conhecido da pessoa.",
+        "detailed": "'leroymerlin.corp-mail.com' parece ter 'leroymerlin' no nome, mas o endereço de verdade é 'corp-mail.com' — a empresa aparece só como enfeite, para enganar quem lê rápido. A 'confirmação' anexada é só uma imagem, fácil de forjar. Pedido de transferência urgente, secreto e fora do processo é o golpe do pagamento falso em nome do chefe. A única defesa real é confirmar por outro canal, como ligar para o número que você já tem da pessoa.",
         "conceptGlossaryId": "deepfake"
       },
       "idealInvestigationSeconds": 16
@@ -204,8 +204,8 @@
         }
       ],
       "explanation": {
-        "short": "Alerta de MFA legítimo, vindo do domínio oficial e com opção segura de ignorar.",
-        "detailed": "Diferente de golpes de phishing, este email não pede para clicar em nada nem cria urgência artificial — ele só informa um código e explica claramente o que fazer se você não reconhecer a tentativa. O domínio, SPF, DKIM e DMARC confirmam a origem legítima. Alertas de MFA de verdade funcionam assim: informativos, sem links, e com uma saída segura para quem não reconhece a tentativa de login.",
+        "short": "Aviso de verdade de confirmação em duas etapas, do endereço oficial, com opção segura de ignorar.",
+        "detailed": "Diferente de um golpe, este e-mail não pede para clicar em nada nem te apressa. Ele só informa um código e explica o que fazer se você não reconhecer o acesso. O endereço e as checagens do e-mail confirmam que é de verdade. Aviso de confirmação em duas etapas funciona assim: informa, não tem link, e dá uma saída segura para quem não reconhece o acesso.",
         "conceptGlossaryId": "mfa"
       },
       "idealInvestigationSeconds": 8
@@ -250,7 +250,7 @@
         {
           "toolId": "link_hover",
           "revealsField": "links[0].actualUrl",
-          "summaryText": "O link leva a um domínio genérico de golpe financeiro, sem relação com bancos reais."
+          "summaryText": "O link leva a um endereço qualquer de golpe financeiro, sem relação com banco de verdade."
         },
         {
           "toolId": "domain_inspect",
@@ -336,7 +336,7 @@
       ],
       "explanation": {
         "short": "Conta real do fornecedor comprometida para trocar os dados bancários do boleto.",
-        "detailed": "Este é o golpe de 'boleto adulterado' em sua forma mais perigosa: o email vem de verdade da conta real do fornecedor (por isso SPF/DKIM/DMARC passam e o certificado é tecnicamente válido), porque a conta foi comprometida. A mudança de beneficiário bancário sem aviso prévio por um canal já estabelecido é sempre motivo para confirmar por fora do email antes de pagar qualquer coisa — e foi exatamente essa confirmação que revelou a fraude.",
+        "detailed": "Este é o golpe do 'boleto trocado' na pior forma: o e-mail vem mesmo da conta real do fornecedor (por isso as checagens passam), porque a conta foi invadida. Troca de conta para pagamento, sem aviso pelo canal de sempre, é sempre motivo para confirmar fora do e-mail antes de pagar. Foi essa confirmação que revelou o golpe.",
         "conceptGlossaryId": "boleto_adulterado"
       },
       "idealInvestigationSeconds": 14
@@ -381,7 +381,7 @@
         {
           "toolId": "link_hover",
           "revealsField": "links[0].actualUrl",
-          "summaryText": "Domínio genérico de spam ('mega-descontos-vip.shop'), sem qualquer relação com a empresa."
+          "summaryText": "Endereço qualquer de propaganda golpista ('mega-descontos-vip.shop'), sem relação com a empresa."
         },
         {
           "toolId": "header_inspect",
@@ -391,7 +391,7 @@
       ],
       "explanation": {
         "short": "Spam promocional genérico com urgência artificial, sem alvo específico.",
-        "detailed": "Urgência artificial ('só nas próximas 2 horas') e uma oferta boa demais para ser verdade são sinais clássicos de spam/phishing de baixo esforço, disparado em massa para qualquer lista de emails, sem relação com a empresa especificamente. Não representa uma ameaça direcionada que exija ação do TI — o certo aqui é simplesmente apagar.",
+        "detailed": "Pressa ('só nas próximas 2 horas') e oferta boa demais para ser verdade são a cara do golpe disparado em massa, para qualquer lista de e-mails, sem relação com a empresa. Não é um ataque direcionado que precise da TI. O certo aqui é só apagar.",
         "conceptGlossaryId": "phishing_urgencia"
       },
       "idealInvestigationSeconds": 6

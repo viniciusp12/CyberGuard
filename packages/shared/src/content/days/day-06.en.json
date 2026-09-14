@@ -110,7 +110,7 @@
       ],
       "explanation": {
         "short": "Suspicious signs with a real explanation — not every yellow flag is an attack.",
-        "detailed": "A neutral SPF result and an unfamiliar originating server would look suspicious at first glance — but here there's a real explanation (email provider migration), independently confirmed by phone. DKIM and DMARC remain valid, the attachment is clean, and the out-of-band confirmation closes the case. After so many days of seeing compromised vendors, it's tempting to report or delete out of caution — but that also has a cost: it delays legitimate payments and overloads IT with false alarms. Investigating properly, here, means recognizing when everything is actually fine.",
+        "detailed": "One of the email's checks came back neutral and it left a server that isn't the usual one — which would look suspicious. But there's a real explanation (an email provider change), confirmed by phone. The rest of the checks are fine, the attachment is clean, and the confirmation through another channel closes the case. After so many hacked vendors, it's tempting to report out of caution. But that also has a cost: it delays real payments and floods IT with false alarms. Investigating properly, here, means recognizing when everything is fine.",
         "conceptGlossaryId": "fornecedor_comprometido"
       },
       "idealInvestigationSeconds": 16
@@ -186,7 +186,7 @@
       ],
       "explanation": {
         "short": "A request to disable a security control, disguised as an urgent audio message from the director.",
-        "detailed": "The request itself should already raise the alarm: disabling a firewall because of an email request is exactly the kind of decision that should never rely solely on an urgent message. The 'audio' is actually an executable with a double extension, the sender's domain is recent and mimics the executive office's name, and the sandbox confirms malicious behavior. Requests to disable security controls always require confirmation through multiple channels — never just what's written in the suspicious email itself.",
+        "detailed": "The request should already set off the alarm: turning off the network's protection because of an email is the kind of decision that can never rely on an urgent message alone. The 'audio' is actually a disguised program; the sender's address is recent and mimics the executive office's name; and the test confirms it's dangerous. A request to turn off security protection always requires confirming through more than one channel — never just what's written in the suspicious email itself.",
         "conceptGlossaryId": "deepfake"
       },
       "idealInvestigationSeconds": 18
@@ -238,7 +238,7 @@
       ],
       "explanation": {
         "short": "Internal HR communication, with no links, no artificial urgency, no attachments.",
-        "detailed": "After so many sophisticated attacks, it's worth remembering that most everyday emails are normal. This one doesn't ask for any unusual action, has no attachments or external links, and comes from a confirmed domain. Treating every email with the same level of suspicion as a targeted attack also has a cost — the goal is to recognize the pattern, not to distrust everything indiscriminately.",
+        "detailed": "After so many elaborate attacks, it's worth remembering: most everyday emails are normal. This one doesn't ask for anything unusual, has no attachment or external link, and comes from a confirmed address. Distrusting every email as if it were an attack also has a cost. The idea is to recognize the pattern, not to distrust everything.",
         "conceptGlossaryId": "phishing_urgencia"
       },
       "idealInvestigationSeconds": 8
@@ -308,8 +308,8 @@
         }
       ],
       "explanation": {
-        "short": "Personalized spear phishing: name-drops a real coworker to gain trust, with a malicious spreadsheet.",
-        "detailed": "This is a targeted attack (spear phishing): the attacker researched real details about the company (the name of a coworker in finance) to appear legitimate and ask for secrecy, which also helps prevent the victim from checking with anyone else. The attachment is a spreadsheet with an enabled macro — a classic method for executing malicious code as soon as the user clicks 'enable content.' The sandbox confirms a registry change, typical of malware that wants to run automatically every time the computer starts.",
+        "short": "A tailored scam: name-drops a real coworker to gain trust, with a dangerous spreadsheet.",
+        "detailed": "This is a tailored attack: the scammer researched real company details (the name of a coworker in finance) to look real and ask for secrecy — which also stops the victim from checking with anyone else. The attachment is a spreadsheet that, when opened, asks you to 'enable content': that's when the dangerous program runs. The test confirms it installs itself to run every time the computer starts.",
         "conceptGlossaryId": "anexo_perigoso"
       },
       "idealInvestigationSeconds": 18
@@ -379,8 +379,8 @@
         }
       ],
       "explanation": {
-        "short": "Fake legal notice using fear of legal consequences to install ransomware.",
-        "detailed": "This scam exploits the fear of legal trouble to pressure the victim into opening the attachment without thinking. The domain imitates a real court, but official Brazilian Judiciary domains use '.jus.br' — never '.org'. The attachment uses a double extension to disguise an executable, and the sandbox reveals it to be ransomware capable of spreading through network shares, which makes it especially dangerous in a corporate environment.",
+        "short": "Fake court notice using fear of a lawsuit to install a virus that locks your files.",
+        "detailed": "This scam uses the fear of legal trouble to get you to open the attachment without thinking. The address imitates a real court, but official Brazilian court sites use '.jus.br' — never '.org'. The attachment hides a disguised program, and the test shows it's a virus that locks your files and demands money, able to spread across the company's network.",
         "conceptGlossaryId": "certificado_nao_garante_legitimidade"
       },
       "idealInvestigationSeconds": 16

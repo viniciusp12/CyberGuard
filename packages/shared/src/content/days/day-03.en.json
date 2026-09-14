@@ -50,13 +50,13 @@
       "tags": ["phishing", "link_malicioso"],
       "difficulty": 3,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Look closely: the domain uses an uppercase 'I' in place of a lowercase 'l' — a homograph attack that fools the eye." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Look closely: the address uses an uppercase 'I' in place of a lowercase 'l'. It's the swapped-letter trick, which fools the eye." },
         { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM, and DMARC all failed." },
-        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Domain visually identical to the official one, but registered only 3 days ago." }
+        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Address that looks exactly like the official one, but was created only 3 days ago." }
       ],
       "explanation": {
         "short": "Homograph attack: uppercase 'I' in place of lowercase 'l'.",
-        "detailed": "In many fonts, the uppercase letter 'I' is nearly indistinguishable from a lowercase 'l'. This email uses 'leroymerIin.com.br' instead of 'leroymerlin.com.br' — visually identical, but a completely different domain registered only 3 days ago. This is called a homograph attack.",
+        "detailed": "The uppercase letter 'I' looks like a lowercase 'l' in many fonts. This email uses 'leroymerIin.com.br' instead of 'leroymerlin.com.br': it looks the same, but it's a different address, created only 3 days ago. It's the swapped-letter trick.",
         "conceptGlossaryId": "ataque_homografos"
       },
       "idealInvestigationSeconds": 10
@@ -96,13 +96,13 @@
       "tags": ["pix_falso", "bec", "engenharia_social"],
       "difficulty": 3,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'leroymerlin-corp.com' is not the company's official domain." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'leroymerlin-corp.com' is not the company's official address." },
         { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF and DMARC failed." },
         { "toolId": "ai_assistant", "revealsField": "aiAssistantHint", "summaryText": "The AI identifies a classic PIX/BEC fraud pattern with high confidence." }
       ],
       "explanation": {
-        "short": "Urgent PIX fraud (BEC) impersonating management.",
-        "detailed": "Urgent PIX payment requests, with no formal approval process and creating emotional pressure ('I'm in a meeting', 'don't lose the deal'), are the hallmark of Business Email Compromise (BEC) fraud. The sender's domain confirms it: it's not the company's official one. Urgent payments should always be confirmed through another channel before being carried out.",
+        "short": "Fake-payment scam: an urgent PIX pretending to be management.",
+        "detailed": "An urgent PIX request, with no approval and using pressure ('I'm in a meeting', 'don't lose the deal'), is the fake-payment scam. The address it came from is not the company's official one. An urgent payment should always be confirmed through another channel before it's made.",
         "conceptGlossaryId": "bec_pix_urgente"
       },
       "idealInvestigationSeconds": 8
@@ -154,7 +154,7 @@
       ],
       "explanation": {
         "short": "Real vendor, but payment slip with a tampered payee.",
-        "detailed": "This is the most dangerous scenario: real sender, real domain, real email authentication (SPF/DKIM/DMARC all pass). The scam is inside the PDF — the slip's payee was swapped for a different account than the one on record. The defense here isn't technical, it's procedural: always confirm changes to payment details by phone with an already-known contact at the vendor, never by email alone.",
+        "detailed": "This is the most dangerous case: a real sender, a real address, all the email's checks passing. The scam is inside the PDF: the payee on the slip was swapped for a different account. The defense here isn't technical. Always confirm a change of payment details by phone, with a contact you already know at the vendor. Never by email alone.",
         "conceptGlossaryId": "boleto_adulterado_fornecedor_real"
       },
       "idealInvestigationSeconds": 12
@@ -200,13 +200,13 @@
       "tags": ["microsoft_falso", "phishing", "link_malicioso"],
       "difficulty": 3,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'micros0ft-online.com' uses the number zero in place of the letter 'o' — it's not a Microsoft domain." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'micros0ft-online.com' uses the number zero in place of the letter 'o'. It's not a Microsoft address." },
         { "toolId": "certificate_view", "revealsField": "certificate", "summaryText": "The certificate is technically valid, but issued for the fake domain, not for the real Microsoft." },
         { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM, and DMARC failed." }
       ],
       "explanation": {
-        "short": "Microsoft domain spoofed with a number in place of a letter.",
-        "detailed": "'micros0ft-online.com' replaces the 'o' with a zero — a common lookalike-domain trick known as typosquatting. The HTTPS certificate is technically valid, which only proves the connection is encrypted, not that the site belongs to Microsoft. The real Microsoft would never use this domain, and the total failure of SPF/DKIM/DMARC confirms the spoofing.",
+        "short": "Fake Microsoft address, with a number in place of a letter.",
+        "detailed": "'micros0ft-online.com' swaps the 'o' for a zero: it's the lookalike-address trick. The site's padlock works, but that only says the connection is secure, not that the site belongs to Microsoft. The real Microsoft would never use this address, and the email's checks failed.",
         "conceptGlossaryId": "microsoft_falso_typosquatting"
       },
       "idealInvestigationSeconds": 9
@@ -257,7 +257,7 @@
       ],
       "explanation": {
         "short": "Real vendor account compromised to divert payments.",
-        "detailed": "Everything here looks technically legitimate: real domain, real email authentication. The scam is the change in banking details requested by email alone, with no formal process — a classic sign of a compromised vendor account (a real vendor, but hacked). Any change to a vendor's banking details should be confirmed by phone with an already-known contact, never just through a received email.",
+        "detailed": "Everything here looks real: a real address, the email's checks passing. The scam is the change of banking details requested by email alone, with no process. It's a sign of a real vendor whose account was hacked. Any change to a vendor's banking details should be confirmed by phone, with a contact you already know. Never just by email.",
         "conceptGlossaryId": "fornecedor_comprometido_troca_bancaria"
       },
       "idealInvestigationSeconds": 8
@@ -303,12 +303,12 @@
       "tags": ["phishing"],
       "difficulty": 3,
       "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Company's official domain." },
+        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Company's official address." },
         { "toolId": "attachment_analysis", "revealsField": "attachments[0].actualType", "summaryText": "Legitimate PDF, extension and actual type match, no macro." }
       ],
       "explanation": {
         "short": "Legitimate internal announcement with a safe attachment.",
-        "detailed": "Official domain, correct email authentication, and the attachment is a genuine PDF with no signs of tampering or malware. Not every attachment is dangerous — what matters is always checking before assuming.",
+        "detailed": "Official address, the email's checks passing, and the attachment is a genuine PDF with no sign of a virus. Not every attachment is dangerous: what matters is checking before you decide.",
         "conceptGlossaryId": "nem_todo_anexo_e_perigoso"
       },
       "idealInvestigationSeconds": 4
