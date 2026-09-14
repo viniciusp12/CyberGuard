@@ -43,15 +43,14 @@ export const mainPages: DictionaryTable = {
   reward: { pt: "Recompensa:", en: "Reward:" },
   coins: { pt: "moedas", en: "coins" },
 
-  // /ranking
-  rankingTitle: { pt: "Ranking", en: "Ranking" },
+  // /ranking — por setor, nunca por pessoa (LGPD)
+  rankingTitle: { pt: "Ranking por setor", en: "Ranking by department" },
   rankingDescription: {
-    pt: "Ranking geral de XP entre todos os funcionários com acesso ao jogo.",
-    en: "Overall XP ranking across all employees with access to the game.",
+    pt: "A pontuação é somada por setor. Nomes de pessoas não aparecem.",
+    en: "Points are added up by department. No individual names are shown.",
   },
-  noOnePlayedYet: { pt: "Ninguém jogou ainda.", en: "No one has played yet." },
-  noDepartment: { pt: "Sem departamento", en: "No department" },
-  you: { pt: "Você", en: "You" },
+  noOnePlayedYet: { pt: "Nenhum setor pontuou ainda.", en: "No department has scored yet." },
+  yourDepartment: { pt: "Seu setor", en: "Your department" },
 
   // circular-carousel.tsx
   carouselAriaLabel: { pt: "Seleção de fase", en: "Phase selection" },

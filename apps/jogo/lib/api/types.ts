@@ -29,19 +29,17 @@ export interface SavePhaseResultResponse {
   moneyAwarded: number;
 }
 
+// Ranking por setor: sem nome, id ou posição de pessoa (exigência de LGPD).
 export interface RankingEntry {
   rank: number;
-  id: string;
-  displayName: string;
-  department: string | null;
+  department: string;
   xp: number;
-  money: number;
-  level: number;
-  isCurrentUser: boolean;
 }
 
 export interface RankingResponse {
   entries: RankingEntry[];
+  // Nome do setor do próprio jogador, só para a tela destacar a linha dele.
+  currentDepartment: string | null;
 }
 
 export interface Employee {
