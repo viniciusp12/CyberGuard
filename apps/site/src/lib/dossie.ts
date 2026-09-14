@@ -69,7 +69,7 @@ type NavigatorEstendido = Navigator & {
   getBattery?: () => Promise<BatteryManager>;
 };
 
-const INDISPONIVEL = "seu navegador não informa";
+const INDISPONIVEL = "não informado";
 
 /** Tenta ler algo do navegador; qualquer falha vira "indisponível". */
 function tentar(fn: () => string | null | undefined): string | null {
@@ -161,13 +161,13 @@ export async function coletarDossie(): Promise<Entrada[]> {
       "navegador",
       "Navegador e versão",
       tentar(() => detectarNavegador(nav)),
-      "Versão antiga é o alvo preferido de quem explora falha já corrigida.",
+      "Navegador desatualizado é alvo fácil.",
     ),
     entrada(
       "sistema",
-      "Sistema operacional",
+      "Sistema do aparelho",
       tentar(() => detectarSistema(nav)),
-      "Diz qual golpe faz sentido tentar em você — celular e computador levam iscas diferentes.",
+      "Celular e computador recebem golpes diferentes.",
     ),
     entrada(
       "tela",
@@ -177,26 +177,26 @@ export async function coletarDossie(): Promise<Entrada[]> {
         const base = `${screen.width} × ${screen.height}`;
         return dpr && dpr !== 1 ? `${base} · densidade ${dpr}×` : base;
       }),
-      "Combinada com outros dados, ajuda a te reconhecer entre milhões de visitantes.",
+      "Com o resto, ajuda a reconhecer você.",
     ),
     entrada(
       "janela",
       "Tamanho desta janela",
       tentar(() => `${window.innerWidth} × ${window.innerHeight}`),
-      "Muda quando você redimensiona. Experimente — a linha se atualiza sozinha.",
+      "Muda junto com a janela.",
       true,
     ),
     entrada(
       "fuso",
       "Fuso horário",
       tentar(() => Intl.DateTimeFormat().resolvedOptions().timeZone),
-      "Entrega a sua região aproximada sem nunca pedir acesso à localização.",
+      "Mostra sua região sem pedir permissão.",
     ),
     entrada(
       "hora",
       "Seu relógio agora",
       tentar(formatarHora),
-      "Serve para disparar a mensagem na hora em que você tende a estar desatento.",
+      "Serve para pegar você distraído.",
       true,
     ),
     entrada(
@@ -206,7 +206,7 @@ export async function coletarDossie(): Promise<Entrada[]> {
         const langs = nav.languages;
         return langs?.length ? langs.slice(0, 3).join(", ") : nav.language;
       }),
-      "Define em que língua o golpe chega até você.",
+      "O golpe chega na sua língua.",
     ),
     entrada(
       "ponteiro",
@@ -219,7 +219,7 @@ export async function coletarDossie(): Promise<Entrada[]> {
         if (!grosso && passaMouse) return "mouse ou trackpad";
         return "toque e mouse";
       }),
-      "Num celular você não consegue passar o mouse sobre o link para conferir o destino.",
+      "No celular, é difícil ver aonde o link leva.",
     ),
     entrada(
       "conexao",
@@ -227,24 +227,24 @@ export async function coletarDossie(): Promise<Entrada[]> {
       tentar(() => {
         const c = nav.connection;
         if (!c?.effectiveType) return null;
-        const economia = c.saveData ? " · modo economia ligado" : "";
+        const economia = c.saveData ? " · modo economia" : "";
         return `${c.effectiveType}${economia}`;
       }),
-      "É só a faixa de velocidade — nunca o nome da sua rede. O Wi-Fi em que você está não é visível daqui, e isso é proposital.",
+      "Só a velocidade, nunca o nome do Wi-Fi.",
     ),
     entrada(
       "cpu",
-      "Núcleos de processamento",
+      "Núcleos do processador",
       tentar(() =>
         nav.hardwareConcurrency ? `${nav.hardwareConcurrency} núcleos` : null,
       ),
-      "Se esse número não bater com o do seu computador, ótimo: navegadores com proteção contra rastreamento mentem aqui de propósito, e alguns trocam a resposta a cada janela.",
+      "Número errado? Ótimo: o navegador protege você.",
     ),
     entrada(
       "memoria",
       "Memória do aparelho",
       tentar(() => (nav.deviceMemory ? `${nav.deviceMemory} GB (aprox.)` : null)),
-      "Também raramente é o valor real: a própria especificação manda arredondar e limitar o número, justamente para não virar mais uma etiqueta sua.",
+      "Arredondada de propósito, para proteger você.",
     ),
   ];
 
@@ -258,26 +258,26 @@ export async function coletarDossie(): Promise<Entrada[]> {
           "bateria",
           "Bateria",
           `${pct}% · ${bat.charging ? "carregando" : "sem carregar"}`,
-          "Bateria acabando é a definição de pressa — e pressa é o que o golpe explora.",
+          "Bateria baixa dá pressa. O golpe usa isso.",
         ),
       );
     } else {
       entradas.push(
-        entrada("bateria", "Bateria", null, "Seu navegador esconde esse dado. Ótimo."),
+        entrada("bateria", "Bateria", null, "Seu navegador esconde. Ótimo."),
       );
     }
   } catch {
     entradas.push(
-      entrada("bateria", "Bateria", null, "Seu navegador esconde esse dado. Ótimo."),
+      entrada("bateria", "Bateria", null, "Seu navegador esconde. Ótimo."),
     );
   }
 
   entradas.push(
     entrada(
       "visita",
-      "Já esteve aqui antes",
+      "Já veio aqui?",
       lerEMarcarVisita() ? "sim" : "primeira visita",
-      "Único dado desta lista que fica gravado — no seu aparelho. O botão abaixo apaga.",
+      "Fica só no seu aparelho. Apague abaixo.",
     ),
   );
 
@@ -326,34 +326,24 @@ export function apagarVisita() {
  */
 export const NAO_VISIVEL: { item: string; porque: string }[] = [
   {
-    item: "O nome da sua rede Wi-Fi",
-    porque:
-      "Não existe função na web que devolva isso. O máximo que um site vê é a faixa de velocidade da conexão, nunca em que rede você está. Só um aplicativo instalado, com permissão de localização concedida por você, consegue ler o nome de uma rede.",
-  },
-  {
     item: "Seu endereço",
     porque:
-      "O fuso horário entrega a região, e o número da sua conexão entrega a cidade aproximada e a operadora. Rua e número exigem permissão de localização, que esta página nunca pede. Quem diz “descobri seu endereço pelo IP” está blefando.",
+      "Sem permissão de localização, no máximo a cidade. Quem diz que achou sua rua assim está blefando.",
   },
   {
-    item: "Seu nome, e-mail ou telefone",
+    item: "Nome, e-mail, telefone",
     porque:
-      "Nada disso é oferecido pelo navegador. Quando um site já sabe quem você é sem você digitar, é porque você entrou em algum momento, ou porque comprou seus dados de um vazamento.",
+      "Se um site sabe, você se cadastrou ou seus dados vazaram.",
   },
   {
-    item: "Os arquivos do seu computador",
+    item: "Seus arquivos",
     porque:
-      "Uma página não lê o seu disco. Ela só recebe o arquivo que você escolhe e envia — por isso o golpe precisa te convencer a anexar, baixar ou instalar alguma coisa.",
+      "Só vê o que você enviar. Por isso o golpe pede para baixar ou instalar algo.",
   },
   {
-    item: "Suas outras abas e seu histórico",
+    item: "Câmera e microfone",
     porque:
-      "Cada site fica isolado dos demais. O rastreamento entre sites existe, mas por outro caminho: cookies e scripts de publicidade que a mesma empresa coloca em milhares de páginas.",
-  },
-  {
-    item: "Sua câmera e seu microfone",
-    porque:
-      "Exigem sua permissão explícita, e o navegador mostra um indicador enquanto estão ligados. Esta página não pede nenhuma das duas.",
+      "Só com sua permissão. O navegador avisa quando estão ligados.",
   },
 ];
 

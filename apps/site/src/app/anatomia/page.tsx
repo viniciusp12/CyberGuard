@@ -8,7 +8,7 @@ import { LinhaDoTempo } from "./LinhaDoTempo";
 export const metadata: Metadata = {
   title: "Como o golpe funciona por dentro",
   description:
-    "A clonagem de WhatsApp passo a passo, do lado de quem aplica — e o ponto exato em que cada etapa pode ser interrompida.",
+    "Clonagem de WhatsApp passo a passo, e como se proteger.",
 };
 
 export default function AnatomiaPage() {
@@ -17,17 +17,17 @@ export default function AnatomiaPage() {
       <PageHeader
         numero="03"
         eyebrow="Anatomia de um golpe"
-        title="Clonagem de WhatsApp, passo a passo, do outro lado"
-        description="Entender o mecanismo protege mais do que decorar regra. Quando você sabe de onde vem cada peça, reconhece o golpe mesmo quando ele muda de roupa."
+        title="Clonagem de WhatsApp, passo a passo"
+        description="Veja onde dá para parar cada etapa."
       />
 
       <section className="pt-10 md:pt-12">
         <div className="container-read">
           <Essencial
             itens={[
-              "Um golpe tem etapas, e cada etapa tem um ponto onde ele pode ser interrompido.",
-              "A parte técnica é a menor: o trabalho pesado do golpista é o roteiro, não o código.",
-              "Entender a mecânica é o que permite reconhecer um golpe que você nunca viu.",
+              "O golpe tem etapas. Dá para parar em cada uma.",
+              "Ninguém invade nada. O golpista engana você numa conversa.",
+              "Sabendo como funciona, você reconhece até golpe novo.",
             ]}
           />
         </div>
@@ -37,12 +37,8 @@ export default function AnatomiaPage() {
         <div className="container-page">
           <div className="mb-14 max-w-2xl border-l-2 border-chumbo-linha pl-5">
             <p className="text-body text-papel-2 text-pretty">
-              Uma observação sobre o nome: não existe “clonagem” no sentido de
-              copiar o aparelho. O que acontece é mais simples e mais
-              constrangedor — a conta é transferida para outro celular usando um
-              código que o próprio WhatsApp manda para você, e que alguém te
-              convence a repetir em voz alta. Nenhuma etapa envolve invadir
-              coisa alguma.
+              Apesar do nome, ninguém copia seu celular. O golpista só te
+              convence a contar um código que o WhatsApp mandou.
             </p>
           </div>
 
@@ -66,24 +62,23 @@ export default function AnatomiaPage() {
       <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
           <p className="etiqueta-risco">
-            Se você fizer uma coisa só depois de ler isto
+            Se for fazer só uma coisa
           </p>
           <p className="mt-4 text-bodyLg text-papel text-pretty">
-            Ative a verificação em duas etapas do WhatsApp. São seis dígitos que
-            você escolhe, e eles transformam o passo 05 numa parede: mesmo que o
-            código do SMS seja entregue, a conta não migra.
+            Ative a verificação em duas etapas do WhatsApp. Você cria um PIN de
+            seis dígitos. Ele trava o golpe no passo 05, mesmo se
+            alguém tiver o código.
           </p>
           <p className="mt-4 text-body text-papel-2 text-pretty">
-            No aplicativo: Configurações → Privacidade → Verificação em duas
-            etapas → Ativar. Guarde o PIN onde você guarda documentos, não num
-            papel na carteira, e cadastre um e-mail de recuperação — sem ele,
-            esquecer o PIN significa esperar sete dias para reentrar na conta.
+            No app: Configurações → Privacidade → Verificação em duas etapas →
+            Ativar. Guarde o PIN com seus documentos. Cadastre um e-mail de
+            recuperação: sem ele, quem esquece o PIN espera sete dias para voltar à conta.
           </p>
 
           <div className="mt-10 border-t border-chumbo-linha pt-8">
             <p className="text-body text-papel-2">
-              Esse golpe existe há anos. O que mudou recentemente foi o custo de
-              fabricar a parte convincente dele.
+              Esse golpe é antigo. Agora ficou mais barato fazer ele parecer
+              verdade.
             </p>
             <Link
               href="/ia"

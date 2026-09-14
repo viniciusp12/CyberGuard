@@ -52,10 +52,9 @@ export const RODADAS: Rodada[] = [
   {
     id: "entrega",
     titulo: "Duas mensagens sobre uma encomenda",
-    contexto:
-      "Você comprou alguma coisa pela internet semana passada. Nas duas mensagens abaixo, uma é fraude.",
+    contexto: "Você comprou algo pela internet. Uma destas mensagens é golpe.",
     licao:
-      "Mensagem de entrega legítima informa. Ela não cobra, não ameaça devolver o pacote hoje e não manda link para pagamento. Sempre que aparecer uma taxa, feche a mensagem e confira o pedido pelo aplicativo ou pelo site onde você comprou.",
+      "Aviso de entrega verdadeiro não cobra. Apareceu taxa? Confira no app ou no site da loja.",
     mensagens: [
       {
         id: "entrega-golpe",
@@ -69,11 +68,11 @@ export const RODADAS: Rodada[] = [
         ],
         corpo: [
           [
-            "CORREIOS: sua encomenda está retida por pendência de taxa alfandegária de ",
+            "CORREIOS: sua encomenda está retida por taxa alfandegária de ",
             { texto: "R$ 3,79", sinal: 2 },
-            ". Regularize ",
+            ". Pague ",
             { texto: "até hoje às 18h", sinal: 3 },
-            " ou o pacote será devolvido ao remetente. Pague em: ",
+            " ou o pacote volta ao remetente: ",
             { texto: "correios-rastreio.info/taxa", sinal: 4 },
           ],
         ],
@@ -82,30 +81,25 @@ export const RODADAS: Rodada[] = [
           {
             n: 1,
             titulo: "Veio de um celular comum",
-            texto:
-              "Empresas grandes disparam SMS por um número curto de 4 ou 5 dígitos, ou por um nome. Um celular pessoal mandando comunicado de empresa é sinal forte.",
+            texto: "Empresa grande manda SMS de número curto, não de celular.",
           },
           {
             n: 2,
-            titulo: "O valor é pequeno de propósito",
-            texto:
-              "R$ 3,79 não dói o suficiente para você parar e conferir. O objetivo raramente é o valor: é capturar os dados do seu cartão na tela seguinte.",
+            titulo: "Valor baixo de propósito",
+            texto: "Você paga sem pensar. Eles querem o seu cartão.",
           },
           {
             n: 3,
-            titulo: "Urgência artificial",
-            texto:
-              "Prazo curto existe para impedir que você pense ou pergunte a alguém. Nenhum processo real de alfândega se resolve ou se perde em cinco horas.",
+            titulo: "Pressa inventada",
+            texto: "O prazo curto é para você não conferir.",
           },
           {
             n: 4,
-            titulo: "O domínio não é o oficial",
-            texto:
-              "O site dos Correios termina em correios.com.br. Qualquer coisa antes disso pode ser inventada: correios-rastreio.info não pertence aos Correios, pertence a quem registrou esse nome.",
+            titulo: "Site falso",
+            texto: "O site dos Correios termina em correios.com.br. Este não.",
           },
         ],
-        veredito:
-          "Fraude. É a versão mais comum de golpe de entrega no Brasil: taxa pequena, prazo curto e um endereço parecido com o oficial.",
+        veredito: "Golpe clássico da taxa de entrega.",
       },
       {
         id: "entrega-legitima",
@@ -121,30 +115,26 @@ export const RODADAS: Rodada[] = [
         sinais: [
           {
             n: 1,
-            titulo: "Ela só informa",
-            texto:
-              "Não pede dinheiro, não pede dado, não ameaça. Uma mensagem que não pede nada não tem como te causar prejuízo.",
+            titulo: "Só informa",
+            texto: "Não pede dinheiro nem dados.",
           },
           {
             n: 2,
-            titulo: "Manda você para o aplicativo, não para um link",
-            texto:
-              "Esse é o formato mais seguro de comunicação: “abra o app”. Você chega no lugar certo por um caminho que já conhece.",
+            titulo: "Manda para o app, sem link",
+            texto: "Você chega por um caminho que já conhece.",
           },
         ],
-        veredito:
-          "Legítima — mas o hábito certo continua sendo conferir pelo app, e não confiar na mensagem em si.",
+        veredito: "Legítima. Mesmo assim, confira pelo app.",
       },
     ],
   },
 
   {
     id: "whatsapp",
-    titulo: "Duas mensagens de WhatsApp de alguém da família",
-    contexto:
-      "As duas chegaram hoje. Uma delas não é quem diz ser.",
+    titulo: "Duas mensagens da sua irmã no WhatsApp",
+    contexto: "As duas chegaram hoje. Uma não é quem diz ser.",
     licao:
-      "Regra que resolve quase todos os casos: quando alguém pedir dinheiro por mensagem, ligue para o número antigo da pessoa. Não responda no chat, não mande áudio, ligue. Quem clonou a conta não atende a ligação no número verdadeiro.",
+      "Pediram dinheiro por mensagem? Ligue para o número antigo da pessoa. Quem clonou a conta não atende.",
     mensagens: [
       {
         id: "wpp-golpe",
@@ -166,16 +156,16 @@ export const RODADAS: Rodada[] = [
             " 🙂",
           ],
           [
-            "Você consegue me fazer um favor? Preciso pagar uma coisa agora e ",
-            { texto: "meu aplicativo do banco está fora do ar", sinal: 3 },
+            "Me faz um favor? Preciso pagar uma coisa agora e ",
+            { texto: "meu app do banco está fora do ar", sinal: 3 },
             ".",
           ],
           [
             "São R$ 1.870. ",
             { texto: "A chave PIX é de um amigo meu", sinal: 4 },
-            ", depois eu te explico. ",
-            { texto: "Não me liga agora que estou em reunião", sinal: 5 },
-            ", me avisa por aqui quando cair.",
+            ", depois te explico. ",
+            { texto: "Não me liga que estou em reunião", sinal: 5 },
+            ", me avisa quando cair.",
           ],
         ],
         golpe: true,
@@ -183,36 +173,30 @@ export const RODADAS: Rodada[] = [
           {
             n: 1,
             titulo: "Número novo, foto conhecida",
-            texto:
-              "A foto de perfil de quase todo mundo é pública no WhatsApp. Copiar a foto e o nome custa trinta segundos e é a base inteira do golpe.",
+            texto: "Copiar foto e nome leva segundos.",
           },
           {
             n: 2,
             titulo: "“Troquei de número”",
-            texto:
-              "É a frase que justifica o contato vir de outro lugar. Pode ser verdade — por isso a confirmação não pode ser por mensagem, tem que ser por ligação no número antigo.",
+            texto: "Pode ser verdade. Confirme ligando no número antigo.",
           },
           {
             n: 3,
-            titulo: "Uma desculpa para não usar o próprio dinheiro",
-            texto:
-              "Banco fora do ar, cartão bloqueado, conta com limite: sempre existe um motivo para que precise ser você a pagar, agora.",
+            titulo: "Desculpa para você pagar",
+            texto: "Sempre há um motivo para ser você, e agora.",
           },
           {
             n: 4,
-            titulo: "A chave PIX é de terceiro",
-            texto:
-              "Este é o sinal mais decisivo. Se o dinheiro vai para o nome de outra pessoa, não vai para quem está pedindo. Antes de confirmar, o app mostra o nome do dono da chave — leia esse nome.",
+            titulo: "PIX para outra pessoa",
+            texto: "O sinal mais forte. Antes de confirmar o PIX, leia no app o nome de quem vai receber.",
           },
           {
             n: 5,
-            titulo: "Bloqueio explícito da ligação",
-            texto:
-              "Reunião, sinal ruim, celular sem áudio. O golpe precisa impedir a voz, porque a voz derruba a farsa em cinco segundos.",
+            titulo: "Pede para não ligar",
+            texto: "A voz desmascara o golpe na hora.",
           },
         ],
-        veredito:
-          "Fraude. É o golpe do WhatsApp clonado, hoje o mais comum do país. Nada aqui exige invadir nada: exige só que você não ligue.",
+        veredito: "Golpe do WhatsApp clonado. Só funciona se você não ligar.",
       },
       {
         id: "wpp-legitima",
@@ -233,14 +217,12 @@ export const RODADAS: Rodada[] = [
           {
             n: 1,
             titulo: "Não pede nada",
-            texto:
-              "Sem dinheiro, sem código, sem urgência. Conversa comum de quem realmente conhece você.",
+            texto: "Sem dinheiro, código ou pressa.",
           },
           {
             n: 2,
-            titulo: "Contexto que só as duas sabem",
-            texto:
-              "Detalhe específico e verificável. Golpista trabalha com frases genéricas porque não conhece a sua vida.",
+            titulo: "Detalhe da vida real",
+            texto: "Golpista não conhece a sua vida.",
           },
         ],
         veredito: "Legítima. É só a sua irmã.",
@@ -251,10 +233,9 @@ export const RODADAS: Rodada[] = [
   {
     id: "banco",
     titulo: "Dois e-mails do seu banco",
-    contexto:
-      "O banco desta simulação, Aurora, é fictício — o formato do golpe não é.",
+    contexto: "O banco Aurora é inventado. O golpe, não.",
     licao:
-      "Banco nenhum pede senha, código ou confirmação de dados por e-mail, SMS ou telefone. Se a mensagem tem link, não use o link: abra o aplicativo do banco por conta própria. Se houver mesmo algum problema, ele vai estar lá.",
+      "Banco não pede senha, código nem seus dados por e-mail, SMS ou ligação. Não use o link: abra o app do banco.",
     mensagens: [
       {
         id: "banco-golpe",
@@ -277,52 +258,43 @@ export const RODADAS: Rodada[] = [
         corpo: [
           [{ texto: "Prezado(a) cliente,", sinal: 3 }],
           [
-            "Detectamos um acesso não reconhecido à sua conta. Por segurança, ela ",
+            "Detectamos um acesso estranho. Sua conta ",
             { texto: "será bloqueada em 24 horas", sinal: 2 },
-            " caso seus dados não sejam revalidados.",
+            " se não revalidar seus dados.",
           ],
-          [
-            "Para manter sua conta ativa, ",
-            { texto: "confirme seus dados no portal oficial", sinal: 4 },
-            ".",
-          ],
+          [{ texto: "Confirme seus dados no portal oficial", sinal: 4 }, "."],
           [{ texto: "Atenciosamente, Equipe de Segurnça Aurora", sinal: 5 }],
         ],
         golpe: true,
         sinais: [
           {
             n: 1,
-            titulo: "O domínio parece, mas não é",
-            texto:
-              "O que vale é o que vem logo antes da primeira barra. Aqui é bancoaurora-seguranca.com — um domínio registrado por qualquer um, que só imita o nome. O domínio do banco seria aurora.com.br.",
+            titulo: "Endereço parecido",
+            texto: "O endereço do banco seria aurora.com.br.",
           },
           {
             n: 2,
             titulo: "Ameaça com prazo",
-            texto:
-              "Bloqueio em 24 horas serve para te tirar do estado em que você confere as coisas. Comunicação real de banco não trabalha com contagem regressiva.",
+            texto: "É para você agir sem conferir.",
           },
           {
             n: 3,
-            titulo: "Saudação genérica",
-            texto:
-              "O banco sabe o seu nome. “Prezado cliente” é o que se escreve quando se dispara o mesmo e-mail para milhares de endereços comprados numa lista.",
+            titulo: "Não usa seu nome",
+            texto: "O seu banco sabe como você se chama.",
           },
           {
             n: 4,
-            titulo: "O texto do link não é o destino do link",
+            titulo: "Link que engana",
             texto:
-              "Escrito está “portal oficial”. O endereço por trás pode ser qualquer coisa. No computador, passe o mouse por cima e leia embaixo; no celular, segure o dedo no link para ver o destino antes de abrir.",
+              "Diz “oficial”, mas pode levar a qualquer site. No celular, segure o dedo no link para ver o endereço. No computador, passe o mouse por cima.",
           },
           {
             n: 5,
-            titulo: "Erro pequeno de digitação",
-            texto:
-              "“Segurnça”, sem o a. Nem todo golpe tem erro, e alguns são impecáveis — mas quando aparece um, ele fecha o caso.",
+            titulo: "Erro de digitação",
+            texto: "“Segurnça”. Nem todo golpe tem erro.",
           },
         ],
-        veredito:
-          "Fraude. É phishing clássico: domínio parecido, prazo curto e um link que promete levar ao lugar certo.",
+        veredito: "E-mail falso: endereço parecido, prazo curto e link.",
       },
       {
         id: "banco-legitimo",
@@ -334,47 +306,38 @@ export const RODADAS: Rodada[] = [
         ],
         corpo: [
           ["Olá, Marina."],
-          [
-            "A fatura do cartão final 4417 já pode ser consultada no aplicativo Aurora, em Cartões → Faturas.",
-          ],
-          [
-            "Não solicitamos senha, código de verificação ou dados do cartão por e-mail, telefone ou mensagem.",
-          ],
+          ["A fatura do cartão final 4417 está no app, em Cartões → Faturas."],
+          ["Não pedimos senha, código ou dados do cartão por e-mail, telefone ou mensagem."],
         ],
         golpe: false,
         sinais: [
           {
             n: 1,
-            titulo: "Chama você pelo nome e cita o final do cartão",
-            texto:
-              "Dado que só quem tem a sua conta conhece. Não é garantia sozinho, mas é o oposto do “prezado cliente”.",
+            titulo: "Usa seu nome",
+            texto: "Sozinho não garante nada, mas ajuda.",
           },
           {
             n: 2,
-            titulo: "Indica o caminho dentro do app, sem link",
-            texto:
-              "Comunicação boa te ensina a chegar sozinho. Assim não existe link para ser falsificado.",
+            titulo: "Sem link",
+            texto: "Indica o caminho dentro do app.",
           },
           {
             n: 3,
-            titulo: "Declara o que nunca vai pedir",
-            texto:
-              "Esse aviso é padrão em comunicação bancária de verdade e serve como régua: se a próxima mensagem pedir exatamente isso, ela não é do banco.",
+            titulo: "Diz o que não pede",
+            texto: "Se alguém pedir isso, não é o banco.",
           },
         ],
-        veredito:
-          "Legítima. Ainda assim, o certo é conferir a fatura abrindo o app, nunca clicando de dentro do e-mail.",
+        veredito: "Legítima. Mesmo assim, veja a fatura pelo app.",
       },
     ],
   },
 
   {
     id: "emprego",
-    titulo: "Duas abordagens sobre uma vaga",
-    contexto:
-      "Você atualizou o currículo em sites de emprego no mês passado.",
+    titulo: "Duas mensagens sobre uma vaga",
+    contexto: "Você pôs seu currículo em sites de emprego.",
     licao:
-      "Processo seletivo de verdade não cobra nada do candidato — nem taxa, nem exame, nem uniforme, nem “reserva de vaga”. E nenhuma empresa precisa dos seus dados bancários antes da contratação.",
+      "Vaga de verdade não cobra nada. E não pede dados do banco antes de contratar.",
     mensagens: [
       {
         id: "emprego-golpe",
@@ -388,58 +351,52 @@ export const RODADAS: Rodada[] = [
         ],
         corpo: [
           [
-            "Olá! Vimos seu currículo e temos uma vaga de ",
+            "Olá! Vimos seu currículo. Vaga de ",
             { texto: "assistente home office, R$ 2.400 por 4h/dia", sinal: 2 },
             ", sem experiência.",
           ],
           [
             { texto: "Você foi pré-aprovada!", sinal: 3 },
-            " Para reservar a vaga, falta só o ",
+            " Falta só o ",
             { texto: "exame admissional (R$ 89,90)", sinal: 4 },
-            ", que é reembolsado na primeira folha.",
+            ", reembolsado depois.",
           ],
           [
-            { texto: "Só temos 2 vagas e fecham hoje", sinal: 3 },
-            ". Me manda seu ",
-            { texto: "CPF e os dados da sua conta", sinal: 5 },
-            " para eu adiantar o cadastro?",
+            { texto: "Só 2 vagas, fecham hoje", sinal: 3 },
+            ". Me manda ",
+            { texto: "CPF e dados da conta", sinal: 5 },
+            "?",
           ],
         ],
         golpe: true,
         sinais: [
           {
             n: 1,
-            titulo: "Contato direto por WhatsApp, sem processo",
-            texto:
-              "Empresa séria fala pelo site da vaga ou por e-mail com domínio próprio, e existe um processo antes de qualquer aprovação.",
+            titulo: "Chegou pelo WhatsApp",
+            texto: "Empresa séria usa o site da vaga ou um e-mail com o nome da empresa.",
           },
           {
             n: 2,
-            titulo: "Oferta boa demais",
-            texto:
-              "Salário alto, meia jornada, sem experiência, de casa. A oferta é calibrada para quem está precisando — e quem está precisando é quem menos pode perder R$ 89,90.",
+            titulo: "Bom demais",
+            texto: "É isca para quem precisa de emprego.",
           },
           {
             n: 3,
-            titulo: "Aprovação instantânea e prazo apertado",
-            texto:
-              "Ser aprovada antes de qualquer entrevista não faz sentido. O prazo serve para você pagar antes de contar para alguém.",
+            titulo: "Aprovada e com pressa",
+            texto: "Sem entrevista, ninguém é aprovado.",
           },
           {
             n: 4,
-            titulo: "Cobrança do candidato",
-            texto:
-              "Este é o ponto que encerra a conversa. Custo de exame admissional é da empresa, por lei. Qualquer cobrança para conseguir emprego é fraude.",
+            titulo: "Cobra do candidato",
+            texto: "Por lei, o exame é pago pela empresa.",
           },
           {
             n: 5,
-            titulo: "Dados bancários antes da contratação",
-            texto:
-              "Conta e CPF só entram na papelada depois da admissão. Antes disso, servem para abrir crédito no seu nome.",
+            titulo: "Dados bancários cedo",
+            texto: "Podem ser usados para pegar crédito no seu nome.",
           },
         ],
-        veredito:
-          "Fraude. O golpe do falso emprego cresce em época de desemprego alto e é desenhado para quem está com pressa de ser aceito.",
+        veredito: "Golpe do falso emprego.",
       },
       {
         id: "emprego-legitimo",
@@ -450,29 +407,24 @@ export const RODADAS: Rodada[] = [
             rotulo: "De",
             valor: ["Recrutamento Vega <selecao@vega.com.br>"],
           },
-          { rotulo: "Assunto", valor: ["Sua candidatura — Assistente administrativo"] },
+          { rotulo: "Assunto", valor: ["Candidatura: assistente administrativo"] },
         ],
         corpo: [
-          ["Olá, Marina. Recebemos sua candidatura à vaga de assistente administrativo."],
-          [
-            "A próxima etapa é uma conversa de 30 minutos por vídeo. Você pode escolher um horário na sua área de candidato, entrando pelo site onde se inscreveu.",
-          ],
-          [
-            "Não cobramos nenhum valor em nenhuma etapa do processo, e não pedimos dados bancários antes da contratação.",
-          ],
+          ["Olá, Marina. Recebemos sua candidatura."],
+          ["Escolha o horário da entrevista no site onde você se inscreveu."],
+          ["Não cobramos nada e não pedimos dados bancários antes de contratar."],
         ],
         golpe: false,
         sinais: [
           {
             n: 1,
-            titulo: "Etapa clara e verificável",
-            texto:
-              "Existe um processo com passos, e você entra por onde já se cadastrou — não por um link recebido.",
+            titulo: "Etapa clara",
+            texto: "Você entra pelo site, não por link recebido.",
           },
           {
             n: 2,
-            titulo: "Diz explicitamente que não cobra",
-            texto: "É a régua contra a próxima mensagem que pedir dinheiro.",
+            titulo: "Diz que não cobra",
+            texto: "Pediu dinheiro depois? Não é essa empresa.",
           },
         ],
         veredito: "Legítima.",

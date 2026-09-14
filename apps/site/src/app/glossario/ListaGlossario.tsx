@@ -171,9 +171,7 @@ export function ListaGlossario() {
       <div ref={listaRef}>
         {filtrados.length === 0 && (
           <p className="text-body text-papel-2">
-            Nenhum termo com essa palavra. Se é algo que você viu por aí e não
-            está aqui, vale nos avisar — a lista cresce conforme aparecem
-            dúvidas.
+            Nenhum termo com essa palavra. Se faltou algum, avise a gente.
           </p>
         )}
 

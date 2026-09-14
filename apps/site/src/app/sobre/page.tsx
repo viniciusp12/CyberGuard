@@ -6,34 +6,33 @@ import { Fonte } from "@/components/ui/Fonte";
 export const metadata: Metadata = {
   title: "Sobre o projeto",
   description:
-    "O que são os Hackudinhos, como o conteúdo é escrito, que regras de precisão o projeto segue e o que ele não faz.",
+    "Quem são os Hackudinhos e como o site é feito.",
 };
 
 const REGRAS = [
   {
-    titulo: "Número só com fonte, publicação e ano",
+    titulo: "Número só com fonte",
     texto:
-      "Nenhuma porcentagem entra sem autor, obra e ano citados na mesma tela. Quando a fonte não resiste à conferência, o número sai — mesmo que ele deixe o texto menos impressionante. A versão anterior deste site trazia quatro estatísticas de manchete: nenhuma sobreviveu à revisão, e três eram atribuições erradas ou de agregador de conteúdo.",
+      "Todo número mostra autor, publicação e ano. Sem fonte confirmada, ele sai.",
   },
   {
     titulo: "Nada de link inventado",
     texto:
-      "Os endereços da seção de resposta a golpe apontam só para domínios de órgão público conferidos. O que ainda não foi conferido aparece marcado como pendente, com a instrução de como chegar lá com segurança — nunca como um link com aparência de oficial.",
+      "Só entram links oficiais que conferimos.",
   },
   {
-    titulo: "Conselho desatualizado é tão ruim quanto conselho errado",
+    titulo: "Conselho velho também engana",
     texto:
-      "Recomendação de segurança envelhece. Trocar senha todo mês deixou de ser recomendado; “no Wi-Fi público roubam sua senha” virou meia-verdade depois do HTTPS universal. O site corrige explicitamente esses dois pontos em vez de repeti-los.",
+      "O site avisa quando um conselho envelheceu, como trocar a senha todo mês.",
   },
   {
     titulo: "Nunca culpar quem caiu",
-    texto:
-      "Golpe é aplicado por gente que faz isso em escala industrial, testando o que funciona em milhares de pessoas. Quem cai estava resolvendo três coisas ao mesmo tempo — ou seja, qualquer um. Vergonha atrasa a reação, e o atraso é justamente o que o golpe precisa.",
+    texto: "Golpe pega qualquer um. A vergonha só atrasa a reação.",
   },
   {
     titulo: "Nada é enviado a lugar nenhum",
     texto:
-      "As partes interativas rodam inteiramente no navegador: a senha digitada, os dados exibidos na home, as respostas do quiz, os itens marcados no checklist. Não há analytics, não há rastreador de terceiros, não há servidor recebendo. A única gravação é a marca de “já esteve aqui”, declarada na própria tela e com botão de apagar ao lado.",
+      "O que você digita ou marca aqui fica só no seu navegador. Não há rastreador. O navegador só salva a marca de “já esteve aqui”, e você pode apagá-la.",
   },
 ];
 
@@ -42,8 +41,8 @@ export default function SobrePage() {
     <>
       <PageHeader
         eyebrow="Sobre o projeto"
-        title="Um site que prefere ser conferível a ser impressionante"
-        description="Os Hackudinhos são um projeto acadêmico de Defesa Cibernética, desenvolvido no Challenge em parceria com a Leroy Merlin. Começou voltado para colaboradores e hoje fala primeiro com o público geral — porque o golpe que chega no trabalho é o mesmo que chega em casa."
+        title="Um site feito para ser confiável"
+        description="Projeto acadêmico de Defesa Cibernética, feito no Challenge com a Leroy Merlin."
       />
 
       <section className="py-14 md:py-20">
@@ -52,19 +51,10 @@ export default function SobrePage() {
             Por que ele é assim
           </h2>
           <p className="mt-5 text-body leading-relaxed text-papel-2 text-pretty">
-            Material de conscientização costuma falhar do mesmo jeito: uma
-            estatística grande no topo, cards com ícone e três linhas, e uma
-            lista de regras para decorar. Isso informa, mas não muda
-            comportamento — ninguém reconhece um golpe porque leu que devia
-            desconfiar.
+            Decorar regras não basta.
           </p>
           <p className="mt-4 text-body leading-relaxed text-papel-2 text-pretty">
-            A aposta aqui é outra: um susto controlado e depois o mecanismo. A
-            página inicial mostra o que qualquer site já sabe sobre você antes
-            de você digitar qualquer coisa. O teste de senha faz o número
-            despencar na sua frente. O quiz marca os sinais dentro da própria
-            mensagem. A anatomia mostra o golpe do lado de quem aplica. Entender
-            como a coisa funciona protege mais do que decorar o que não fazer.
+            Aqui, você testa e vê o golpe na prática.
           </p>
 
           <h2 className="mt-14 font-display text-2xl font-semibold">
@@ -87,13 +77,9 @@ export default function SobrePage() {
             Acessibilidade
           </h2>
           <p className="mt-5 text-body leading-relaxed text-papel-2 text-pretty">
-            O público inclui gente com pouca familiaridade com tecnologia e
-            gente que lê com dificuldade em tela, então isso aqui não é enfeite:
-            todo texto passa de 4,5:1 de contraste, tudo que é interativo
-            funciona pelo teclado com foco visível, os alvos de toque têm no
-            mínimo 44 pixels, e quem configurou o sistema para reduzir animações
-            recebe a página inteira sem movimento nenhum. Jargão só aparece
-            explicado na frase seguinte.
+            Feito para quem tem pouca prática com tecnologia. Letras bem
+            visíveis, uso pelo teclado, botões grandes e respeito a quem desliga
+            animações.
           </p>
           <Fonte
             autor="W3C"
@@ -106,11 +92,8 @@ export default function SobrePage() {
             O que este site não é
           </h2>
           <p className="mt-5 text-body leading-relaxed text-papel-2 text-pretty">
-            Não é orientação jurídica, não substitui o seu banco e não garante
-            recuperação de dinheiro. Não vende produto, não indica serviço pago
-            de proteção e não pede nenhum dado seu. Se em algum momento uma
-            página aqui pedir CPF, senha ou pagamento, você não está nos
-            Hackudinhos.
+            Não substitui advogado nem banco e não garante devolver dinheiro.
+            Se uma página pedir CPF, senha ou pagamento, não é dos Hackudinhos.
           </p>
 
           <div className="mt-12 border-t border-chumbo-linha pt-8">
@@ -119,7 +102,7 @@ export default function SobrePage() {
                 href="/no-trabalho"
                 className="inline-flex min-h-touch items-center rounded-sm border border-chumbo-linhaForte px-5 py-3 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
               >
-                A camada corporativa do Challenge →
+                Golpes no trabalho →
               </Link>
               <Link
                 href="/contato"

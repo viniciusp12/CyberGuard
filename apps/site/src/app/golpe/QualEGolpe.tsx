@@ -217,13 +217,13 @@ export function QualEGolpe() {
                     }`}
                   >
                     {acertou
-                      ? "Você apontou a fraude."
-                      : "Você apontou a mensagem legítima — e é exatamente por isso que esse golpe funciona tanto."}
+                      ? "Acertou! Essa é a mensagem falsa."
+                      : "Essa era a verdadeira. É assim que o golpe engana."}
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-papel-2">
                     {acertou
-                      ? "Agora repare em onde estavam as pistas: elas estão marcadas nos dois textos."
-                      : "Ninguém acerta por ser esperto; acerta por saber onde olhar. As pistas estão marcadas nos dois textos abaixo."}
+                      ? "Veja as pistas marcadas nas duas."
+                      : "Tudo bem. Veja as pistas marcadas."}
                   </p>
                 </div>
 
@@ -235,7 +235,7 @@ export function QualEGolpe() {
 
                 <div className="mt-5 border-l-2 border-menta bg-chumbo-painel/60 px-5 py-4">
                   <p className="etiqueta-risco">
-                    O que levar dessa rodada
+                    Para lembrar
                   </p>
                   <p className="mt-2 text-body leading-relaxed text-papel-2">
                     {r.licao}

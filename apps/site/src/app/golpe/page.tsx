@@ -8,7 +8,7 @@ import { QualEGolpe } from "./QualEGolpe";
 export const metadata: Metadata = {
   title: "Qual deles é golpe?",
   description:
-    "Quatro pares de mensagens reais do cotidiano brasileiro — PIX, Correios, banco e falso emprego. Escolha a fraude e veja os sinais destacados dentro do próprio texto.",
+    "Mensagens do dia a dia: descubra qual é golpe.",
 };
 
 export default function GolpePage() {
@@ -17,17 +17,17 @@ export default function GolpePage() {
       <PageHeader
         numero="02"
         eyebrow="Qual deles é golpe?"
-        title="Você recebe as duas no mesmo dia. Qual é a fraude?"
-        description="Quatro pares de mensagens do cotidiano brasileiro. Escolha e o site marca os sinais dentro do próprio texto — inclusive os da mensagem legítima, porque saber por que algo é confiável importa tanto quanto reconhecer a fraude."
+        title="Chegaram duas mensagens. Qual é golpe?"
+        description="Escolha uma e veja as pistas marcadas."
       />
 
       <section className="pt-10 md:pt-12">
         <div className="container-read">
           <Essencial
             itens={[
-              "Os golpes mais comuns no Brasil não exploram falha técnica — exploram pressa e confiança.",
-              "O sinal que se repete em quase todos: urgência somada a um canal que você não escolheu.",
-              "Reconhecer o formato vale mais que decorar casos: eles mudam de roupa toda semana.",
+              "Golpe usa sua pressa e sua confiança.",
+              "Desconfie de pressa em mensagem que você não esperava.",
+              "Os detalhes mudam. O jeito do golpe, não.",
             ]}
           />
         </div>
@@ -37,11 +37,7 @@ export default function GolpePage() {
         <div className="container-page">
           <div className="mb-12 max-w-2xl border-l-2 border-chumbo-linha pl-5">
             <p className="text-body text-papel-2 text-pretty">
-              Antes de começar: errar aqui é o esperado. Essas mensagens são
-              escritas por gente que faz isso o dia inteiro, testando o que
-              funciona em milhares de pessoas. Cair não é falta de atenção nem
-              de inteligência — é o resultado normal de uma mensagem bem feita
-              chegando em um dia ruim.
+              Errar é normal. Quem cai não é bobo: a mensagem é bem feita.
             </p>
           </div>
 
@@ -63,18 +59,15 @@ export default function GolpePage() {
 
       <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
-          <p className="etiqueta">A regra que serve para todos os casos</p>
+          <p className="etiqueta">A regra que vale para tudo</p>
           <p className="mt-4 text-bodyLg text-papel text-pretty">
-            Nunca confirme uma mensagem pelo caminho que a mensagem oferece.
-            Saia dela: abra o aplicativo por conta própria, ligue para o número
-            que você já tinha salvo, digite o endereço do site você mesmo. Todo
-            golpe depende de você seguir o caminho que ele montou.
+            Não use o link nem o número da mensagem. Abra o app, ligue para o
+            número que você já tinha ou digite o site à mão.
           </p>
 
           <div className="mt-10 border-t border-chumbo-linha pt-8">
             <p className="text-body text-papel-2">
-              Reconhecer a mensagem é metade. A outra metade é entender como ela
-              chegou até você.
+              Agora veja como o golpe chega até você.
             </p>
             <Link
               href="/anatomia"

@@ -76,7 +76,7 @@ export function HeroDossie() {
           <div className="lg:sticky lg:top-28">
             <p className="etiqueta flex flex-wrap items-center gap-x-3 gap-y-1">
               <span className="text-menta">
-                coleta local
+                só no seu navegador
                 <span
                   aria-hidden="true"
                   className="ml-1 inline-block animate-caret"
@@ -87,7 +87,7 @@ export function HeroDossie() {
               <span aria-hidden="true" className="text-chumbo-linhaForte">
                 ·
               </span>
-              <span>destino: nenhum</span>
+              <span>nada é enviado</span>
             </p>
 
             <h1 className="mt-6 font-display text-hero font-semibold text-balance">
@@ -96,9 +96,8 @@ export function HeroDossie() {
             </h1>
 
             <p className="mt-7 max-w-xl text-bodyLg text-papel-2 text-pretty">
-              Você abriu esta página e não digitou nada. Ainda assim, ela já
-              montou o dossiê ao lado — e qualquer outro site que você abrir hoje
-              consegue montar o mesmo, sem avisar.
+              Sem você digitar nada, esta página montou uma ficha sua. Qualquer
+              site consegue.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -106,7 +105,7 @@ export function HeroDossie() {
                 href="#a-virada"
                 className="inline-flex min-h-touch items-center rounded-sm bg-menta px-6 py-3 font-display text-sm font-medium text-chumbo transition-colors duration-200 hover:bg-menta-400"
               >
-                Entender o que isso significa
+                O que isso quer dizer?
               </Link>
               <Link
                 href="/ja-cai"
@@ -121,7 +120,7 @@ export function HeroDossie() {
           <div>
             <div className="rounded-sm border border-chumbo-linha bg-chumbo-painel">
               <div className="flex items-center justify-between gap-4 border-b border-chumbo-linha px-5 py-3">
-                <p className="etiqueta">Dossiê montado no seu navegador</p>
+                <p className="etiqueta">Sua ficha</p>
                 <p className="font-display text-[0.6875rem] text-papel-3">
                   {total > 0 ? `${total} campos` : "lendo…"}
                 </p>
@@ -163,7 +162,7 @@ export function HeroDossie() {
                 {!entradas && (
                   <div className="px-5 py-6">
                     <p className="font-display text-sm text-papel-3">
-                      Lendo o que o navegador entrega sem pedir…
+                      Montando sua ficha…
                     </p>
                   </div>
                 )}
@@ -176,18 +175,13 @@ export function HeroDossie() {
                 O que acontece com esses dados
               </p>
               <p className="mt-2.5 text-sm leading-relaxed text-papel-2">
-                <strong className="font-semibold text-papel">Nada.</strong> Esta
-                página não envia nenhuma dessas informações para lugar nenhum:
-                não há requisição de rede, não há servidor recebendo, não há
-                registro. Tudo o que você vê acima foi lido e desenhado dentro do
-                seu próprio navegador e some quando você fechar a aba.
+                <strong className="font-semibold text-papel">Nada.</strong> Nenhum
+                dado sai do seu aparelho. Tudo some quando você fecha a aba.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-papel-2">
-                A única exceção é a última linha. Para mostrar como um site
-                reconhece quem volta, gravamos uma marca no seu aparelho — no{" "}
-                <Termo id="armazenamento-local">armazenamento local</Termo> do
-                navegador, nada além de “esteve aqui”. Ela também nunca sai
-                daqui.
+                Só a última linha fica guardada, como uma marca na{" "}
+                <Termo id="armazenamento-local">memória do navegador</Termo>.
+                Não sai daqui.
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <button
@@ -196,11 +190,11 @@ export function HeroDossie() {
                   disabled={apagado}
                   className="inline-flex min-h-touch items-center rounded-sm border border-chumbo-linhaForte px-4 py-2 font-display text-sm text-papel transition-colors duration-200 hover:bg-chumbo-painel disabled:cursor-default disabled:border-chumbo-linha disabled:text-papel-3"
                 >
-                  {apagado ? "Marca apagada" : "Apagar essa marca agora"}
+                  {apagado ? "Marca apagada" : "Apagar a marca"}
                 </button>
                 {apagado && (
                   <span className="font-display text-sm text-menta">
-                    Pronto. Você voltou a ser um desconhecido.
+                    Pronto. Esta página esqueceu você.
                   </span>
                 )}
               </div>
@@ -208,11 +202,9 @@ export function HeroDossie() {
 
             {/* O contraponto. Sem ele a lista de cima vira alarmismo. */}
             <div className="mt-4 rounded-sm border border-chumbo-linha bg-chumbo-painel/60 p-5">
-              <p className="etiqueta">O que esta página não consegue ver</p>
+              <p className="etiqueta">O que esta página não vê</p>
               <p className="mt-2.5 text-sm leading-relaxed text-papel-2">
-                Tão importante quanto a lista de cima. Saber onde ficam os
-                limites é o que permite reconhecer quem blefa sobre saber mais
-                do que dá para saber.
+                Ajuda a pegar golpista que blefa.
               </p>
 
               <dl className="mt-4 divide-y divide-chumbo-linha border-t border-chumbo-linha">
@@ -245,33 +237,21 @@ export function HeroDossie() {
           }
         >
           <div className="max-w-3xl">
-            <p className="etiqueta">A virada</p>
+            <p className="etiqueta">Por que importa</p>
             <p className="mt-5 font-display text-title text-balance">
-              Você não digitou nada.{" "}
+              Nada disso saiu daqui.{" "}
               <span className="text-papel-2">
-                Nada disso saiu do seu navegador — mas qualquer site que você
-                abre consegue ver.
+                Mas qualquer site vê.
               </span>
             </p>
             <p className="mt-7 max-w-2xl text-bodyLg text-papel-2 text-pretty">
-              Isso não é invasão nem falha: é como a web funciona. Cada linha
-              sozinha é banal — juntas, elas viram uma etiqueta que identifica
-              você entre milhões, técnica que tem nome:{" "}
-              <Termo id="fingerprinting">fingerprinting</Termo>. O problema
-              começa quando alguém usa esses pedaços para escrever uma mensagem
-              sob medida — no seu idioma, no seu horário, citando o seu aparelho
-              — e você acredita porque parece pessoal demais para ser golpe.
+              Não é invasão, é como a internet funciona. Juntos, esses dados
+              formam um{" "}
+              <Termo id="fingerprinting">rastro que o navegador deixa</Termo>.
+              Com ele, o golpista faz a mensagem parecer pessoal.
             </p>
             <p className="mt-5 max-w-2xl text-bodyLg text-papel-2 text-pretty">
-              Repare que alguns números da lista podem não bater com o seu
-              aparelho de verdade — e que abrir esta página numa janela anônima
-              muda a resposta. Não é erro: é o seu navegador embaralhando os
-              dados de propósito para dificultar que a combinação vire uma
-              etiqueta única. A defesa existe, está ligada e funcionando.
-            </p>
-            <p className="mt-5 max-w-2xl text-bodyLg text-papel-2 text-pretty">
-              As próximas páginas mostram como essa mensagem é montada, como
-              reconhecê-la, e o que fazer se ela já tiver funcionado com você.
+              A seguir: como se proteger.
             </p>
           </div>
         </div>

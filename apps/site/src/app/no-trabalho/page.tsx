@@ -10,25 +10,25 @@ import { CATEGORIAS, PASSOS_INCIDENTE, TOTAL_GOLPES } from "@/lib/trabalho";
 export const metadata: Metadata = {
   title: "Os mesmos golpes no trabalho",
   description:
-    "Quatorze fraudes que miram quem está no expediente — QR code trocado, login falso, bombardeio de MFA, boleto adulterado, ransomware — com o ponto exato em que cada uma quebra.",
+    "Golpes que miram quem está trabalhando: QR Code trocado, login falso, boleto trocado e mais. Veja como barrar cada um.",
 };
 
 const MEDOS = [
   {
     medo: "“Vão achar que sou burro.”",
-    real: "Quem aplica isso faz o dia inteiro, testando o que funciona em milhares de pessoas. Cair é o resultado esperado de uma técnica boa chegando num dia ruim, não um teste de inteligência.",
+    real: "Golpista treina isso todo dia. Cair não tem nada a ver com inteligência.",
   },
   {
     medo: "“Vou levar bronca.”",
-    real: "Numa empresa que entendeu o problema, a bronca é por esconder, nunca por avisar. Se a sua não é assim ainda, avisar continua sendo a decisão certa — o estrago de esconder é maior, e ele sempre aparece.",
+    real: "Avisar é sempre o certo. Esconder dá mais prejuízo, e uma hora aparece.",
   },
   {
     medo: "“Talvez não tenha sido nada, não quero dar trabalho.”",
-    real: "Falso alarme custa dez minutos de alguém. Alarme atrasado custa dias de operação. A segurança prefere cem avisos à toa a um silêncio de dois dias.",
+    real: "Alarme falso custa dez minutos de alguém. Aviso atrasado pode custar dias de trabalho parado.",
   },
   {
     medo: "“Vou esperar para ver se dá problema.”",
-    real: "É a pior das opções. Nas primeiras horas dá para bloquear acesso, cancelar pagamento e conter o alastramento. Depois, resta contar o prejuízo.",
+    real: "É a pior escolha. Logo no começo, dá para bloquear acesso e cancelar pagamento. Depois, só resta contar o prejuízo.",
   },
 ];
 
@@ -36,18 +36,18 @@ export default function NoTrabalhoPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Camada corporativa · Challenge Leroy Merlin"
+        eyebrow="No trabalho · Challenge Leroy Merlin"
         title="Os mesmos golpes, quando você está no trabalho"
-        description="Muda o alvo, não o método. No expediente a pressa vem da hierarquia e do fechamento do mês, o dinheiro não é seu, e o prejuízo respinga em cliente e colega."
+        description="O jeito de enganar é o mesmo. Mas no trabalho o dinheiro é da empresa, e o prejuízo atinge clientes e colegas."
       />
 
       <section className="pt-10 md:pt-12">
         <div className="container-read">
           <Essencial
             itens={[
-              "No trabalho o golpe mira processo, não pessoa: pagamento, acesso e cadeia de fornecedores.",
-              "Cultura de reporte importa mais que treinamento — quem tem medo de avisar esconde o incidente.",
-              "A LGPD dá prazo para comunicar vazamento à ANPD; o relógio começa a correr na descoberta.",
+              "No trabalho, o golpe mira pagamentos, senhas e fornecedores.",
+              "Caiu? Avise na hora. Quem tem medo de avisar deixa o problema crescer.",
+              "Se vazar dado pessoal, a LGPD dá prazo para avisar a ANPD. Ele começa na descoberta.",
             ]}
           />
         </div>
@@ -57,18 +57,15 @@ export default function NoTrabalhoPage() {
         <div className="container-page">
           <div className="mb-12 max-w-2xl border-l-2 border-chumbo-linha pl-5">
             <p className="text-body text-papel-2 text-pretty">
-              Uma premissa que vale para tudo o que vem abaixo: quem cai não é
-              descuidado. Cai quem estava resolvendo três coisas ao mesmo tempo
-              às 17h50 de uma sexta — ou seja, todo mundo, uma hora ou outra. Um
-              ambiente em que as pessoas têm medo de avisar é um ambiente onde
-              os incidentes só aparecem grandes.
+              Quem cai não é descuidado. É quem estava com pressa, fazendo três
+              coisas ao mesmo tempo. Isso acontece com todo mundo.
             </p>
           </div>
 
-          {/* Índice: com 14 golpes, uma lista corrida vira parede de texto. */}
+          {/* Índice: com vários golpes, uma lista corrida vira parede de texto. */}
           <nav aria-label="Categorias" className="mb-14">
             <p className="etiqueta">
-              {TOTAL_GOLPES} golpes, em cinco famílias
+              {TOTAL_GOLPES} golpes, em três grupos
             </p>
             <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {CATEGORIAS.map((c) => (
@@ -115,14 +112,12 @@ export default function NoTrabalhoPage() {
                       </h3>
 
                       {/*
-                        Dos quatro textos que cada golpe tinha, dois ficam
-                        visíveis e dois recolhem. A escolha não é arbitrária:
-                        "como chega" é o que faz reconhecer, e "onde quebra" é
-                        o que faz agir. Esses dois resolvem a página sozinhos.
-
-                        "Por que funciona" e "o que fazer" explicam e
-                        aprofundam — valiosos para quem quer entender, mas é
-                        deles a densidade que fez a empresa achar massante.
+                        Dos quatro textos de cada golpe, três ficam visíveis
+                        (como chega, onde o golpe quebra, o que fazer) e só "por
+                        que funciona" fica recolhido. Os três visíveis são o que
+                        faz reconhecer e agir; o recolhido é para quem quer
+                        entender a fundo, sem pesar na leitura de quem só quer o
+                        recado.
                       */}
                       <div className="mt-5">
                         <p className="etiqueta">Como chega</p>
@@ -132,21 +127,23 @@ export default function NoTrabalhoPage() {
                       </div>
 
                       <div className="mt-5 border-l-2 border-menta py-2 pl-4">
-                        <p className="etiqueta-risco">Onde o golpe quebra</p>
+                        <p className="etiqueta-risco">Onde você barra o golpe</p>
                         <p className="mt-1.5 text-body leading-relaxed text-papel text-pretty">
                           {g.pontoDeQuebra}
                         </p>
                       </div>
 
+                      <div className="mt-5">
+                        <p className="etiqueta">O que fazer</p>
+                        <p className="mt-2 text-sm leading-relaxed text-papel-2">
+                          {g.oQueFazer}
+                        </p>
+                      </div>
+
                       <div className="mt-4">
-                        <Aprofundar rotulo="Por que funciona e o que fazer">
-                          <p className="etiqueta">Por que funciona</p>
-                          <p className="mt-2 text-sm leading-relaxed text-papel-2">
+                        <Aprofundar rotulo="Por que funciona">
+                          <p className="text-sm leading-relaxed text-papel-2">
                             {g.porQueFunciona}
-                          </p>
-                          <p className="etiqueta mt-5">O que fazer</p>
-                          <p className="mt-2 text-sm leading-relaxed text-papel-2">
-                            {g.oQueFazer}
                           </p>
                         </Aprofundar>
                       </div>
@@ -166,29 +163,21 @@ export default function NoTrabalhoPage() {
             Uma correção sobre Wi-Fi público
           </p>
           <h2 className="mt-4 font-display text-2xl font-semibold text-balance">
-            “Alguém na mesma rede lê a sua senha” já não é mais o risco
+            O risco do Wi-Fi aberto mudou
           </h2>
           <p className="mt-5 text-body leading-relaxed text-papel-2 text-pretty">
-            Esse aviso vem de uma web em que os sites trafegavam sem
-            criptografia. Hoje praticamente todo site sério usa HTTPS, e o
-            conteúdo do que você acessa não é legível por quem está na mesma
-            rede. Repetir o alerta antigo desgasta a confiança no resto do
-            conselho.
+            Antes, quem estava na mesma rede podia ler o que você enviava.
+            Hoje quase todo site protege esses dados.
           </p>
           <p className="mt-4 text-body leading-relaxed text-papel-2 text-pretty">
-            O risco real hoje é outro. Primeiro, a rede com nome clonado: um
-            ponto de acesso chamado igual ao do shopping, do hotel ou da loja,
-            que te leva a uma tela de login falsa. Segundo, a tela de cadastro
-            da própria rede aberta, pedindo CPF, telefone e e-mail — dados que
-            alimentam a próxima mensagem de golpe. Terceiro, o mais banal: a
-            tela do notebook visível para quem está atrás de você.
+            O risco hoje é outro. Pode ser uma rede falsa com o nome da loja ou
+            do shopping, que abre um login falso. Pode ser um cadastro pedindo
+            CPF e telefone. Ou alguém olhando a sua tela.
           </p>
           <p className="mt-4 text-body leading-relaxed text-papel-2 text-pretty">
-            O que resolve: preferir o 4G ou 5G do celular a rede aberta
-            desconhecida; nunca fazer login numa tela que apareceu sozinha ao
-            conectar; e, para sistema interno, usar a VPN da empresa — que aí
-            sim tem função clara, que é dar acesso à rede corporativa com
-            identidade verificada.
+            Prefira o 4G ou 5G do celular. Nunca digite senha numa tela que
+            abriu sozinha ao conectar. Para sistema da empresa, use a VPN da
+            empresa, a conexão protegida que ela fornece.
           </p>
         </div>
       </section>
@@ -198,21 +187,17 @@ export default function NoTrabalhoPage() {
         <div className="container-read">
           <p className="etiqueta">Contragolpe</p>
           <h2 className="mt-3 font-display text-2xl font-semibold text-balance md:text-3xl">
-            Avisar rápido vale mais que qualquer configuração
+            Avisar rápido é a melhor defesa
           </h2>
 
           <p className="mt-5 text-bodyLg leading-relaxed text-papel-2 text-pretty">
-            O tamanho de um incidente quase nunca é definido pela técnica do
-            ataque. É definido por quantos minutos passaram entre a pessoa
-            perceber e alguém poder agir. Nesse intervalo dá para bloquear um
-            acesso, sustar um pagamento, tirar uma máquina da rede. Depois dele,
-            resta contar o prejuízo.
+            O estrago depende do tempo até alguém saber. No começo, dá para
+            bloquear um acesso, parar um pagamento ou desconectar o computador.
           </p>
 
           <p className="mt-4 text-body leading-relaxed text-papel-2 text-pretty">
-            E o que mais alarga esse intervalo não é falta de treinamento. É
-            vergonha. Por isso vale enfrentar as quatro frases que passam pela
-            cabeça de quem acabou de clicar em algo errado:
+            O que mais atrasa o aviso é a vergonha. Veja as quatro frases que
+            passam pela cabeça de quem clicou errado:
           </p>
 
           <dl className="mt-8 divide-y divide-chumbo-linha border-y border-chumbo-linha">
@@ -231,12 +216,9 @@ export default function NoTrabalhoPage() {
               Se você lidera uma equipe
             </p>
             <p className="mt-2 text-body leading-relaxed text-papel-2 text-pretty">
-              A sua reação ao primeiro aviso define se haverá um segundo. Quem
-              é repreendido ao reportar não deixa de errar — deixa de contar, e
-              o próximo incidente só aparece quando já é grande. Agradecer o
-              aviso na frente da equipe, mesmo quando foi falso alarme, é a
-              medida de segurança mais barata que existe e não depende de
-              orçamento nenhum.
+              Sua reação ao primeiro aviso decide se haverá um segundo. Quem
+              leva bronca por avisar para de contar. Agradeça o aviso, mesmo
+              quando for alarme falso.
             </p>
           </div>
         </div>
@@ -246,10 +228,10 @@ export default function NoTrabalhoPage() {
       <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
           <h2 className="font-display text-2xl font-semibold">
-            Se acontecer com você no expediente
+            Se acontecer com você no trabalho
           </h2>
           <p className="mt-3 text-body text-papel-2 text-pretty">
-            A ordem importa mais que a rapidez de cada passo isolado.
+            Siga os passos nesta ordem.
           </p>
 
           <ol className="mt-8 divide-y divide-chumbo-linha border-y border-chumbo-linha">
@@ -272,22 +254,21 @@ export default function NoTrabalhoPage() {
           </ol>
 
           <div className="mt-10 rounded-sm border border-chumbo-linha bg-chumbo-painel p-6">
-            <p className="etiqueta">O prazo legal, para quem precisa saber</p>
+            <p className="etiqueta">O prazo da lei</p>
             <p className="mt-3 text-body leading-relaxed text-papel-2 text-pretty">
-              Quando um incidente de segurança atinge dados pessoais e pode
-              acarretar risco relevante às pessoas afetadas, o controlador tem{" "}
+              Um problema de segurança atingiu dados pessoais e pode trazer
+              risco relevante às pessoas? A empresa tem{" "}
               <strong className="font-semibold text-papel">
                 três dias úteis
               </strong>{" "}
-              para comunicar a Autoridade Nacional de Proteção de Dados e os
-              titulares. O prazo conta a partir do momento em que a empresa
-              toma conhecimento de que o incidente afetou dados pessoais.
+              para avisar a ANPD e as pessoas afetadas. A ANPD é o órgão do
+              governo que cuida de dados pessoais. O prazo conta de quando a
+              empresa descobre que dados pessoais foram atingidos.
             </p>
             <p className="mt-3 text-body leading-relaxed text-papel-2 text-pretty">
-              É por isso que o seu aviso rápido não é só boa vontade: ele é o
-              que faz o relógio começar cedo o bastante para a empresa
-              conseguir cumprir a lei. Quem conduz essa comunicação é o
-              encarregado de dados, nunca você por conta própria.
+              Por isso seu aviso rápido ajuda a empresa a cumprir a lei. Quem
+              faz esse aviso é o encarregado de dados, nunca você por conta
+              própria.
             </p>
             <Fonte
               autor="ANPD"
@@ -313,8 +294,8 @@ export default function NoTrabalhoPage() {
 
           <div className="mt-10 border-t border-chumbo-linha pt-8">
             <p className="text-body text-papel-2">
-              Fora do expediente, o alvo volta a ser você e a sua família — e o
-              método é exatamente o mesmo.
+              Fora do trabalho, o alvo é você e sua família. E o golpe é o
+              mesmo.
             </p>
             <Link
               href="/golpe"

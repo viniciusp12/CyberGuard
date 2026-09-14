@@ -7,7 +7,7 @@ import { TermosRelacionados } from "@/components/ui/TermosRelacionados";
 export const metadata: Metadata = {
   title: "Já caí num golpe — e agora?",
   description:
-    "O que fazer nas primeiras horas, em ordem: banco e devolução do PIX, boletim de ocorrência, avisar contatos, trocar senhas. Só canais oficiais.",
+    "O que fazer depois de cair num golpe.",
 };
 
 type Passo = {
@@ -22,61 +22,60 @@ const PASSOS: Passo[] = [
   {
     n: "01",
     quando: "nos primeiros minutos",
-    titulo: "Ligue para o seu banco e peça o bloqueio",
+    titulo: "Ligue para o banco e peça o bloqueio",
     texto:
-      "Use o telefone que está no verso do cartão ou o chat de dentro do aplicativo — nunca um número que veio na mensagem do golpe. Diga a frase exata: “fui vítima de fraude, quero registrar contestação e acionar o Mecanismo Especial de Devolução”.",
+      "Use o número do verso do cartão ou o chat do app. Nunca use número que veio na mensagem. Diga: “fui vítima de fraude, quero registrar contestação e acionar o Mecanismo Especial de Devolução”.",
     detalhe:
-      "O MED é a regra do Banco Central que permite tentar puxar de volta um PIX enviado sob fraude. Você tem até 80 dias para pedir e o banco tem até 7 dias para analisar, mas a chance real de reaver o dinheiro cai muito depois das primeiras horas — porque o valor é retirado da conta de destino rapidamente. Pedir no mesmo dia é o que decide.",
+      "Esse mecanismo (MED) é uma regra do Banco Central que tenta trazer o PIX de volta. Você tem até 80 dias para pedir, e o banco, até 7 dias para analisar. Peça no mesmo dia: o dinheiro some rápido.",
   },
   {
     n: "02",
     quando: "nos primeiros minutos",
-    titulo: "Se foi o WhatsApp que tomaram, retome a conta agora",
+    titulo: "Tomaram seu WhatsApp? Recupere agora",
     texto:
-      "Reinstale o WhatsApp e faça login com o seu número. O código chega por SMS no seu chip, que continua sendo seu — e quem estiver usando a conta em outro aparelho é desconectado na hora.",
+      "Instale o WhatsApp de novo e entre com seu número. O código chega por SMS. O golpista perde o acesso na hora.",
     detalhe:
-      "Terminada a recuperação, ative imediatamente a verificação em duas etapas (Configurações → Privacidade → Verificação em duas etapas). Sem isso, dá para retomarem no minuto seguinte. Se aparecer pedido de PIN e você não tiver criado nenhum, é porque o golpista criou: o WhatsApp permite recuperar por e-mail ou impõe uma espera de sete dias.",
+      "Depois, ligue a confirmação em duas etapas no WhatsApp. O app pediu um PIN que você não criou? Foi o golpista. Recupere por e-mail ou espere sete dias.",
   },
   {
     n: "03",
     quando: "na primeira hora",
-    titulo: "Avise os seus contatos por outro caminho",
+    titulo: "Avise seus contatos por outro caminho",
     texto:
-      "Ligue, mande áudio de outro número, poste nos stories, escreva no grupo da família. Diga a frase mais curta possível: “meu WhatsApp foi clonado, não mandem PIX para ninguém que se diga eu”.",
-    detalhe:
-      "Este passo não recupera o seu dinheiro — ele impede o prejuízo das outras dez pessoas. Em golpe de conta tomada, quem paga a conta quase sempre é um conhecido da vítima.",
+      "Ligue ou poste nos stories. Diga: “meu WhatsApp foi clonado, não mandem PIX para ninguém que se diga eu”.",
+    detalhe: "Assim, amigos e parentes não caem no mesmo golpe.",
   },
   {
     n: "04",
     quando: "no mesmo dia",
     titulo: "Registre boletim de ocorrência",
     texto:
-      "Dá para fazer pela internet, de graça, pela delegacia eletrônica do seu estado, com login gov.br. O boletim tem a mesma validade do feito na delegacia.",
+      "É de graça, pela internet, na delegacia eletrônica do seu estado. Entre com a conta gov.br. Vale como o da delegacia.",
     detalhe:
-      "Não é burocracia inútil: o número do BO costuma ser exigido pelo banco na contestação, sustenta o pedido de devolução e é o que existe caso alguém abra crédito no seu nome depois.",
+      "O banco costuma pedir o número do BO. Ele também ajuda se abrirem crédito no seu nome.",
   },
   {
     n: "05",
     quando: "no mesmo dia",
     titulo: "Troque as senhas, começando pelo e-mail",
     texto:
-      "O e-mail primeiro, sempre — é por ele que se redefine a senha de todo o resto. Depois banco, redes sociais e qualquer lugar onde você usava a mesma senha.",
+      "Com seu e-mail, dá para trocar todas as outras senhas. Depois, troque as do banco, das redes e as repetidas.",
     detalhe:
-      "Em cada conta, procure “aparelhos conectados” ou “sessões ativas” e desconecte tudo o que você não reconhece. Trocar a senha sem encerrar as sessões deixa quem já estava dentro continuar dentro em vários serviços.",
+      "Em cada conta, procure “aparelhos conectados” e desconecte o que não reconhece. Senão, o golpista pode continuar lá dentro.",
   },
   {
     n: "06",
     quando: "nos primeiros dias",
     titulo: "Veja o que existe no seu nome",
     texto:
-      "O Banco Central tem um serviço gratuito, o Registrato, que mostra contas abertas, empréstimos e chaves PIX registradas no seu CPF. Serve para descobrir o que foi feito com os seus dados sem você saber.",
+      "O Registrato, do Banco Central, mostra de graça as contas, empréstimos e chaves PIX no seu CPF.",
   },
   {
     n: "07",
     quando: "se não resolver",
-    titulo: "Escale para o canal oficial de reclamação",
+    titulo: "Reclame no canal oficial",
     texto:
-      "Se o banco negar a contestação sem explicação ou não responder, registre no Consumidor.gov.br, que é a plataforma oficial do Ministério da Justiça — a empresa tem dez dias para responder e a resposta fica registrada. Se o problema envolveu troca de chip pela operadora, a reclamação também vai para a Anatel.",
+      "O banco negou sem explicar ou não respondeu? Reclame no Consumidor.gov.br. Se passaram seu número para outro chip, reclame também na Anatel.",
   },
 ];
 
@@ -92,62 +91,59 @@ const CANAIS: Canal[] = [
   {
     nome: "Seu banco",
     o_que:
-      "Contestação e Mecanismo Especial de Devolução do PIX. É o canal mais importante e o mais rápido.",
-    rotulo:
-      "Pelo telefone do verso do cartão ou pelo chat de dentro do aplicativo. Não existe um site único — desconfie de qualquer um que apareça em busca patrocinada.",
+      "Para pedir a devolução do PIX (MED). É o canal mais importante.",
+    rotulo: "Use o número do verso do cartão ou o chat do app.",
   },
   {
     nome: "Delegacia eletrônica de São Paulo",
-    o_que: "Registro de boletim de ocorrência pela internet, com login gov.br.",
+    o_que: "Boletim pela internet, com login gov.br.",
     href: "https://www.delegaciaeletronica.policiacivil.sp.gov.br/",
   },
   {
     nome: "Delegacia eletrônica dos demais estados",
-    o_que:
-      "Cada estado tem o seu portal, com nome e endereço diferentes (Delegacia Online, Delegacia Virtual, BO Online).",
+    o_que: "Cada estado tem seu próprio site.",
     pendente:
-      "Endereços por estado ainda não conferidos um a um. Enquanto isso, o caminho seguro é buscar “delegacia eletrônica” mais o nome do seu estado e conferir se o domínio termina em .gov.br antes de digitar qualquer dado.",
+      "Busque “delegacia eletrônica” e o nome do seu estado. Só digite dados se o endereço do site terminar em .gov.br.",
   },
   {
     nome: "Registrato — Banco Central",
-    o_que:
-      "Relatório gratuito de contas, empréstimos e chaves PIX registrados no seu CPF. Acesso pela conta gov.br.",
+    o_que: "Relatório gratuito do seu CPF. Entre com a conta gov.br.",
     href: "https://www.gov.br/pt-br/servicos/emitir-relatorio-de-chaves-pix",
   },
   {
     nome: "Consumidor.gov.br",
     o_que:
-      "Plataforma oficial do Ministério da Justiça para reclamar de empresa que não resolveu. A empresa tem dez dias para responder.",
+      "Do Ministério da Justiça, para reclamar de empresa que não resolveu. Ela tem dez dias para responder.",
     href: "https://www.consumidor.gov.br",
   },
   {
     nome: "Anatel",
     o_que:
-      "Reclamação contra operadora de telefonia — o caminho quando houve troca indevida de chip. Exige o número de protocolo do atendimento da operadora antes.",
+      "Para reclamar da operadora, se passaram seu número para outro chip. Antes, reclame na operadora e anote o protocolo.",
     href: "https://www.gov.br/anatel/pt-br/consumidor/quer-reclamar/reclamacao",
   },
 ];
 
 const NAO_FACA = [
   {
-    titulo: "Não pague nada para “recuperar” o dinheiro",
+    titulo: "Não pague para “recuperar” o dinheiro",
     texto:
-      "O segundo golpe vem em cima do primeiro: alguém aparece dizendo que consegue reaver o valor mediante uma taxa. Recuperação de fraude não se compra, e ninguém fora do seu banco tem esse poder.",
+      "Quem cobra taxa para recuperar o dinheiro é outro golpista. Só o seu banco pode tentar isso.",
   },
   {
-    titulo: "Não procure o telefone do banco no buscador",
+    titulo: "Não procure o telefone do banco na internet",
     texto:
-      "Criminosos compram anúncios com números falsos de central de atendimento, e eles aparecem antes do resultado verdadeiro. Use só o número do verso do cartão ou o chat de dentro do app.",
+      "Golpistas pagam anúncios com números falsos. Use só o verso do cartão ou o chat do app.",
   },
   {
     titulo: "Não apague as mensagens",
     texto:
-      "Print de conversa, comprovante de PIX, número de quem chamou, horário. Tudo isso é o que sustenta a contestação e o boletim. Tire foto de tudo antes de qualquer coisa.",
+      "Guarde prints, comprovante do PIX, número de quem chamou e horário.",
   },
   {
     titulo: "Não fique sozinho com isso",
     texto:
-      "A vergonha é o que mais atrasa a reação, e atraso é justamente o que o golpe precisa. Contar a alguém na primeira hora vale mais do que qualquer configuração.",
+      "A vergonha atrasa você, e o golpe depende disso. Conte para alguém logo.",
   },
 ];
 
@@ -156,9 +152,9 @@ export default function JaCaiPage() {
     <>
       <PageHeader
         numero="06"
-        eyebrow="Resposta a incidente"
+        eyebrow="Depois do golpe"
         title="Já caí num golpe — e agora?"
-        description="Primeiro: não é culpa sua, e você não é ingênuo. Golpe é feito por gente que faz isso profissionalmente, testando o que funciona em milhares de pessoas. O que importa agora é a ordem das próximas horas."
+        description="Não é culpa sua: golpista é profissional. Agora, aja rápido e na ordem certa."
       />
 
       {/* Ação imediata, antes de qualquer leitura longa. */}
@@ -166,9 +162,9 @@ export default function JaCaiPage() {
         <div className="container-read">
           <p className="etiqueta-risco">Se acabou de acontecer</p>
           <p className="mt-3 text-bodyLg text-papel text-pretty">
-            Ligue para o seu banco agora, pelo número do verso do cartão, e diga
-            que foi vítima de fraude. Faça isso antes de ler o resto desta
-            página — a chance de reaver dinheiro cai a cada hora.
+            Ligue para o seu banco agora, pelo número do verso do cartão. Diga
+            que foi vítima de fraude. Faça isso antes de ler o resto: a chance
+            de recuperar o dinheiro cai a cada hora.
           </p>
         </div>
       </section>
@@ -226,8 +222,7 @@ export default function JaCaiPage() {
         <div className="container-read">
           <h2 className="font-display text-2xl font-semibold">Canais oficiais</h2>
           <p className="mt-3 text-body text-papel-2 text-pretty">
-            Só entram aqui canais de órgão público ou da própria instituição.
-            Nenhum intermediário, nenhum serviço pago de “recuperação”.
+            Só canais do governo e do seu banco.
           </p>
 
           <ul className="mt-8 divide-y divide-chumbo-linha border-y border-chumbo-linha">
@@ -258,7 +253,7 @@ export default function JaCaiPage() {
                 {c.pendente && (
                   <div className="mt-3">
                     <PendenteVerificacao>
-                      link pendente de conferência
+                      link ainda não conferido
                     </PendenteVerificacao>
                     <p className="mt-2 text-sm leading-relaxed text-papel-3">
                       {c.pendente}
@@ -270,10 +265,7 @@ export default function JaCaiPage() {
           </ul>
 
           <p className="mt-6 font-display text-xs leading-relaxed text-papel-3">
-            Regra desta página: nenhum endereço é publicado por suposição. Os
-            links acima apontam para domínios de órgão público conferidos; o que
-            ainda não foi conferido aparece marcado, com o caminho seguro para
-            você mesmo chegar lá.
+            Os links acima foram conferidos.
           </p>
 
           <TermosRelacionados
@@ -285,13 +277,13 @@ export default function JaCaiPage() {
       <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
           <p className="text-body text-papel-2 text-pretty">
-            Passada a urgência, vale fechar as portas que ficaram abertas.
+            Passado o susto, proteja suas contas.
           </p>
           <Link
             href="/agora"
             className="mt-5 inline-flex min-h-touch items-center rounded-sm border border-chumbo-linhaForte px-5 py-3 font-display text-sm text-papel transition-colors duration-200 hover:border-menta hover:text-menta"
           >
-            O que fazer agora — os oito ajustes →
+            Veja os oito ajustes →
           </Link>
         </div>
       </section>

@@ -75,16 +75,14 @@ export function TesteSenha() {
           <strong className="font-semibold text-papel">
             O que você digitar não sai daqui.
           </strong>{" "}
-          A conta é feita pelo próprio navegador, na sua máquina. Não há envio,
-          não há salvamento, não há registro — nem para nós, nem para ninguém.
-          Fechou a aba, acabou. Mesmo assim, o hábito certo é não digitar uma
-          senha de verdade em nenhum site que peça: use uma parecida.
+          Nada é enviado nem salvo. Mesmo assim, teste uma senha parecida, não
+          a verdadeira.
         </p>
 
         {/* Resultado */}
         <div className="mt-8 rounded-sm border border-chumbo-linha bg-chumbo-painel p-6">
           <p className="etiqueta">
-            Tempo para varrer todas as combinações
+            Tempo para testar todas as combinações
           </p>
 
           <div aria-live="polite" aria-atomic="true">
@@ -116,7 +114,7 @@ export function TesteSenha() {
             <div
               className="h-1.5 w-full overflow-hidden rounded-full bg-chumbo-painel"
               role="img"
-              aria-label={`Força estimada: ${Math.round(a.bits)} bits de entropia`}
+              aria-label={`Força estimada: ${Math.round(a.bits)} bits`}
             >
               <div
                 className={`h-full transition-all duration-300 ease-marca ${forcaCor(a.bits, a.fraca)}`}
@@ -129,11 +127,11 @@ export function TesteSenha() {
                 <dd className="text-papel-2 tabular-nums">{a.comprimento}</dd>
               </div>
               <div className="flex gap-2">
-                <dt>alfabeto</dt>
+                <dt>variedade</dt>
                 <dd className="text-papel-2 tabular-nums">{a.alfabeto}</dd>
               </div>
               <div className="flex gap-2">
-                <dt>entropia</dt>
+                <dt>força</dt>
                 <dd className="text-papel-2 tabular-nums">
                   {Math.round(a.bits)} bits
                 </dd>
@@ -143,41 +141,32 @@ export function TesteSenha() {
 
           {senha.length > 0 && (
             <div className="mt-6 border-t border-chumbo-linha pt-5">
-              <p className="etiqueta">Se o ataque for pelo site, e não offline</p>
+              <p className="etiqueta">Se o golpista tentar direto no site</p>
               <p className="mt-2 font-display text-sm text-papel-2">
                 {formatarDuracao(a.segundosOnline)}
               </p>
               <p className="mt-2 text-sm leading-relaxed text-papel-3">
-                Muito mais lento porque o site bloqueia depois de algumas
-                tentativas. O número grande lá em cima é o cenário ruim: quando
-                o banco de senhas vaza e o ataque roda na máquina do criminoso,
-                sem ninguém para barrar.
+                Demora mais, porque o site bloqueia. O número de cima é o pior
+                caso.
               </p>
             </div>
           )}
 
           {a.pareceFrase && (
             <div className="mt-6 border-t border-chumbo-linha pt-5">
-              <p className="etiqueta-risco">Ressalva importante</p>
+              <p className="etiqueta-risco">Atenção</p>
               <p className="mt-2 text-sm leading-relaxed text-papel-2">
-                Sua senha tem espaços, então provavelmente é uma frase. A conta
-                acima assume que cada letra foi sorteada. Se as palavras vieram
-                de uma música, de um versículo ou de um ditado, o número real é
-                muito menor — atacantes testam frases prontas. Frase-senha só
-                funciona quando as palavras não têm relação entre si.
+                Parece uma frase. Se veio de música, versículo ou ditado, cai
+                bem mais rápido.
               </p>
             </div>
           )}
         </div>
 
         <p className="mt-4 font-display text-xs leading-relaxed text-papel-3">
-          Cenário assumido: {PALPITES_POR_SEGUNDO.toLocaleString("pt-BR")}{" "}
-          tentativas por segundo offline (ordem de grandeza de uma placa de vídeo
-          atual contra um algoritmo de senha rápido e mal escolhido) e{" "}
-          {PALPITES_ONLINE} por segundo contra um site com bloqueio. A conta
-          divide o total pela metade, porque em média a senha certa aparece no
-          meio da varredura. Números diferentes de outros medidores significam
-          suposições diferentes, não erro.
+          A conta supõe {PALPITES_POR_SEGUNDO.toLocaleString("pt-BR")}{" "}
+          tentativas por segundo com senhas vazadas e {PALPITES_ONLINE} por
+          segundo direto no site. Outros testes supõem outros números.
         </p>
       </div>
 
@@ -185,11 +174,10 @@ export function TesteSenha() {
       <div className="space-y-8">
         <div className="rounded-sm border border-chumbo-linha bg-chumbo-painel p-6">
           <h2 className="font-display text-lg font-semibold">
-            Comprimento vence complexidade decorada
+            Tamanho vale mais que símbolos
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-papel-2">
-            Cada caractere a mais multiplica o trabalho do atacante. Cada
-            símbolo esquisito a mais só multiplica a sua chance de esquecer.
+            Cada letra a mais multiplica o trabalho do golpista.
           </p>
 
           <ul className="mt-5 space-y-4">
@@ -212,50 +200,42 @@ export function TesteSenha() {
           </ul>
 
           <p className="mt-5 border-t border-chumbo-linha pt-4 text-sm leading-relaxed text-papel-2">
-            A terceira é mais fácil de lembrar, mais fácil de digitar no celular
-            e ainda assim a mais resistente — desde que as palavras tenham sido
-            sorteadas, não escolhidas por você.
+            A terceira é fácil de lembrar e a mais forte, se as palavras forem
+            sorteadas.
           </p>
         </div>
 
         <div className="rounded-sm border border-chumbo-linha bg-chumbo-painel p-6">
           <h2 className="font-display text-lg font-semibold">
-            O que fazer com isso na prática
+            Na prática
           </h2>
           <ul className="mt-4 space-y-4 text-sm leading-relaxed text-papel-2">
             <li>
               <strong className="font-semibold text-papel">
                 Use um gerenciador de senhas.
               </strong>{" "}
-              Ele inventa uma senha longa e diferente para cada site e guarda
-              tudo. Você decora uma só: a que abre o gerenciador — e essa deve
-              ser uma frase-senha longa. Bitwarden, 1Password, KeePassXC e o
-              gerenciador embutido no seu navegador servem.
+              Ele cria e guarda uma senha para cada site. Bitwarden, 1Password,
+              KeePassXC e o do navegador servem.
             </li>
             <li>
               <strong className="font-semibold text-papel">
-                Não repita senha entre sites.
+                Não repita senha.
               </strong>{" "}
-              É o que mais causa estrago. Um site pequeno vaza a sua senha e
-              quem pegou vai testar a mesma combinação no seu e-mail, no seu
-              banco e no seu Instagram. Isso tem nome: credential stuffing.
+              Se um site vaza, os golpistas testam a mesma senha no seu e-mail
+              e no banco.
             </li>
             <li>
               <strong className="font-semibold text-papel">
-                Proteja o e-mail acima de tudo.
+                Proteja o e-mail primeiro.
               </strong>{" "}
-              Quem entra no seu e-mail redefine a senha de todo o resto. Ele
-              merece a senha mais longa e a verificação em duas etapas mais
-              forte que você conseguir.
+              Quem entra nele troca a senha de todo o resto. Ligue a
+              verificação em duas etapas.
             </li>
             <li>
               <strong className="font-semibold text-papel">
                 Troque só quando houver motivo.
               </strong>{" "}
-              Trocar de senha todo mês por obrigação faz as pessoas criarem
-              variações previsíveis. Troque quando houver suspeita ou vazamento
-              — essa é a recomendação atual do NIST, que abandonou a exigência
-              de troca periódica.
+              Motivo é suspeita de invasão ou vazamento.
             </li>
           </ul>
         </div>

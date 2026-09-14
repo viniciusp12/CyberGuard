@@ -10,7 +10,7 @@ const SECOES = [
     href: "/senha",
     titulo: "Teste de senha",
     resumo:
-      "Digite e veja o tempo de quebra despencar. Descubra por que “P@ssw0rd1” não é forte e por que quatro palavras aleatórias são.",
+      "Veja em quanto tempo sua senha seria descoberta.",
     acao: "interativo",
   },
   {
@@ -18,7 +18,7 @@ const SECOES = [
     href: "/golpe",
     titulo: "Qual deles é golpe?",
     resumo:
-      "Quatro pares de mensagens que chegam de verdade no Brasil. Escolha a fraude e veja os sinais marcados dentro do próprio texto.",
+      "Ache a mensagem falsa e veja as pistas.",
     acao: "interativo",
   },
   {
@@ -26,7 +26,7 @@ const SECOES = [
     href: "/anatomia",
     titulo: "Como o golpe funciona por dentro",
     resumo:
-      "A clonagem de WhatsApp passo a passo, do lado de quem aplica — e o ponto exato onde ela quebra.",
+      "Como clonam um WhatsApp e como impedir.",
     acao: "leitura",
   },
   {
@@ -34,7 +34,7 @@ const SECOES = [
     href: "/ia",
     titulo: "Inteligência artificial",
     resumo:
-      "O que sai do seu aparelho quando você conversa com uma IA, o que ela mudou nos golpes — e por que as defesas antigas ainda funcionam.",
+      "Golpes com IA e os cuidados que continuam valendo.",
     acao: "interativo",
   },
   {
@@ -42,15 +42,15 @@ const SECOES = [
     href: "/agora",
     titulo: "O que fazer agora",
     resumo:
-      "Oito ajustes concretos com o porquê de cada um e o que exatamente eles impedem. Nada genérico.",
-    acao: "checklist",
+      "Ajustes simples para fazer hoje.",
+    acao: "lista",
   },
   {
     n: "06",
     href: "/ja-cai",
     titulo: "Já caí num golpe — e agora?",
     resumo:
-      "A ordem das primeiras horas: banco, devolução do PIX, boletim de ocorrência, avisar contatos. Só canais oficiais.",
+      "Na ordem: banco, devolução do PIX, boletim de ocorrência, contatos. Só canais oficiais.",
     acao: "urgente",
   },
 ];

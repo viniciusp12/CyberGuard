@@ -19,74 +19,74 @@ const PASSOS: Passo[] = [
   {
     n: "01",
     quando: "semanas antes",
-    titulo: "O número já está circulando",
+    titulo: "Seu número já está por aí",
     movimento:
-      "Não é preciso descobrir nada. Números de celular estão em anúncios de venda de móveis usados, em grupos públicos de bairro, em listas de contato vazadas de lojas e aplicativos. Quem aplica o golpe compra ou coleta esses números às centenas.",
+      "Seu número está em anúncios, grupos e listas vazadas. O golpista junta centenas de números.",
     ruptura:
-      "Evitar publicar o número em anúncio e sair de grupos públicos reduz a chance de entrar na lista — mas não dependa disso: quase todo número brasileiro já vazou em algum lugar.",
+      "Evite pôr seu número em anúncios e grupos abertos. Mas quase todo número já vazou.",
   },
   {
     n: "02",
     quando: "minutos antes",
-    titulo: "Uma olhada rápida em quem você é",
+    titulo: "Uma espiada em quem você é",
     movimento:
-      "Com o número em mãos, dá para ver a foto de perfil do WhatsApp e, com o nome, chegar às redes sociais abertas. Em poucos minutos se descobre o primeiro nome, o rosto, quem parecem ser os filhos, os pais, o pessoal do trabalho.",
+      "Pela foto do WhatsApp e pelas redes abertas, ele descobre quem é sua família.",
     ruptura:
-      "Fechar perfis públicos e restringir quem vê sua foto do WhatsApp (Configurações → Privacidade → Foto do perfil → Meus contatos) encarece o trabalho.",
+      "Feche seus perfis. Foto do WhatsApp só para contatos: Configurações → Privacidade → Foto do perfil → Meus contatos.",
   },
   {
     n: "03",
     quando: "14h02",
-    titulo: "O pedido do código parte do próprio WhatsApp",
+    titulo: "O WhatsApp manda um código",
     movimento:
-      "O criminoso começa a instalar o WhatsApp em outro aparelho usando o seu número. O aplicativo faz o que sempre faz: manda um SMS com um código de seis dígitos para o dono do número. Ou seja, para você. Nada foi invadido — esse SMS é legítimo.",
+      "O golpista instala o WhatsApp com o seu número. O app manda um código por SMS para você.",
     ruptura:
-      "É por isso que o código chega “do nada”. Um código que você não pediu significa que alguém está tentando entrar agora.",
+      "Chegou código que você não pediu? Alguém tenta entrar agora. Não passe para ninguém.",
   },
   {
     n: "04",
     quando: "14h03",
-    titulo: "A ligação, um minuto depois",
+    titulo: "Uma ligação, um minuto depois",
     movimento:
-      "Aí vem a única parte que depende de você. Alguém liga dizendo ser da operadora, do suporte técnico, da loja onde você anunciou, do RH de uma vaga, do sorteio de uma igreja. A conversa é educada e sempre chega no mesmo ponto: “para confirmar, me diz o código que acabou de chegar no seu celular”.",
+      "Alguém liga fingindo ser da operadora, de uma loja ou de uma vaga. E pede o código.",
     ruptura:
-      "Nenhuma empresa, em nenhuma situação, precisa de um código que chegou no seu celular. Nenhuma. Esse código existe justamente para provar que o telefone é seu — entregá-lo é entregar a conta.",
+      "Nenhuma empresa precisa desse código. Nunca. Quem passa o código entrega a conta.",
     decisivo: true,
   },
   {
     n: "05",
     quando: "14h04",
-    titulo: "A conta muda de aparelho",
+    titulo: "A conta muda de celular",
     movimento:
-      "Com os seis dígitos, o WhatsApp migra a conta para o aparelho do criminoso. O seu desconecta. As conversas antigas ficam com você, mas o número — e a identidade dele — passa a estar do outro lado.",
+      "Com o código, sua conta vai para o celular do golpista. O seu desconecta.",
     ruptura:
-      "Aqui está o freio de mão: se a verificação em duas etapas do WhatsApp estiver ativada, o aplicativo pede também um PIN de seis dígitos que só você sabe, e o código do SMS sozinho não serve para nada. É o único passo dessa lista que trava o golpe mesmo depois de tudo ter dado errado.",
+      "Com a verificação em duas etapas ligada, o app pede também um PIN, uma senha que só você sabe. Sem o PIN, o código do SMS não serve.",
     decisivo: true,
   },
   {
     n: "06",
     quando: "14h10",
-    titulo: "Leitura antes do golpe",
+    titulo: "Ele observa antes de pedir",
     movimento:
-      "Antes de pedir dinheiro, lê-se um pouco. Quem você chama de mãe, quem chama você de amor, quem já te emprestou dinheiro antes, como você escreve, se usa emoji, se manda áudio. É esse detalhe que faz a próxima mensagem soar como você.",
+      "Ele vê quem é sua família, quem te empresta dinheiro e como você escreve.",
   },
   {
     n: "07",
     quando: "14h25",
-    titulo: "Os pedidos saem em série",
+    titulo: "Pedidos para vários contatos",
     movimento:
-      "As mensagens vão para dezenas de contatos ao mesmo tempo, com valores diferentes para cada perfil. A desculpa é sempre a mesma família: emergência, aplicativo do banco fora do ar, chave PIX de terceiro, e um pedido para não ligar agora.",
+      "Vários contatos recebem pedido de dinheiro. Desculpas: emergência, app do banco fora do ar, PIX para outra pessoa, “não me liga”.",
     ruptura:
-      "Do outro lado, a defesa é uma só: ligar. Quem está com a conta não atende ligação no número verdadeiro.",
+      "Quem recebe deve ligar para a pessoa. O golpista não atende no número verdadeiro.",
   },
   {
     n: "08",
     quando: "às vezes só no dia seguinte",
-    titulo: "Você descobre por último",
+    titulo: "Você é o último a saber",
     movimento:
-      "A vítima costuma não perceber nada de imediato — o WhatsApp simplesmente parou de funcionar, o que parece problema de internet. A descoberta quase sempre vem de fora: alguém liga perguntando se você está bem, ou se o PIX era mesmo seu.",
+      "Parece falha no WhatsApp. Quase sempre, alguém liga perguntando se o PIX era seu.",
     ruptura:
-      "Se o WhatsApp desconectar sozinho, trate como emergência, não como bug. Reinstale e recupere a conta pelo SMS na hora — quem estiver dentro é expulso.",
+      "WhatsApp desconectou sozinho? É urgente. Reinstale e recupere a conta pelo SMS na hora. Quem estiver dentro é expulso.",
   },
 ];
 
@@ -153,7 +153,7 @@ export function LinhaDoTempo() {
               <p
                 className={`etiqueta ${p.decisivo ? "text-menta" : ""}`}
               >
-                {p.decisivo ? "Aqui o golpe quebra" : "O que atrapalha"}
+                {p.decisivo ? "Aqui o golpe quebra" : "Como se proteger"}
               </p>
               <p className="mt-1.5 text-body leading-relaxed text-papel-2 text-pretty">
                 {p.ruptura}

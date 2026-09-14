@@ -26,59 +26,49 @@ export type ItemTriagem = {
 export const TRIAGEM: ItemTriagem[] = [
   {
     id: "email-trabalho",
-    texto: "Reescrever um e-mail que você mesmo redigiu, sem dados de ninguém",
+    texto: "Melhorar um e-mail que você mesmo escreveu, sem dados de ninguém",
     seguro: true,
-    motivo:
-      "Texto que é só seu e não identifica terceiros. É o uso mais comum e o mais tranquilo.",
+    motivo: "O texto é seu e não expõe ninguém.",
   },
   {
     id: "planilha-clientes",
     texto: "Uma planilha de clientes com nome, CPF e telefone, para “organizar”",
     seguro: false,
     motivo:
-      "Isso é compartilhar dado pessoal de outras pessoas com uma empresa que não tem autorização delas. Pela LGPD, quem colou responde — e a empresa também. Anonimize antes: “cliente A”, “cliente B”.",
+      "São dados de outras pessoas, sem autorização delas. Pela LGPD, quem colou responde, e a empresa também. Troque os dados por “cliente A”, “cliente B”.",
   },
   {
     id: "resumo-materia",
     texto: "Pedir explicação de um assunto que você está estudando",
     seguro: true,
-    motivo:
-      "Nenhum dado sensível envolvido. Só confira o que vier: modelo de linguagem inventa fato com a mesma confiança com que acerta.",
+    motivo: "Não tem dado pessoal. Só confira a resposta: a IA pode inventar.",
   },
   {
     id: "exame",
-    texto: "Foto de um exame médico de um parente, para entender o resultado",
+    texto: "Foto do exame médico de um parente, para entender o resultado",
     seguro: false,
     motivo:
-      "Dado de saúde é a categoria mais protegida que existe, e nem é seu. Se for para fazer, tire tudo que identifica a pessoa — e ainda assim, quem responde a dúvida é o médico.",
+      "Dado de saúde tem proteção especial na lei, e nem é seu. Pergunte ao médico.",
   },
   {
     id: "senha",
-    texto: "Sua senha ou um código de verificação, para “conferir se é forte”",
+    texto: "Sua senha ou um código de confirmação, para “ver se é forte”",
     seguro: false,
     motivo:
-      "Nunca. Ela sai do seu aparelho, entra num histórico e pode passar por revisão humana. Para testar força de senha existe a seção 01 deste site, que calcula sem enviar nada.",
-  },
-  {
-    id: "codigo-empresa",
-    texto: "Um trecho de código do sistema interno da empresa",
-    seguro: false,
-    motivo:
-      "Depende inteiramente da política do seu trabalho. Muita empresa proíbe, e várias oferecem uma ferramenta corporativa contratada — que existe justamente porque tem contrato de confidencialidade por trás. Use a aprovada, não a pública.",
+      "Nunca. Ela fica guardada lá e pode ser lida por pessoas. Para testar, use o Teste de senha deste site.",
   },
   {
     id: "contrato",
-    texto: "Um contrato ou proposta comercial sob sigilo, para resumir",
+    texto: "Um contrato ou documento interno da empresa, para resumir",
     seguro: false,
-    motivo:
-      "Cláusula de confidencialidade não abre exceção para “eu só queria um resumo”. Vale o mesmo caminho: ferramenta aprovada pela empresa ou nada.",
+    motivo: "Siga a regra da empresa. Use só a IA aprovada por ela, ou nenhuma.",
   },
   {
     id: "carta-pessoal",
-    texto: "Um texto pessoal seu, tipo carta ou diário, para revisar",
+    texto: "Um texto pessoal seu, como carta ou diário, para revisar",
     seguro: true,
     motivo:
-      "É seu e a escolha é sua — mas vale saber que ele vira parte do histórico da sua conta e pode alimentar treinamento, dependendo da configuração. Se for algo que você não mostraria a um estranho, use o modo sem histórico.",
+      "A escolha é sua. Mas ele fica no histórico. Se for íntimo, use a conversa sem histórico.",
   },
 ];
 
@@ -92,48 +82,35 @@ export type Mudanca = {
 /** O que a IA efetivamente mudou na mecânica dos golpes. */
 export const MUDANCAS: Mudanca[] = [
   {
-    titulo: "O português errado deixou de ser pista",
-    oQueEra:
-      "Durante anos, a dica mais repetida foi “desconfie de erro de gramática”. Funcionava porque muita fraude era traduzida por máquina ruim ou escrita por quem não falava a língua.",
-    oQueMudou:
-      "Hoje qualquer pessoa gera um texto impecável em português, no tom certo, sem esforço. Uma mensagem bem escrita não diz mais nada sobre ser verdadeira.",
+    titulo: "Português errado não é mais pista",
+    oQueEra: "A dica era desconfiar de erro de português.",
+    oQueMudou: "Hoje qualquer um cria um texto perfeito em segundos.",
     oQueFazer:
-      "Os sinais que sobraram são os que sempre valeram mais: o domínio do link, o pedido de dinheiro ou de código, a urgência e o canal por onde chegou. Nenhum deles depende de como o texto foi escrito.",
+      "Olhe o que a mensagem pede: dinheiro, código, pressa. E confira o endereço do site.",
   },
   {
-    titulo: "A voz de alguém conhecido pode ser imitada",
-    oQueEra:
-      "Ouvir a voz da pessoa era a confirmação final. “Se eu falei com ela, era ela.”",
+    titulo: "Voz e rosto podem ser imitados",
+    oQueEra: "Ouvir a voz ou ver o rosto da pessoa era prova.",
     oQueMudou:
-      "Poucos segundos de áudio bastam para gerar uma voz parecida — e áudio nosso é o que mais existe: mensagem de voz, story, vídeo, reunião gravada. Já há casos relatados de ligação com voz imitada de familiar em situação de emergência.",
+      "Poucos segundos de áudio bastam para imitar uma voz. Videochamada falsa já enganou empresas, mas ainda é rara.",
     oQueFazer:
-      "Voz virou mais um dado que pode ser falsificado, então parou de servir sozinha como prova. Desligue e ligue de volta para o número que você já tinha salvo — quem está do outro lado não atende nesse número.",
+      "Pediram dinheiro por ligação ou vídeo? Desligue e ligue você mesmo para o número que já tinha salvo.",
   },
   {
-    titulo: "Rosto em vídeo também já foi falsificado",
-    oQueEra:
-      "Chamada de vídeo era considerada prova definitiva de identidade.",
+    titulo: "O golpe parece feito para você",
+    oQueEra: "A mesma mensagem ia para todo mundo.",
     oQueMudou:
-      "Existem casos documentados de fraude corporativa em que a videochamada inteira era falsa. Ainda é caro e raro, e quase sempre mirado em empresa e valor alto, não em pessoa comum.",
+      "Agora ela pode citar sua empresa, sua cidade e o que você postou.",
     oQueFazer:
-      "Para pagamento fora do fluxo normal, confirmação vai por um segundo canal combinado antes — não pelo canal em que o pedido chegou, mesmo que ele mostre um rosto conhecido.",
+      "Não importa o quanto ela sabe de você. Importa o que ela pede.",
   },
   {
-    titulo: "O golpe passou a ser feito sob medida, em escala",
-    oQueEra:
-      "A mesma mensagem genérica ia para milhares de pessoas, e por isso soava genérica.",
+    titulo: "A IA também inventa respostas",
+    oQueEra: "Você achava uma fonte e via se era confiável.",
     oQueMudou:
-      "Agora dá para gerar mil versões diferentes, cada uma citando o nome da empresa onde a pessoa trabalha, a cidade, o assunto que ela postou ontem. A mensagem parece pessoal porque foi feita para você — só que automaticamente.",
+      "A IA responde tudo com segurança, até telefone de banco que ela inventou.",
     oQueFazer:
-      "Pare de usar “parece pessoal demais para ser golpe” como critério. A pergunta certa continua sendo o que a mensagem está pedindo, não o quanto ela te conhece.",
-  },
-  {
-    titulo: "A IA também erra com confiança",
-    oQueEra: "Buscar informação era encontrar uma fonte e avaliar a fonte.",
-    oQueMudou:
-      "Chatbot responde qualquer coisa com o mesmo tom seguro, inclusive telefone de central de atendimento, endereço de site e procedimento bancário que ele inventou. O nome disso é alucinação.",
-    oQueFazer:
-      "Nunca peça a uma IA o telefone ou o site do seu banco, da polícia ou de um órgão público. Um número inventado com aparência oficial é a porta de entrada perfeita para outro golpe. Vá ao verso do cartão ou ao site oficial que você já conhece.",
+      "Nunca peça a uma IA o contato do seu banco ou de um órgão público. Use o verso do cartão ou o site oficial.",
   },
 ];
 
@@ -151,21 +128,21 @@ export const DEFESAS: Defesa[] = [
   {
     titulo: "Combine uma palavra-código com a família",
     texto:
-      "Uma palavra que só vocês sabem, combinada pessoalmente, para usar quando alguém pedir dinheiro com urgência por telefone ou mensagem. Não importa quão parecida esteja a voz: quem não souber a palavra não é quem diz ser. É a defesa mais barata que existe contra voz imitada, e funciona para crianças e idosos igualmente.",
+      "Se alguém pedir dinheiro com pressa, peça que diga a palavra. Quem não souber não é quem diz ser.",
   },
   {
-    titulo: "Volte sempre pelo canal que você já tinha",
+    titulo: "Volte pelo caminho que você já conhece",
     texto:
-      "Desligue e ligue para o número salvo na sua agenda. Abra o aplicativo do banco por conta própria. Digite você mesmo o endereço do site. Isso funciona contra qualquer nível de imitação, porque não exige que você identifique nada — só que você não siga o caminho oferecido.",
+      "Ligue para o número salvo na agenda. Abra você mesmo o app do banco ou digite o endereço do site.",
   },
   {
-    titulo: "Leia o nome do dono da chave PIX",
+    titulo: "Leia o nome de quem vai receber o PIX",
     texto:
-      "A tela de confirmação mostra para quem o dinheiro vai. Nenhum áudio convincente muda esse nome. Se não é a pessoa que está pedindo, acabou a conversa.",
+      "Nenhum áudio muda o nome na tela de confirmação. Se não for quem pediu, não pague.",
   },
   {
     titulo: "Verificação em duas etapas",
     texto:
-      "Uma imitação perfeita da sua voz não gera o código que está no seu aparelho. As proteções que dependem de posse — do celular, do PIN, da chave — não são afetadas por falsificação de imagem e som.",
+      "É um código a mais, além da senha, que aparece no seu celular. Voz imitada não cria esse código. Nunca passe o código para ninguém.",
   },
 ];

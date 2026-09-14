@@ -6,7 +6,7 @@ import { ListaGlossario } from "./ListaGlossario";
 export const metadata: Metadata = {
   title: "Glossário",
   description:
-    "Servidor, IP, HTTPS, hash, phishing, deepfake, MED. Os termos técnicos explicados em português comum, com o motivo de cada um importar para você.",
+    "Servidor, IP, HTTPS, phishing, deepfake, MED e outros termos técnicos, explicados de um jeito simples.",
 };
 
 export default function GlossarioPage() {
@@ -14,17 +14,15 @@ export default function GlossarioPage() {
     <>
       <PageHeader
         eyebrow="Glossário"
-        title="Os termos técnicos, em português comum"
-        description="Você não precisa de nada disto para se proteger — o resto do site funciona sem. Isto aqui é para quem bateu o olho numa palavra e quis saber o que tem por baixo."
+        title="Os termos técnicos, em português simples"
+        description="Você não precisa disto para se proteger. É para quando você vê uma palavra e quer saber o que ela quer dizer."
       />
 
       <section className="py-14 md:py-20">
         <div className="container-page">
           <div className="mb-10 max-w-2xl border-l-2 border-menta pl-5">
             <p className="text-body text-papel-2 text-pretty">
-              Duas entradas valem a leitura mesmo de quem não gosta de termo
-              técnico, porque desmontam as duas maiores fontes de falsa
-              segurança que existem:{" "}
+              Se for ler só dois, leia estes:{" "}
               <Link
                 href="/glossario#https"
                 className="text-papel underline decoration-menta/50 underline-offset-4 hover:decoration-menta"
@@ -38,7 +36,7 @@ export default function GlossarioPage() {
               >
                 a VPN
               </Link>
-              . Nenhum dos dois faz o que a maioria das pessoas acha que faz.
+              . Nenhum dos dois protege como muita gente acha.
             </p>
           </div>
 
@@ -46,9 +44,7 @@ export default function GlossarioPage() {
 
           <div className="mt-16 max-w-2xl border-t border-chumbo-linha pt-8">
             <p className="text-body text-papel-2 text-pretty">
-              Faltou algum termo que você viu por aí? A lista foi montada a
-              partir do que aparece no próprio site e do que costuma gerar
-              dúvida — ela cresce conforme chegam perguntas.
+              Faltou alguma palavra que você viu por aí? Mande para a gente.
             </p>
             <Link
               href="/contato"

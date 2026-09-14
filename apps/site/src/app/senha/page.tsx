@@ -9,7 +9,7 @@ import { TesteSenha } from "./TesteSenha";
 export const metadata: Metadata = {
   title: "Teste sua senha",
   description:
-    "Veja em tempo real quanto tempo levaria para quebrar uma senha por força bruta. O cálculo roda no seu navegador — nada é enviado nem salvo.",
+    "Veja quanto tempo levaria para descobrir sua senha. Nada é enviado.",
 };
 
 export default function SenhaPage() {
@@ -19,16 +19,16 @@ export default function SenhaPage() {
         numero="01"
         eyebrow="Teste de senha"
         title="Quanto tempo a sua senha aguenta?"
-        description="Digite e veja o número despencar. A conta é feita aqui dentro, no seu navegador, e revela uma coisa que quase todo mundo aprendeu errado: o que protege é o comprimento, não os símbolos decorados."
+        description="Digite uma senha inventada e veja."
       />
 
       <section className="pt-10 md:pt-12">
         <div className="container-read">
           <Essencial
             itens={[
-              "O que quebra uma senha não é ela ser curta, é ser previsível — nome, data e sequência caem primeiro.",
-              "Tamanho vale mais que símbolos: quatro palavras aleatórias vencem P@ssw0rd!",
-              "O teste desta página roda no seu navegador; nada é enviado nem gravado.",
+              "Senha previsível cai primeiro: nome, data e sequência.",
+              "Tamanho vale mais que símbolos. Quatro palavras sorteadas vencem P@ssw0rd!",
+              "O teste roda no seu navegador. Nada é gravado.",
             ]}
           />
         </div>
@@ -54,14 +54,11 @@ export default function SenhaPage() {
 
       <section className="border-t border-chumbo-linha bg-chumbo-painel/40 py-14 md:py-20">
         <div className="container-read">
-          <p className="etiqueta">Sobre a recomendação de não trocar por rotina</p>
+          <p className="etiqueta">Não precisa trocar a senha por rotina</p>
           <p className="mt-4 text-body text-papel-2 text-pretty">
-            A diretriz de identidade digital do NIST, referência usada por
-            órgãos e empresas no mundo todo, deixou de recomendar troca
-            periódica obrigatória de senha e passou a recomendar troca apenas
-            diante de indício de comprometimento — justamente porque a
-            obrigação leva as pessoas a criar variações previsíveis da mesma
-            senha.
+            O NIST, referência mundial no assunto, parou de recomendar a troca
+            obrigatória de senha. Ela faz as pessoas criarem senhas parecidas.
+            Troque só se suspeitar de invasão.
           </p>
           <Fonte
             autor="NIST"
@@ -72,8 +69,7 @@ export default function SenhaPage() {
 
           <div className="mt-10 border-t border-chumbo-linha pt-8">
             <p className="text-body text-papel-2">
-              Senha resolvida, sobra o outro caminho: convencer você a entregar
-              o acesso de bom grado.
+              Senha forte não basta se alguém convencer você a entregá-la.
             </p>
             <Link
               href="/golpe"

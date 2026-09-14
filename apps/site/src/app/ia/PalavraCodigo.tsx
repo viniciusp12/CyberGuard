@@ -56,10 +56,8 @@ export function PalavraCodigo() {
       </button>
 
       <p className="mt-5 text-sm leading-relaxed text-papel-3">
-        Sorteada aqui no seu navegador, sem envio e sem gravação. Combine
-        pessoalmente com quem mora com você e com quem mais puder receber um
-        pedido em seu nome. Não mande por mensagem — se a conta for tomada, o
-        golpista lê a combinação junto.
+        Sorteada no seu navegador, sem envio. Combine pessoalmente com a
+        família. Nunca por mensagem: se invadirem sua conta, o golpista lê a palavra.
       </p>
     </div>
   );

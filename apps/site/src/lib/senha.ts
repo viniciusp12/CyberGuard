@@ -220,7 +220,7 @@ export function analisar(senha: string): Analise {
     return montar(
       0,
       "lista",
-      "Essa senha está em listas públicas de senhas vazadas. Um ataque não precisa calcular nada: ele testa a lista primeiro. Cai na hora.",
+      "Essa senha está em listas de senhas vazadas. Cai na hora.",
       true,
     );
   }
@@ -229,7 +229,7 @@ export function analisar(senha: string): Analise {
     return montar(
       Math.min(bitsBrutos, 14),
       "palavra-sufixo",
-      `É “${base}” com enfeite em volta. Trocar a por @ e pôr um número no fim é a primeira coisa que os programas de ataque testam — não a última.`,
+      `É “${base}” com enfeite. Trocar a por @ ou pôr número no fim não engana.`,
       true,
     );
   }
@@ -238,7 +238,7 @@ export function analisar(senha: string): Analise {
     return montar(
       Math.min(bitsBrutos, 12),
       "repeticao",
-      "É um pedacinho curto repetido. Para quem ataca, o tamanho real dela é o do pedaço, não o da senha inteira.",
+      "É um pedaço curto repetido. Vale só o tamanho do pedaço.",
       true,
     );
   }
@@ -247,7 +247,7 @@ export function analisar(senha: string): Analise {
     return montar(
       Math.min(bitsBrutos, 20),
       "sequencia",
-      "Tem uma sequência do teclado ou do alfabeto dentro. Essas sequências estão em toda lista de ataque.",
+      "Tem uma sequência do teclado ou do alfabeto. Os golpistas testam isso logo.",
       true,
     );
   }
@@ -256,7 +256,7 @@ export function analisar(senha: string): Analise {
     return montar(
       Math.min(bitsBrutos, 24),
       "data",
-      "Tem uma data aí dentro. São só uns poucos milhares de combinações possíveis — e aniversários são fáceis de descobrir.",
+      "Tem uma data dentro. Datas são poucas, e aniversário é fácil de descobrir.",
       true,
     );
   }
@@ -265,7 +265,7 @@ export function analisar(senha: string): Analise {
     return montar(
       bitsBrutos,
       "curta",
-      "Curta demais. Abaixo de 8 caracteres, nem a maior variedade de símbolos salva.",
+      "Curta demais. Com menos de 8 caracteres, nem símbolos salvam.",
       true,
     );
   }
@@ -279,14 +279,14 @@ export function analisar(senha: string): Analise {
 
   if (analise.segundos < 60 * 60 * 24) {
     analise.veredito =
-      "Ainda dá para varrer todas as combinações em menos de um dia. Aumente o comprimento — é o que mais muda esse número.";
+      "Dá para testar todas as combinações em menos de um dia. Aumente o tamanho.";
     analise.fraca = true;
   } else if (analise.segundos < 60 * 60 * 24 * 365 * 100) {
     analise.veredito =
-      "Segura contra varredura, desde que seja usada em um lugar só. Reaproveitada, ela vale o quanto valer o site mais frágil onde você a usou.";
+      "Boa, se usada em um lugar só. Repetida, fica tão fraca quanto o pior site onde está.";
   } else {
     analise.veredito =
-      "Fora de alcance de força bruta. Daqui pra frente o risco não é a matemática — é reuso, vazamento e alguém te convencer a entregá-la.";
+      "Ninguém descobre essa testando combinações. O risco é repetir a senha ou cair num golpe e entregá-la.";
   }
 
   return analise;
@@ -294,7 +294,7 @@ export function analisar(senha: string): Analise {
 
 /** Exemplos do comparativo "comprimento vence complexidade decorada". */
 export const COMPARATIVO = [
-  { rotulo: "Complexa e curta, do jeito que mandam decorar", senha: "Xk9#mQ2!" },
-  { rotulo: "A mesma ideia, dois caracteres a mais", senha: "Xk9#mQ2!vB" },
-  { rotulo: "Quatro palavras comuns, só minúsculas", senha: "girafa porta melancia trilho" },
+  { rotulo: "Curta e cheia de símbolos", senha: "Xk9#mQ2!" },
+  { rotulo: "A mesma, com mais duas letras", senha: "Xk9#mQ2!vB" },
+  { rotulo: "Quatro palavras simples", senha: "girafa porta melancia trilho" },
 ];
