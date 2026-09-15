@@ -4,7 +4,8 @@ import type { CreateEmployeeResponse, Employee } from "./types";
 export interface CreateEmployeePayload {
   username: string;
   displayName: string;
-  department?: string;
+  department: string;
+  password: string;
 }
 
 export const adminApi = {

@@ -29,8 +29,9 @@ export class AdminService {
     const existing = await this.prisma.user.findUnique({ where: { username: dto.username.toLowerCase() } });
     if (existing) throw new ConflictException("Já existe um usuário com este nome de usuário.");
 
-    const temporaryPassword = generateTemporaryPassword();
-    const passwordHash = await hashPassword(temporaryPassword);
+    // A senha vem do admin (não é mais gerada). mustChangePassword força a
+    // pessoa a trocar no primeiro login, então continua sendo temporária.
+    const passwordHash = await hashPassword(dto.password);
 
     const user = await this.prisma.user.create({
       data: {
@@ -44,7 +45,8 @@ export class AdminService {
       select: { id: true, username: true, displayName: true, department: true, role: true },
     });
 
-    return { user, temporaryPassword };
+    // Devolve a senha para a tela confirmar ao admin qual foi cadastrada.
+    return { user, temporaryPassword: dto.password };
   }
 
   async resetPassword(employeeId: string) {

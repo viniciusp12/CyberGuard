@@ -29,6 +29,7 @@ export default function AdminPage() {
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [department, setDepartment] = useState("");
+  const [password, setPassword] = useState("");
   const [revealedPassword, setRevealedPassword] = useState<{ username: string; password: string } | null>(
     null,
   );
@@ -47,13 +48,14 @@ export default function AdminPage() {
   function handleCreate(event: React.FormEvent) {
     event.preventDefault();
     createEmployee.mutate(
-      { username, displayName, department: department.trim() || undefined },
+      { username, displayName, department: department.trim(), password },
       {
         onSuccess: (result) => {
           setRevealedPassword({ username: result.user.username, password: result.temporaryPassword });
           setUsername("");
           setDisplayName("");
           setDepartment("");
+          setPassword("");
         },
       },
     );
@@ -94,7 +96,7 @@ export default function AdminPage() {
           <h3 className="mb-3 flex items-center gap-2 font-semibold">
             <UserPlus className="h-4 w-4" /> {t("adminPages.registerEmployee")}
           </h3>
-          <form onSubmit={handleCreate} className="grid gap-3 sm:grid-cols-3">
+          <form onSubmit={handleCreate} className="grid gap-3 sm:grid-cols-2">
             <input
               required
               type="text"
@@ -111,19 +113,30 @@ export default function AdminPage() {
               className="h-10 rounded-lg border border-border bg-surface-2 px-3 text-sm text-text outline-none focus:border-primary"
             />
             <input
+              required
               placeholder={t("adminPages.departmentPlaceholder")}
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
               className="h-10 rounded-lg border border-border bg-surface-2 px-3 text-sm text-text outline-none focus:border-primary"
             />
+            <input
+              required
+              minLength={8}
+              type="text"
+              placeholder={t("adminPages.passwordPlaceholder")}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="h-10 rounded-lg border border-border bg-surface-2 px-3 text-sm text-text outline-none focus:border-primary"
+            />
+            <p className="sm:col-span-2 text-xs text-text-muted">{t("adminPages.passwordHint")}</p>
             {createEmployee.error && (
-              <p className="sm:col-span-3 text-sm text-danger">
+              <p className="sm:col-span-2 text-sm text-danger">
                 {createEmployee.error instanceof ApiError
                   ? createEmployee.error.message
                   : t("adminPages.createFallbackError")}
               </p>
             )}
-            <Button type="submit" disabled={createEmployee.isPending} className="sm:col-span-3 w-fit">
+            <Button type="submit" disabled={createEmployee.isPending} className="sm:col-span-2 w-fit">
               {createEmployee.isPending ? t("adminPages.registering") : t("adminPages.register")}
             </Button>
           </form>
