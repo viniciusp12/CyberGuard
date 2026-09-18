@@ -10,6 +10,7 @@ import type { QuizQuestion } from "@repo/shared/schemas";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { MeterBadge } from "@/components/hud/MeterBadge";
+import { BotaoSair } from "@/components/game/BotaoSair";
 import { useSavePhaseResult } from "@/lib/hooks/usePlayerProfile";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
@@ -208,8 +209,9 @@ export default function QuizPage() {
           label={t("minigames.question")}
           value={`${currentIndex + 1}/${questions.length}`}
         />
+        <MeterBadge icon={CheckCircle2} label={t("minigames.points")} value={score} colorClassName="text-primary" />
         <div className="ml-auto">
-          <MeterBadge icon={CheckCircle2} label={t("minigames.points")} value={score} colorClassName="text-primary" />
+          <BotaoSair para="/minigames" />
         </div>
       </div>
 

@@ -1,15 +1,15 @@
 import type { DictionaryTable } from "../dictionary";
 
 export const investigation: DictionaryTable = {
-  benchTitle: { pt: "Bancada de Investigação", en: "Investigation Bench" },
+  benchTitle: { pt: "Dicas sobre este e-mail", en: "Hints about this email" },
 
   runToolPrompt: {
-    pt: "Execute esta ferramenta para revelar as informações.",
-    en: "Run this tool to reveal the information.",
+    pt: "Toque para ver esta dica.",
+    en: "Tap to see this hint.",
   },
-  runButton: { pt: "Executar (-{{cost}}s)", en: "Run (-{{cost}}s)" },
+  runButton: { pt: "Ver dica", en: "See hint" },
 
-  domainLabel: { pt: "Domínio", en: "Domain" },
+  domainLabel: { pt: "Endereço do site", en: "Site address" },
   yes: { pt: "Sim", en: "Yes" },
   no: { pt: "Não", en: "No" },
 
@@ -17,7 +17,7 @@ export const investigation: DictionaryTable = {
     pt: "IA Corporativa não conseguiu analisar este email.",
     en: "Corporate AI could not analyze this email.",
   },
-  phishingProbabilityLabel: { pt: "Probabilidade de phishing", en: "Phishing probability" },
+  phishingProbabilityLabel: { pt: "Chance de ser golpe", en: "Chance it is a scam" },
   aiDisclaimer: {
     pt: "Lembre-se: a IA Corporativa é uma ferramenta de apoio e pode errar, especialmente em golpes mais sofisticados.",
     en: "Remember: Corporate AI is a support tool and can be wrong, especially with more sophisticated scams.",
@@ -25,41 +25,41 @@ export const investigation: DictionaryTable = {
 
   noAttachments: { pt: "Este email não possui anexos.", en: "This email has no attachments." },
   fileNameLabel: { pt: "Nome do arquivo", en: "File name" },
-  declaredExtensionLabel: { pt: "Extensão declarada", en: "Declared extension" },
-  actualTypeLabel: { pt: "Tipo real detectado", en: "Actual detected type" },
+  declaredExtensionLabel: { pt: "O nome do arquivo diz", en: "The file name says" },
+  actualTypeLabel: { pt: "O arquivo é na verdade", en: "The file actually is" },
   sizeLabel: { pt: "Tamanho", en: "Size" },
-  hasMacroLabel: { pt: "Contém macro", en: "Contains macro" },
+  hasMacroLabel: { pt: "Tem programa embutido", en: "Has a program inside" },
 
   noHttpsLink: {
-    pt: "Nenhum link HTTPS para analisar certificado.",
-    en: "No HTTPS link to analyze certificate.",
+    pt: "Nenhum link com cadeado para conferir.",
+    en: "No link with a padlock to check.",
   },
   companyLabel: { pt: "Empresa", en: "Company" },
-  issuerLabel: { pt: "Emissor", en: "Issuer" },
+  issuerLabel: { pt: "Emitido por", en: "Issued by" },
   validityLabel: { pt: "Validade", en: "Validity" },
-  certificateValidLabel: { pt: "Certificado válido", en: "Certificate valid" },
+  certificateValidLabel: { pt: "Cadeado válido", en: "Padlock valid" },
   certValidYes: { pt: "sim", en: "yes" },
   certValidNo: { pt: "não", en: "no" },
 
-  senderDomainLabel: { pt: "Domínio do remetente", en: "Sender domain" },
+  senderDomainLabel: { pt: "Endereço de quem mandou", en: "Address of who sent it" },
   noReputationData: {
-    pt: "Nenhum dado adicional de reputação disponível para este domínio.",
-    en: "No additional reputation data available for this domain.",
+    pt: "Não há mais nada registrado sobre este endereço.",
+    en: "Nothing else is on record about this address.",
   },
 
-  originServerLabel: { pt: "Servidor de origem", en: "Origin server" },
-  originIpLabel: { pt: "IP de origem", en: "Origin IP" },
+  originServerLabel: { pt: "Computador que enviou", en: "Computer that sent it" },
+  originIpLabel: { pt: "Número da conexão", en: "Connection number" },
   routeLabel: { pt: "Rota", en: "Route" },
 
   noRecordFound: {
-    pt: "Nenhum registro encontrado para este remetente.",
-    en: "No record found for this sender.",
+    pt: "Nada encontrado sobre quem mandou.",
+    en: "Nothing found about who sent it.",
   },
-  internalStatusLabel: { pt: "Status no banco interno", en: "Internal database status" },
+  internalStatusLabel: { pt: "O que a empresa sabe", en: "What the company knows" },
   observationsLabel: { pt: "Observações", en: "Notes" },
   statusTrustedVendor: { pt: "Fornecedor confiável", en: "Trusted vendor" },
-  statusNeverUsed: { pt: "Remetente nunca utilizado", en: "Sender never used before" },
-  statusRecentDomain: { pt: "Domínio recém-criado", en: "Recently created domain" },
+  statusNeverUsed: { pt: "Nunca escreveu antes", en: "Never wrote before" },
+  statusRecentDomain: { pt: "Endereço criado há poucos dias", en: "Address created days ago" },
   statusPreviouslyReported: { pt: "Email já denunciado", en: "Email previously reported" },
 
   noLinks: { pt: "Este email não contém links.", en: "This email contains no links." },
@@ -89,8 +89,8 @@ export const investigation: DictionaryTable = {
     en: "Suspicious network connection detected.",
   },
   outcomeMalwareDownload: {
-    pt: "Tentativa de download de malware adicional.",
-    en: "Attempt to download additional malware.",
+    pt: "Tenta baixar mais vírus para o computador.",
+    en: "Tries to download more viruses onto the computer.",
   },
   outcomeRegistryChange: {
     pt: "Alteração suspeita no registro do sistema.",

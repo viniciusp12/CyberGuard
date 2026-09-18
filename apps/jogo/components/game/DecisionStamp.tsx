@@ -15,11 +15,21 @@ export function DecisionStamp({ action }: { action: PlayerAction | null }) {
   const { t } = useLocale();
   const config = action ? STAMP_CONFIG[action] : null;
 
+  return <Stamp label={config ? t(config.key) : null} colorVar={config?.colorVar ?? ""} />;
+}
+
+/**
+ * O carimbo em si, sem depender das ações do jogo principal.
+ *
+ * Existe separado porque o caça-golpe carimba "Golpe" e "De verdade", que não
+ * são `PlayerAction`. Mesma animação, mesma cara — um só lugar para ajustar.
+ */
+export function Stamp({ label, colorVar }: { label: string | null; colorVar: string }) {
   return (
     <AnimatePresence>
-      {action && config && (
+      {label && (
         <motion.div
-          key={action}
+          key={label}
           className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center overflow-hidden rounded-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -29,7 +39,7 @@ export function DecisionStamp({ action }: { action: PlayerAction | null }) {
           <motion.div
             aria-hidden
             className="absolute h-32 w-32 rounded-full sm:h-44 sm:w-44"
-            style={{ background: config.colorVar }}
+            style={{ background: colorVar }}
             initial={{ opacity: 0.55, scale: 0.15 }}
             animate={{ opacity: 0, scale: 1.8 }}
             transition={{ duration: 0.55, ease: "easeOut" }}
@@ -38,16 +48,16 @@ export function DecisionStamp({ action }: { action: PlayerAction | null }) {
           <motion.div
             className="select-none rounded-md border-[5px] px-5 py-2.5 text-2xl font-black uppercase tracking-widest sm:px-8 sm:py-4 sm:text-4xl"
             style={{
-              borderColor: config.colorVar,
-              color: config.colorVar,
+              borderColor: colorVar,
+              color: colorVar,
               fontFamily: "var(--font-pixel)",
-              boxShadow: `0 0 0 2px color-mix(in srgb, ${config.colorVar} 25%, transparent)`,
+              boxShadow: `0 0 0 2px color-mix(in srgb, ${colorVar} 25%, transparent)`,
             }}
             initial={{ scale: 2.6, opacity: 0, rotate: -20 }}
             animate={{ scale: 1, opacity: 1, rotate: -10 }}
             transition={{ type: "spring", stiffness: 480, damping: 16 }}
           >
-            {t(config.key)}
+            {label}
           </motion.div>
         </motion.div>
       )}

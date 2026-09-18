@@ -1,21 +1,37 @@
 import type { DictionaryTable } from "../dictionary";
 
 export const phasesGame: DictionaryTable = {
-  accept: { pt: "Aceitar", en: "Accept" },
-  report: { pt: "Reportar ao TI", en: "Report to IT" },
+  /*
+   * A decisão tem duas respostas e uma saída honesta.
+   *
+   * Antes era "Aceitar", "Excluir" e "Reportar ao TI" — três verbos que pediam
+   * do jogador uma escolha de procedimento, quando a pergunta que o treinamento
+   * quer treinar é uma só: isto é golpe ou não é? Excluir ainda era pior que
+   * inútil: apagar um golpe em silêncio é justamente o que impede o time de
+   * segurança de avisar quem mais recebeu.
+   *
+   * "Não sei" ficou no lugar dele porque é a resposta verdadeira na maior parte
+   * das vezes, e a que se quer premiar na vida real — quem não sabe, pergunta.
+   * Não vale ponto e também não tira: nenhum e-mail tem "não sei" como resposta
+   * certa (ver o comentário em EmailActionBar sobre os dois que precisaram
+   * mudar).
+   */
+  accept: { pt: "Não é golpe", en: "Not a scam" },
+  report: { pt: "É golpe", en: "It's a scam" },
+  unsure: { pt: "Não sei", en: "Not sure" },
 
   inboxHeader: { pt: "Caixa de Entrada — Correspondência", en: "Inbox — Correspondence" },
   fromLabel: { pt: "De:", en: "From:" },
-  hiddenAddress: { pt: "<endereço oculto — use Investigar>", en: "<hidden address — use Investigate>" },
+  hiddenAddress: { pt: "<endereço escondido — veja as dicas>", en: "<hidden address — see the hints>" },
   toLabel: { pt: "Para:", en: "To:" },
   dateLabel: { pt: "Data:", en: "Date:" },
   qrAttached: { pt: "QR Code anexado à mensagem", en: "QR code attached to message" },
 
-  investigateButton: { pt: "Investigar", en: "Investigate" },
+  investigateButton: { pt: "Ver dicas", en: "See hints" },
 
-  stampAccept: { pt: "LIBERADO", en: "CLEARED" },
-  stampDelete: { pt: "EXCLUÍDO", en: "DELETED" },
-  stampReport: { pt: "DENUNCIADO", en: "REPORTED" },
+  stampAccept: { pt: "NÃO É GOLPE", en: "NOT A SCAM" },
+  stampDelete: { pt: "NÃO SEI", en: "NOT SURE" },
+  stampReport: { pt: "É GOLPE", en: "IT'S A SCAM" },
 
   interruptionLabel: { pt: "Interrupção", en: "Interruption" },
 

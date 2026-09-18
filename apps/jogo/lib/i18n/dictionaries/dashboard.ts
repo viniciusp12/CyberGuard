@@ -12,8 +12,8 @@ export const dashboard: DictionaryTable = {
   levelProgress: { pt: "Progresso do nível {{level}}", en: "Level {{level}} progress" },
   nextDayTitle: { pt: "Pronto para o próximo dia de trabalho?", en: "Ready for the next work day?" },
   nextDayDescription: {
-    pt: "Novos emails chegaram. Investigue com cuidado antes de decidir.",
-    en: "New emails have arrived. Investigate carefully before deciding.",
+    pt: "Novos e-mails chegaram. Veja as dicas com calma antes de decidir.",
+    en: "New emails have arrived. Take your time with the hints before deciding.",
   },
   goToPhases: { pt: "Ir para as fases", en: "Go to phases" },
 };

@@ -4,15 +4,15 @@ export const mainPages: DictionaryTable = {
   // /phases
   phasesTitle: { pt: "Fases", en: "Phases" },
   phasesDescription: {
-    pt: "Cada dia de trabalho traz novos emails para investigar.",
-    en: "Each work day brings new emails to investigate.",
+    pt: "Cada dia de trabalho traz novos e-mails para conferir.",
+    en: "Each work day brings new emails to check.",
   },
   dayTitle: { pt: "Dia {{number}} — {{title}}", en: "Day {{number}} — {{title}}" },
   difficultyTag: { pt: "Dificuldade {{min}}-{{max}}", en: "Difficulty {{min}}-{{max}}" },
   phasesComingSoonTitle: { pt: "Mais desafios chegando", en: "More challenges coming" },
   phasesComingSoonDescription: {
-    pt: "Microsoft falsa, CEO Fraud, deepfake e ataques combinados em produção.",
-    en: "Fake Microsoft, CEO fraud, deepfake, and combined attacks in production.",
+    pt: "Microsoft falsa, chefe falso, voz clonada e golpes misturados.",
+    en: "Fake Microsoft, fake boss, cloned voice and mixed scams.",
   },
   comingSoonTag: { pt: "Em breve", en: "Coming soon" },
   dayNumber: { pt: "Dia {{number}}", en: "Day {{number}}" },
@@ -26,8 +26,8 @@ export const mainPages: DictionaryTable = {
   // /shop
   shopTitle: { pt: "Loja", en: "Shop" },
   shopDescription: {
-    pt: "Upgrades ajudam na investigação, mas nunca resolvem um email por você.",
-    en: "Upgrades help your investigation, but they never solve an email for you.",
+    pt: "Os upgrades dão mais dicas, mas nunca resolvem um e-mail por você.",
+    en: "Upgrades give you more hints, but they never solve an email for you.",
   },
   owned: { pt: "Adquirido", en: "Owned" },
   buyFor: { pt: "Comprar por", en: "Buy for" },

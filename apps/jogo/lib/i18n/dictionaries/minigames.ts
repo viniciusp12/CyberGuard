@@ -22,8 +22,8 @@ export const minigames: DictionaryTable = {
   },
   cacaPhishingTitle: { pt: "Caça-Golpe", en: "Scam Hunt" },
   cacaPhishingDescription: {
-    pt: "Uma lista de e-mails. Toque nos que são golpe. Quando terminar, confira o resultado.",
-    en: "A list of emails. Tap the ones that are scams. When you're done, check your result.",
+    pt: "Um e-mail por vez. Arraste para o lado: golpe ou de verdade.",
+    en: "One email at a time. Swipe to one side: scam or real.",
   },
   cacaPhishingMeta: { pt: "Sem tempo · no seu ritmo", en: "No timer · at your own pace" },
   quizTitle: { pt: "Quiz de Segurança", en: "Security Quiz" },
@@ -36,11 +36,31 @@ export const minigames: DictionaryTable = {
 
   // caça-golpe: abertura
   cacaIntro: {
-    pt: "Vão aparecer {{count}} e-mails. Toque só nos que você acha que são golpe. Não tem tempo: leia com calma e, quando terminar, toque em Conferir.",
-    en: "{{count}} emails will appear. Tap only the ones you think are scams. There's no timer: read calmly and, when you're done, tap Check.",
+    pt: "Vão aparecer {{count}} e-mails, um de cada vez. Arraste para a esquerda se for golpe, para a direita se for de verdade. Não tem tempo: leia com calma.",
+    en: "{{count}} emails will appear, one at a time. Swipe left if it's a scam, right if it's real. There's no timer: read calmly.",
   },
   start: { pt: "Começar", en: "Start" },
   check: { pt: "Conferir", en: "Check" },
+
+  // caça-golpe: a partida, um cartão por vez
+  cardCounter: { pt: "Cartão", en: "Card" },
+  markScam: { pt: "É golpe", en: "It's a scam" },
+  markReal: { pt: "É de verdade", en: "It's real" },
+  swipeHint: {
+    pt: "Arraste o cartão para o lado, use os botões ou as setas ← →",
+    en: "Drag the card sideways, use the buttons, or the ← → arrow keys",
+  },
+  stampScam: { pt: "Golpe", en: "Scam" },
+  stampReal: { pt: "De verdade", en: "Real" },
+  feedbackCaughtScam: { pt: "Isso mesmo: era golpe.", en: "That's right: it was a scam." },
+  feedbackCorrectReal: { pt: "Isso mesmo: esse era de verdade.", en: "That's right: that one was real." },
+  feedbackMissedScam: { pt: "Esse era golpe.", en: "That one was a scam." },
+  feedbackFalseAlarm: { pt: "Esse era de verdade.", en: "That one was real." },
+  reviewTitle: { pt: "O que escapou", en: "What got past you" },
+  reviewEmpty: {
+    pt: "Você acertou todos. Não escapou nenhum.",
+    en: "You got them all. Nothing got past you.",
+  },
 
   // resultado (comum aos dois)
   gameOver: { pt: "Resultado", en: "Result" },

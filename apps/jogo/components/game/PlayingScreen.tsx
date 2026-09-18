@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 import type { PlayingState, PhaseAction } from "@repo/shared/engine";
 import type { PlayerAction } from "@repo/shared/schemas";
 import { GameHud } from "@/components/hud/GameHud";
@@ -58,6 +58,7 @@ export function PlayingScreen({
         xp={state.xp}
         emailAtual={state.currentEmailIndex + 1}
         totalEmails={state.emails.length}
+        sairPara="/phases"
       />
 
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-4 px-4 py-6">
@@ -71,7 +72,7 @@ export function PlayingScreen({
         </div>
 
         <Button variant="outline" size="lg" onClick={() => setBenchOpen(true)} disabled={!!pendingAction}>
-          <Search className="h-5 w-5" /> {t("phasesGame.investigateButton")}
+          <Lightbulb className="h-5 w-5" /> {t("phasesGame.investigateButton")}
         </Button>
 
         <EmailActionBar onDecide={handleDecide} disabled={!!pendingAction} />

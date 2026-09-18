@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { X, Microscope } from "lucide-react";
+import { X, Lightbulb } from "lucide-react";
 import type { Email, InvestigationToolId } from "@repo/shared/schemas";
 import { useInvestigation } from "@/lib/hooks/useInvestigation";
 import { INVESTIGATION_TOOL_REGISTRY } from "./registry";
@@ -35,7 +35,7 @@ export function InvestigationBench({
         <Dialog.Content className="fixed left-1/2 top-1/2 z-50 flex h-[85vh] w-[95vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-xl border border-border bg-bg shadow-2xl">
           <div className="flex items-center justify-between border-b border-border bg-surface px-5 py-4">
             <Dialog.Title className="flex items-center gap-2 font-stencil font-semibold uppercase tracking-wide">
-              <Microscope className="h-5 w-5 text-primary" />
+              <Lightbulb className="h-5 w-5 text-primary" />
               {t("investigation.benchTitle")}
             </Dialog.Title>
             <Dialog.Close className="rounded-lg p-1.5 text-text-muted hover:bg-surface-2 hover:text-text">
