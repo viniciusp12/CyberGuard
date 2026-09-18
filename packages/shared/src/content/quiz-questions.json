@@ -5,27 +5,13 @@
     "options": [
       "É sempre legítimo, contas realmente bloqueiam rápido",
       "A pressa forçada é uma técnica clássica de golpe",
-      "Só é golpe se vier de um remetente desconhecido",
+      "Só é golpe se vier de alguém desconhecido",
       "Não indica nada, é só um estilo de escrita"
     ],
     "correctIndex": 1,
     "concept": "engenharia_social",
     "difficulty": 1,
     "explanation": "Criar pressa para você agir sem pensar é uma tática clássica de golpe."
-  },
-  {
-    "id": "quiz-02",
-    "question": "O que é um ataque de homógrafos?",
-    "options": [
-      "Um vírus que se replica em várias máquinas",
-      "Usar letras parecidas (como 'I' maiúsculo no lugar de 'l') para imitar um endereço",
-      "Enviar o mesmo email para várias pessoas",
-      "Um tipo de golpe feito apenas por telefone"
-    ],
-    "correctIndex": 1,
-    "concept": "phishing",
-    "difficulty": 3,
-    "explanation": "Ataques de homógrafos exploram caracteres parecidos para criar domínios falsos quase indistinguíveis do original."
   },
   {
     "id": "quiz-03",
@@ -60,21 +46,21 @@
     "question": "Um arquivo chamado 'nota_fiscal.pdf.exe' foi enviado como anexo. O que isso indica?",
     "options": [
       "É um PDF protegido por senha",
-      "É uma extensão dupla escondendo um executável malicioso",
+      "São dois nomes de arquivo colados, escondendo um programa perigoso",
       "É um formato válido de compactação",
       "Não há nada de errado, é só um nome longo"
     ],
     "correctIndex": 1,
     "concept": "anexo_perigoso",
     "difficulty": 1,
-    "explanation": "A extensão real é '.exe' (executável); '.pdf' antes disso é só para enganar visualmente."
+    "explanation": "O arquivo termina em '.exe', que quer dizer programa. O '.pdf' antes disso está lá só para enganar."
   },
   {
     "id": "quiz-06",
     "question": "O cadeado (conexão segura) em um site significa que:",
     "options": [
       "O site é 100% confiável e seguro",
-      "A conexão é criptografada, mas isso não garante que o conteúdo seja legítimo",
+      "A conversa com o site vai embaralhada, mas isso não diz se o site é honesto",
       "O site pertence ao governo",
       "Não existem golpes possíveis nesse site"
     ],
@@ -98,20 +84,6 @@
     "explanation": "Pendrives desconhecidos podem estar infectados propositalmente — nunca conecte, entregue à TI."
   },
   {
-    "id": "quiz-08",
-    "question": "Qual sinal MAIS indica que um email de 'WhatsApp' pedindo confirmação de sessão é falso?",
-    "options": [
-      "O logotipo está em verde",
-      "O endereço de quem enviou não tem relação com a Meta/WhatsApp",
-      "O email chegou de manhã",
-      "O assunto tem emoji"
-    ],
-    "correctIndex": 1,
-    "concept": "whatsapp_falso",
-    "difficulty": 2,
-    "explanation": "Serviços legítimos não enviam notificações por domínios genéricos não associados à empresa real."
-  },
-  {
     "id": "quiz-09",
     "question": "Um fornecedor real e confiável pede, só por email, para trocar os dados bancários de pagamento. O que isso pode indicar?",
     "options": [
@@ -130,7 +102,7 @@
     "question": "Antes de escanear um QR Code desconhecido, o que é recomendado?",
     "options": [
       "Escanear e ver o que acontece",
-      "Visualizar o destino/URL real antes de acessar",
+      "Ver para onde o link leva de verdade antes de abrir",
       "Compartilhar com um colega primeiro",
       "QR Codes são sempre seguros"
     ],
@@ -140,27 +112,13 @@
     "explanation": "É possível pré-visualizar o link de um QR Code antes de acessá-lo, evitando golpes disfarçados."
   },
   {
-    "id": "quiz-11",
-    "question": "O que é o golpe do pagamento falso em nome de um chefe?",
-    "options": [
-      "Um vírus que ataca especificamente diretores",
-      "Um golpista se passando por um executivo para induzir pagamentos ou ações urgentes",
-      "Uma falha de segurança em servidores de email",
-      "Um tipo de spam comum sem intenção maliciosa"
-    ],
-    "correctIndex": 1,
-    "concept": "bec",
-    "difficulty": 4,
-    "explanation": "Esse golpe usa a autoridade de um chefe para pressionar a vítima a agir sem conferir."
-  },
-  {
     "id": "quiz-12",
     "question": "Por que um endereço como 'microsoft-suporte-verificacao.com' deve gerar desconfiança?",
     "options": [
       "Porque é muito longo",
       "Porque não é o endereço oficial da Microsoft, só tem a palavra 'microsoft' dentro",
       "Porque usa hífen",
-      "Domínios assim são sempre legítimos parceiros"
+      "Endereços assim são sempre de parceiros de verdade"
     ],
     "correctIndex": 1,
     "concept": "microsoft_falso",
@@ -182,20 +140,6 @@
     "explanation": "Boletos podem ter o beneficiário adulterado mesmo vindo de um fornecedor real — sempre confira antes de pagar."
   },
   {
-    "id": "quiz-14",
-    "question": "Um SMS avisa que uma encomenda está retida e pede para clicar em um link para liberar. Isso é:",
-    "options": [
-      "Sempre verdadeiro, encomendas ficam retidas com frequência",
-      "Possível golpe por SMS, ainda mais se você não esperava encomenda",
-      "Só um golpe se vier de número internacional",
-      "Seguro, desde que o link comece com 'https'"
-    ],
-    "correctIndex": 1,
-    "concept": "sms_falso",
-    "difficulty": 2,
-    "explanation": "Golpe por SMS usa a mesma manipulação do golpe por e-mail, com pressa e links falsos."
-  },
-  {
     "id": "quiz-15",
     "question": "Qual dessas é uma boa prática de senha?",
     "options": [
@@ -210,40 +154,12 @@
     "explanation": "Senhas únicas e longas por serviço, geridas por um gerenciador, reduzem drasticamente o risco de invasão em cadeia."
   },
   {
-    "id": "quiz-16",
-    "question": "A ferramenta de apoio aponta só 40% de chance de golpe para um e-mail que, na verdade, é perigoso. Isso significa que:",
-    "options": [
-      "A IA nunca erra, então o email é seguro",
-      "Ferramentas de IA são um apoio, mas podem errar — o julgamento humano continua necessário",
-      "40% já é prova suficiente de que é golpe",
-      "A ferramenta deve ser desativada"
-    ],
-    "correctIndex": 1,
-    "concept": "phishing",
-    "difficulty": 4,
-    "explanation": "Ferramentas automáticas ajudam, mas não substituem a investigação humana, especialmente em golpes sofisticados."
-  },
-  {
-    "id": "quiz-17",
-    "question": "Por que emails com extrema urgência ('responda em 10 minutos ou...') são um sinal de alerta?",
-    "options": [
-      "Porque emails urgentes são sempre spam",
-      "Porque a pressão de tempo é usada para impedir que a vítima pense com calma e verifique",
-      "Porque servidores de email demoram para processar",
-      "Não é um sinal de alerta, é só educação"
-    ],
-    "correctIndex": 1,
-    "concept": "engenharia_social",
-    "difficulty": 1,
-    "explanation": "Reduzir o tempo de a vítima pensar é uma das táticas mais usadas em golpes."
-  },
-  {
     "id": "quiz-18",
     "question": "O que fazer ao suspeitar que um e-mail é golpe, mesmo sem ter certeza total?",
     "options": [
-      "Ignorar e apagar sem reportar",
-      "Reportar ao TI/segurança da informação para análise",
-      "Responder ao remetente perguntando se é verdade",
+      "Apagar sem contar para ninguém",
+      "Avisar o time de segurança da empresa",
+      "Responder para quem mandou, perguntando se é verdade",
       "Encaminhar para vários colegas perguntando a opinião deles"
     ],
     "correctIndex": 1,

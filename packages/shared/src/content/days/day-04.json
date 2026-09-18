@@ -2,7 +2,7 @@
   "id": "day-04",
   "dayNumber": 4,
   "title": "As coisas ficam sutis",
-  "description": "Chega de golpes óbvios. Agora os ataques combinam várias técnicas ao mesmo tempo — e nem tudo que parece suspeito é malicioso.",
+  "description": "Chega de golpe óbvio. Agora eles misturam várias técnicas — e nem tudo que parece suspeito é.",
   "difficultyRange": [4, 4],
   "timeLimitSeconds": 300,
   "isBossDay": false,
@@ -50,7 +50,7 @@
       },
       "internalDbRecord": {
         "senderStatus": "recently_created_domain",
-        "notes": "Domínio registrado há 2 dias. Usa '1' no lugar do 'l' em 'leroymerlin' — homógrafo quase idêntico ao domínio oficial."
+        "notes": "Endereço criado há 2 dias. Usa '1' no lugar do 'l' em 'leroymerlin' — quase idêntico ao verdadeiro."
       },
       "riskLevel": "malicious",
       "correctAction": "report",
@@ -61,12 +61,12 @@
         {
           "toolId": "domain_inspect",
           "revealsField": "sender.domain",
-          "summaryText": "'leroymer1in.com.br' usa o número 1 no lugar do 'l' — um homógrafo quase indistinguível do domínio oficial."
+          "summaryText": "'leroymer1in.com.br' usa o número 1 no lugar do 'l'. De relance, é igual ao endereço oficial."
         },
         {
           "toolId": "header_inspect",
           "revealsField": "headers",
-          "summaryText": "SPF e DMARC falharam, e o servidor de origem não tem nenhuma relação com a infraestrutura real da empresa."
+          "summaryText": "As conferências automáticas não bateram, e o e-mail não saiu de nenhum computador da empresa."
         },
         {
           "toolId": "internal_db_lookup",
@@ -128,7 +128,7 @@
         {
           "toolId": "internal_db_lookup",
           "revealsField": "internalDbRecord",
-          "summaryText": "Esse remetente nunca enviou nada à empresa — o diretor real só usa o email corporativo."
+          "summaryText": "Esse endereço nunca enviou nada à empresa — o diretor de verdade só usa o e-mail da empresa."
         },
         {
           "toolId": "out_of_band_verify",
@@ -193,8 +193,8 @@
       },
       "riskLevel": "safe",
       "correctAction": "accept",
-      "primaryConcept": "fornecedor_comprometido",
-      "tags": ["fornecedor_comprometido"],
+      "primaryConcept": "legitimo",
+      "tags": ["fornecedor_comprometido", "legitimo"],
       "difficulty": 4,
       "investigationHints": [
         {
@@ -246,7 +246,7 @@
       },
       "internalDbRecord": {
         "senderStatus": "recently_created_domain",
-        "notes": "Domínio registrado há 4 dias. RH nunca solicita dados bancários por QR Code."
+        "notes": "Endereço criado há 4 dias. O RH nunca pede dados bancários por QR Code."
       },
       "riskLevel": "malicious",
       "correctAction": "report",
@@ -262,7 +262,7 @@
         {
           "toolId": "domain_inspect",
           "revealsField": "sender.domain",
-          "summaryText": "'leroymerlin-cadastro.com.br' não é um domínio da empresa — é um domínio parecido registrado por terceiros."
+          "summaryText": "'leroymerlin-cadastro.com.br' não é da empresa — é um endereço parecido, registrado por outra pessoa."
         },
         {
           "toolId": "internal_db_lookup",
@@ -276,77 +276,6 @@
         "conceptGlossaryId": "qr_falso"
       },
       "idealInvestigationSeconds": 10
-    },
-    {
-      "id": "d4-e05",
-      "dayId": "day-04",
-      "order": 5,
-      "subject": "Achei isso no estacionamento, é seu?",
-      "bodyHtml": "<p>Oi, tudo bem?</p><p>Achei um pendrive caído perto da sua vaga com uma etiqueta escrito 'Folha de pagamento - RH'. Abri só pra ver de quem era e vi seu nome numa planilha. Deixei os arquivos aqui, dá uma olhada e confirma se é seu.</p>",
-      "sender": {
-        "displayName": "Marcos (Segurança Patrimonial)",
-        "emailAddressRaw": "seguranca.patrimonial@leroymerlin-rh.net",
-        "domain": "leroymerlin-rh.net",
-        "isSpoofed": true,
-        "spoofType": "lookalike_domain"
-      },
-      "links": [],
-      "attachments": [
-        {
-          "id": "d4-e05-att1",
-          "fileName": "folha_pagamento_backup.pdf.scr",
-          "declaredExtension": ".pdf",
-          "actualType": "application/x-msdownload",
-          "sizeKB": 340,
-          "hasMacro": false,
-          "isMalicious": true,
-          "sandboxResult": {
-            "outcome": "suspicious_connection",
-            "host": "185.220.101.99"
-          }
-        }
-      ],
-      "headers": {
-        "fromServer": "mail.leroymerlin-rh.net",
-        "sourceIp": "185.220.101.33",
-        "spf": "fail",
-        "dkim": "none",
-        "dmarc": "fail",
-        "sentAt": "2026-08-10T13:15:00Z",
-        "routeHops": ["185.220.101.33"]
-      },
-      "internalDbRecord": {
-        "senderStatus": "recently_created_domain",
-        "notes": "Não existe 'Segurança Patrimonial' com esse domínio. O time de segurança física não envia arquivos por email."
-      },
-      "riskLevel": "malicious",
-      "correctAction": "report",
-      "primaryConcept": "usb_infectado",
-      "tags": ["usb_infectado", "anexo_perigoso", "engenharia_social"],
-      "difficulty": 4,
-      "investigationHints": [
-        {
-          "toolId": "attachment_analysis",
-          "revealsField": "attachments[0].fileName",
-          "summaryText": "'folha_pagamento_backup.pdf.scr' usa extensão dupla — '.scr' é um executável disfarçado de protetor de tela."
-        },
-        {
-          "toolId": "sandbox_execution",
-          "revealsField": "attachments[0].sandboxResult",
-          "summaryText": "Em sandbox, o arquivo tenta se conectar a um servidor externo desconhecido."
-        },
-        {
-          "toolId": "internal_db_lookup",
-          "revealsField": "internalDbRecord",
-          "summaryText": "Não existe essa área com esse endereço. Segurança nunca manda arquivo por e-mail."
-        }
-      ],
-      "explanation": {
-        "short": "Desculpa do 'pen drive achado' para justificar um anexo perigoso.",
-        "detailed": "É a velha história do pen drive largado no chão, agora por e-mail: em vez de deixar um pen drive com vírus esperando alguém espetar, o golpista finge que achou e manda o 'conteúdo' por e-mail. O arquivo '.pdf.scr' esconde um programa, e o teste confirma que é perigoso. Como é um ataque de propósito contra a empresa, vale reportar à TI, não só apagar.",
-        "conceptGlossaryId": "usb_infectado"
-      },
-      "idealInvestigationSeconds": 14
     }
   ]
 }

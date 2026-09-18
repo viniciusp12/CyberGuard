@@ -25,6 +25,11 @@ export const SecurityConceptTagSchema = z.enum([
   "boleto_adulterado",
   "deepfake",
   "anexo_perigoso",
+  // E-mail legítimo. Existe como tag própria porque o placar de domínio conta
+  // as tags de cada acerto: enquanto os legítimos vinham marcados como
+  // "phishing", aceitar corretamente um e-mail de verdade creditava domínio de
+  // phishing a quem nunca reconheceu um golpe.
+  "legitimo",
 ]);
 export type SecurityConceptTag = z.infer<typeof SecurityConceptTagSchema>;
 

@@ -53,7 +53,7 @@
       },
       "internalDbRecord": {
         "senderStatus": "never_used",
-        "notes": "'leroymerlin.corp-mail.com' is not a company domain — it's a subdomain of 'corp-mail.com,' a third-party service."
+        "notes": "'leroymerlin.corp-mail.com' is not the company's: it belongs to 'corp-mail.com', an outside service."
       },
       "outOfBandCheck": {
         "channelDescription": "Call to CFO Carla Mendes's registered extension",
@@ -74,7 +74,7 @@
         {
           "toolId": "domain_inspect",
           "revealsField": "sender.domain",
-          "summaryText": "'leroymerlin.corp-mail.com' is a subdomain of 'corp-mail.com' — a third-party service, not the company."
+          "summaryText": "'leroymerlin.corp-mail.com' belongs to 'corp-mail.com', an outside service. The company name is only at the start."
         },
         {
           "toolId": "internal_db_lookup",
@@ -88,80 +88,16 @@
         }
       ],
       "explanation": {
-        "short": "Subdomain trick + fabricated video call image to lend credibility to a PIX request.",
+        "short": "A lookalike address plus a fake video call image, to make a payment request look real.",
         "detailed": "'leroymerlin.corp-mail.com' looks like it has 'leroymerlin' in the name, but the real address is 'corp-mail.com' — the company shows up only as decoration, to fool a quick reader. The attached 'confirmation' is just an image, easy to fake. An urgent, secret transfer request that bypasses the normal process is the fake-payment scam in a boss's name. The only real defense is to confirm through another channel, like calling the number you already have for the person.",
         "conceptGlossaryId": "deepfake"
       },
       "idealInvestigationSeconds": 16
     },
     {
-      "id": "d5-e02",
-      "dayId": "day-05",
-      "order": 2,
-      "subject": "[Alert] Your Microsoft 365 account has been compromised",
-      "bodyHtml": "<p>We detected suspicious activity on your corporate Microsoft 365 account.</p><p>To protect your data, call our specialized technical support now: <strong>0800 025 1188</strong>, or install our remote access tool so we can resolve this with you immediately.</p>",
-      "sender": {
-        "displayName": "Microsoft 365 Security",
-        "emailAddressRaw": "security-alert@microsoft-0365support.com",
-        "domain": "microsoft-0365support.com",
-        "isSpoofed": true,
-        "spoofType": "lookalike_domain"
-      },
-      "links": [
-        {
-          "id": "d5-e02-link1",
-          "displayText": "Install remote support tool",
-          "actualUrl": "http://microsoft-0365support.com/remote-access-tool.exe",
-          "isMalicious": true
-        }
-      ],
-      "attachments": [],
-      "headers": {
-        "fromServer": "mail.microsoft-0365support.com",
-        "sourceIp": "194.5.10.22",
-        "spf": "fail",
-        "dkim": "none",
-        "dmarc": "fail",
-        "sentAt": "2026-08-11T10:45:00Z",
-        "routeHops": ["194.5.10.22"]
-      },
-      "internalDbRecord": {
-        "senderStatus": "recently_created_domain",
-        "notes": "Microsoft never asks you to install remote access tools by email, nor does it offer support via this kind of toll-free number."
-      },
-      "riskLevel": "malicious",
-      "correctAction": "report",
-      "primaryConcept": "microsoft_falso",
-      "tags": ["microsoft_falso", "engenharia_social", "link_malicioso"],
-      "difficulty": 5,
-      "investigationHints": [
-        {
-          "toolId": "domain_inspect",
-          "revealsField": "sender.domain",
-          "summaryText": "'microsoft-0365support.com' does not belong to Microsoft — it's a third-party domain created to imitate official support."
-        },
-        {
-          "toolId": "link_hover",
-          "revealsField": "links[0].actualUrl",
-          "summaryText": "The link directly downloads a 'remote access tool' executable."
-        },
-        {
-          "toolId": "internal_db_lookup",
-          "revealsField": "internalDbRecord",
-          "summaryText": "Microsoft never requests the installation of remote access tools by email."
-        }
-      ],
-      "explanation": {
-        "short": "Fake Microsoft technical support requesting the installation of remote access.",
-        "detailed": "This 'fake tech support' scam combines a scary alert (compromised account) with an apparently convenient solution (a call or a tool) that, in reality, gives the attacker full control of the computer. Legitimate technology companies never ask you to install remote access tools from an unsolicited email — if there's real doubt about the account's security, the right path is to go directly to the official website, without clicking anything in the email.",
-        "conceptGlossaryId": "microsoft_falso"
-      },
-      "idealInvestigationSeconds": 12
-    },
-    {
       "id": "d5-e03",
       "dayId": "day-05",
-      "order": 3,
+      "order": 2,
       "subject": "Your two-step verification code",
       "bodyHtml": "<p>Hello,</p><p>We received a login attempt on your corporate account from a new device.</p><p>If this was you, use the code <strong>482913</strong> to confirm access. If you don't recognize this attempt, ignore this email and your account will remain secure.</p>",
       "sender": {
@@ -184,12 +120,12 @@
       },
       "internalDbRecord": {
         "senderStatus": "trusted_vendor",
-        "notes": "Company's official domain, internal authentication system."
+        "notes": "The company's official address. It is the system that sends access codes."
       },
       "riskLevel": "safe",
       "correctAction": "accept",
-      "primaryConcept": "mfa",
-      "tags": ["mfa"],
+      "primaryConcept": "legitimo",
+      "tags": ["mfa", "legitimo"],
       "difficulty": 5,
       "investigationHints": [
         {
@@ -200,7 +136,7 @@
         {
           "toolId": "header_inspect",
           "revealsField": "headers",
-          "summaryText": "SPF, DKIM, and DMARC pass — the email really did come from the company's official infrastructure."
+          "summaryText": "The automatic checks matched: the email really did come from the company's system."
         }
       ],
       "explanation": {
@@ -213,7 +149,7 @@
     {
       "id": "d5-e04",
       "dayId": "day-05",
-      "order": 4,
+      "order": 3,
       "subject": "Fwd: Fwd: OPPORTUNITY - payroll loan approved",
       "bodyHtml": "<p>Good morning everyone, I got this in the company WhatsApp group and it's being forwarded to everybody, here's the link:</p><p>Payroll loan approved with no credit check, approval in 5 minutes, click to see your exclusive employee terms.</p>",
       "sender": {
@@ -242,7 +178,7 @@
         "routeHops": ["40.97.110.20"]
       },
       "riskLevel": "suspicious",
-      "correctAction": "delete",
+      "correctAction": "report",
       "primaryConcept": "whatsapp_falso",
       "tags": ["whatsapp_falso", "phishing", "engenharia_social"],
       "difficulty": 5,
@@ -260,7 +196,7 @@
       ],
       "explanation": {
         "short": "Financial scam chain message forwarded through a personal email, with no specific target within the company.",
-        "detailed": "This is a classic mass scam — 'easy loan, no credit check' is a generic lure that circulates through WhatsApp groups and gets forwarded, often by well-meaning people who didn't notice the scam. Unlike the previous attacks, this one wasn't specifically targeted at the company nor does it use Leroy Merlin infrastructure — there's no need to involve IT, but it also shouldn't be forwarded any further. The right move here is simply to delete it.",
+        "detailed": "This is a classic mass scam — 'easy loan, no credit check' is a generic lure that circulates through WhatsApp groups and gets forwarded, often by well-meaning people who didn't notice the scam. Unlike the previous scams, this one wasn't built for the company and doesn't use Leroy Merlin's systems. It is still a scam: mark it as one and, above all, don't forward it to anyone.",
         "conceptGlossaryId": "whatsapp_falso"
       },
       "idealInvestigationSeconds": 8
@@ -268,7 +204,7 @@
     {
       "id": "d5-e05",
       "dayId": "day-05",
-      "order": 5,
+      "order": 4,
       "subject": "Updated invoice - new payee starting this month",
       "bodyHtml": "<p>Dear all,</p><p>We would like to inform you that, due to a corporate restructuring, our payments will now be received under a new company name. Please find the updated invoice attached with the new bank details.</p>",
       "sender": {
@@ -340,61 +276,6 @@
         "conceptGlossaryId": "boleto_adulterado"
       },
       "idealInvestigationSeconds": 14
-    },
-    {
-      "id": "d5-e06",
-      "dayId": "day-05",
-      "order": 6,
-      "subject": "🎉 EXCLUSIVE COUPON: 70% OFF today only for employees!",
-      "bodyHtml": "<p>Congratulations! You've been selected for an exclusive 70% discount coupon at our partner store. Valid only for the next 2 hours.</p>",
-      "sender": {
-        "displayName": "Partner Promotions",
-        "emailAddressRaw": "promo@mega-descontos-vip.shop",
-        "domain": "mega-descontos-vip.shop",
-        "isSpoofed": false,
-        "spoofType": "none"
-      },
-      "links": [
-        {
-          "id": "d5-e06-link1",
-          "displayText": "Redeem coupon now",
-          "actualUrl": "http://mega-descontos-vip.shop/resgate?id=8827",
-          "isMalicious": true
-        }
-      ],
-      "attachments": [],
-      "headers": {
-        "fromServer": "mail.mega-descontos-vip.shop",
-        "sourceIp": "89.44.10.201",
-        "spf": "fail",
-        "dkim": "none",
-        "dmarc": "none",
-        "sentAt": "2026-08-11T15:50:00Z",
-        "routeHops": ["89.44.10.201"]
-      },
-      "riskLevel": "suspicious",
-      "correctAction": "delete",
-      "primaryConcept": "phishing",
-      "tags": ["phishing", "link_malicioso", "engenharia_social"],
-      "difficulty": 5,
-      "investigationHints": [
-        {
-          "toolId": "link_hover",
-          "revealsField": "links[0].actualUrl",
-          "summaryText": "A random scam-ad address ('mega-descontos-vip.shop'), with no connection to the company."
-        },
-        {
-          "toolId": "header_inspect",
-          "revealsField": "headers",
-          "summaryText": "SPF, DKIM, and DMARC all fail — typical of mass spam sent from disposable infrastructure."
-        }
-      ],
-      "explanation": {
-        "short": "Generic promotional spam with artificial urgency, with no specific target.",
-        "detailed": "Pressure ('only for the next 2 hours') and an offer too good to be true are the face of a scam blasted out in bulk, to any email list, with no connection to the company. It isn't a targeted attack that needs IT. The right move here is simply to delete it.",
-        "conceptGlossaryId": "phishing_urgencia"
-      },
-      "idealInvestigationSeconds": 6
     }
   ]
 }

@@ -12,7 +12,7 @@
     "sender": "RH Leroy Merlin <rh@leroymerlin.com.br>",
     "subject": "Pesquisa de clima organizacional 2026",
     "isPhishing": false,
-    "concept": "phishing",
+    "concept": "legitimo",
     "explanation": "Endereço oficial, sem pressa e sem pedir dados."
   },
   {
@@ -36,7 +36,7 @@
     "sender": "Fornecedor Constrular <financeiro@constrular-materiais.com.br>",
     "subject": "Boleto referente ao pedido 4521",
     "isPhishing": false,
-    "concept": "boleto_adulterado",
+    "concept": "legitimo",
     "explanation": "Fornecedor conhecido, sem pedido de troca de dados bancários."
   },
   {
@@ -48,27 +48,11 @@
     "explanation": "O WhatsApp não avisa por um endereço qualquer como esse."
   },
   {
-    "id": "arc-07",
-    "sender": "Facilities <facilities@leroymerlin.com.br>",
-    "subject": "Manutenção do ar-condicionado na sexta-feira",
-    "isPhishing": false,
-    "concept": "phishing",
-    "explanation": "Comunicado interno comum, endereço oficial."
-  },
-  {
-    "id": "arc-08",
-    "sender": "Central de Mensagens <sms@central-mensagens-brasil.info>",
-    "subject": "Você tem 1 SMS retido, visualize antes que expire",
-    "isPhishing": true,
-    "concept": "sms_falso",
-    "explanation": "Operadoras não retêm SMS para visualização por link de email."
-  },
-  {
     "id": "arc-09",
     "sender": "Treinamentos <treinamentos@leroymerlin.com.br>",
     "subject": "Inscrições abertas para o curso de liderança",
     "isPhishing": false,
-    "concept": "phishing",
+    "concept": "legitimo",
     "explanation": "Endereço oficial, sem link suspeito nem pressa."
   },
   {
@@ -80,27 +64,19 @@
     "explanation": "Troca de dados bancários só por email, sem confirmação formal — sinal de conta comprometida."
   },
   {
-    "id": "arc-11",
-    "sender": "Programa de Benefícios <beneficios@promocoes-parceiras.net>",
-    "subject": "Resgate seus pontos antes da meia-noite!",
-    "isPhishing": true,
-    "concept": "engenharia_social",
-    "explanation": "Urgência artificial com prêmio como isca, remetente desconhecido."
-  },
-  {
     "id": "arc-12",
     "sender": "Financeiro Fornecedor ABC <financeiro@fornecedorabc.com>",
     "subject": "Nota fiscal 2854 em anexo",
     "isPhishing": true,
     "concept": "anexo_perigoso",
-    "explanation": "Fornecedores reais também podem enviar anexos maliciosos disfarçados de nota fiscal."
+    "explanation": "Fornecedor de verdade também pode mandar anexo perigoso disfarçado de nota fiscal."
   },
   {
     "id": "arc-13",
     "sender": "Operações <operacoes@leroymerlin.com.br>",
     "subject": "Pauta da reunião mensal de operações",
     "isPhishing": false,
-    "concept": "phishing",
+    "concept": "legitimo",
     "explanation": "Comunicado de rotina, endereço oficial e sem anexo suspeito."
   },
   {
@@ -124,40 +100,16 @@
     "sender": "Vendas <vendas@leroymerlin.com.br>",
     "subject": "Metas do trimestre atualizadas no painel",
     "isPhishing": false,
-    "concept": "phishing",
+    "concept": "legitimo",
     "explanation": "Comunicado interno normal, sem link ou anexo suspeito."
-  },
-  {
-    "id": "arc-17",
-    "sender": "Cobrança <cobranca@boleto-facil-pagamentos.com>",
-    "subject": "Boleto vencido, evite negativação, pague agora",
-    "isPhishing": true,
-    "concept": "boleto_adulterado",
-    "explanation": "Endereço qualquer, sem ligação com a empresa, com tom de ameaça."
   },
   {
     "id": "arc-18",
     "sender": "Segurança da Informação <seguranca@leroymerlin.com.br>",
     "subject": "Lembrete: treinamento de segurança obrigatório",
     "isPhishing": false,
-    "concept": "phishing",
+    "concept": "legitimo",
     "explanation": "Endereço oficial e conteúdo que combina com a área."
-  },
-  {
-    "id": "arc-19",
-    "sender": "Suporte Office 365 <account-security@micros0ft-online.com>",
-    "subject": "Sua licença expira hoje, renove automaticamente",
-    "isPhishing": true,
-    "concept": "microsoft_falso",
-    "explanation": "Novamente o zero no lugar do 'o' em 'micros0ft'."
-  },
-  {
-    "id": "arc-20",
-    "sender": "Compras <compras@leroymerlin.com.br>",
-    "subject": "Novo catálogo de fornecedores homologados",
-    "isPhishing": false,
-    "concept": "phishing",
-    "explanation": "Comunicado interno de rotina, do próprio endereço oficial."
   },
   {
     "id": "arc-21",
@@ -174,21 +126,5 @@
     "isPhishing": true,
     "concept": "qr_falso",
     "explanation": "Endereço '.xyz' desconhecido e prêmio do nada: isca de QR Code."
-  },
-  {
-    "id": "arc-23",
-    "sender": "Biblioteca Corporativa <biblioteca@leroymerlin.com.br>",
-    "subject": "Novos e-books disponíveis na plataforma interna",
-    "isPhishing": false,
-    "concept": "phishing",
-    "explanation": "Comunicado de rotina, endereço oficial, sem pressa."
-  },
-  {
-    "id": "arc-24",
-    "sender": "Suporte de Senha <senha@redefinir-conta-corporativa.com>",
-    "subject": "Sua senha é fraca, clique para criar uma nova agora",
-    "isPhishing": true,
-    "concept": "senha_fraca",
-    "explanation": "Endereço que não é da empresa pedindo para trocar senha por link: golpe para roubar login e senha."
   }
 ]

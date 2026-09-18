@@ -26,7 +26,7 @@
   {
     "id": "upg-filtro-inteligente",
     "name": "Smart Filter",
-    "description": "Visually highlights suspicious domains in the inbox.",
+    "description": "Highlights suspicious addresses in the inbox.",
     "icon": "filter",
     "priceMoney": 500,
     "effect": { "kind": "highlight_suspicious_domains" }

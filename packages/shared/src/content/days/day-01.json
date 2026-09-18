@@ -2,7 +2,7 @@
   "id": "day-01",
   "dayNumber": 1,
   "title": "Primeiro dia na Leroy Merlin",
-  "description": "Emails obviamente falsos. Aprenda a reconhecer os sinais mais básicos de phishing.",
+  "description": "E-mails falsos que dá para perceber de longe. Aprenda os sinais mais simples.",
   "difficultyRange": [1, 1],
   "timeLimitSeconds": 240,
   "isBossDay": false,
@@ -32,12 +32,12 @@
       "attachments": [],
       "internalDbRecord": {
         "senderStatus": "recently_created_domain",
-        "notes": "Domínio registrado há 6 dias. Nenhum histórico de envio anterior."
+        "notes": "Endereço criado há 6 dias. Nunca mandou e-mail para a empresa antes."
       },
       "aiAssistantHint": {
         "phishingProbability": 91,
         "isReliable": true,
-        "reasoning": "Domínio recém-registrado combinado com linguagem de urgência extrema é um padrão fortemente associado a phishing."
+        "reasoning": "O endereço foi criado há poucos dias e a mensagem manda correr. Essa dupla quase sempre é golpe."
       },
       "headers": {
         "fromServer": "mail.leroymerlin-ti.com.br",
@@ -72,7 +72,7 @@
         {
           "toolId": "header_inspect",
           "revealsField": "headers",
-          "summaryText": "As checagens automáticas do e-mail falharam, e ele veio de fora do Brasil. Tudo indica remetente falso."
+          "summaryText": "As checagens automáticas do e-mail falharam, e ele veio de fora do Brasil. Tudo indica que quem mandou não é quem diz ser."
         },
         {
           "toolId": "internal_db_lookup",
@@ -137,7 +137,7 @@
       "aiAssistantHint": {
         "phishingProbability": 38,
         "isReliable": false,
-        "reasoning": "Remetente, domínio e certificado parecem legítimos. A IA não analisa o conteúdo real do anexo e não detectou o executável disfarçado."
+        "reasoning": "Quem mandou e o endereço parecem de verdade. Mas esta ajuda não abre o anexo, e o arquivo é um programa disfarçado."
       },
       "headers": {
         "fromServer": "mail.fornecedorabc.com",
@@ -209,7 +209,7 @@
       },
       "internalDbRecord": {
         "senderStatus": "never_used",
-        "notes": "Nenhum email deste remetente foi recebido pela empresa antes."
+        "notes": "A empresa nunca recebeu e-mail deste endereço antes."
       },
       "headers": {
         "fromServer": "mail.promocoes-parceiras.net",
@@ -239,7 +239,7 @@
         {
           "toolId": "internal_db_lookup",
           "revealsField": "internalDbRecord",
-          "summaryText": "Esse remetente nunca escreveu para a empresa. Não faz parte de programa nenhum."
+          "summaryText": "Quem mandou nunca escreveu para a empresa antes. Não faz parte de programa nenhum."
         }
       ],
       "explanation": {
@@ -275,8 +275,8 @@
       },
       "riskLevel": "safe",
       "correctAction": "accept",
-      "primaryConcept": "phishing",
-      "tags": ["phishing"],
+      "primaryConcept": "legitimo",
+      "tags": ["legitimo"],
       "difficulty": 1,
       "investigationHints": [
         {
@@ -292,7 +292,7 @@
       ],
       "explanation": {
         "short": "E-mail interno de verdade. Pode confiar.",
-        "detailed": "Nem todo e-mail é ameaça. Reportar ou apagar um comunicado de verdade só atrapalha a equipe. Este vem do endereço oficial, não te apressa, não pede dados e não tem link nem anexo suspeito.",
+        "detailed": "Nem todo e-mail é ameaça. Dizer que um comunicado de verdade é golpe só atrapalha a equipe. Este vem do endereço oficial, não te apressa, não pede dados e não tem link nem anexo suspeito.",
         "conceptGlossaryId": "nem_tudo_e_phishing"
       },
       "idealInvestigationSeconds": 3

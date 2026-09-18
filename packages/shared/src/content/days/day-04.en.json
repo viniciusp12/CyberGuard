@@ -2,7 +2,7 @@
   "id": "day-04",
   "dayNumber": 4,
   "title": "Things get subtle",
-  "description": "No more obvious scams. Now attacks combine multiple techniques at once — and not everything that looks suspicious is malicious.",
+  "description": "No more obvious scams. Now they mix several tricks at once — and not everything that looks suspicious is.",
   "difficultyRange": [4, 4],
   "timeLimitSeconds": 300,
   "isBossDay": false,
@@ -50,7 +50,7 @@
       },
       "internalDbRecord": {
         "senderStatus": "recently_created_domain",
-        "notes": "Domain registered 2 days ago. Uses '1' instead of 'l' in 'leroymerlin' — a homograph nearly identical to the official domain."
+        "notes": "Address created 2 days ago. Uses '1' instead of 'l' in 'leroymerlin' — almost identical to the real one."
       },
       "riskLevel": "malicious",
       "correctAction": "report",
@@ -61,12 +61,12 @@
         {
           "toolId": "domain_inspect",
           "revealsField": "sender.domain",
-          "summaryText": "'leroymer1in.com.br' uses the number 1 instead of 'l' — a homograph nearly indistinguishable from the official domain."
+          "summaryText": "'leroymer1in.com.br' uses the number 1 instead of the 'l'. At a glance, it looks just like the official address."
         },
         {
           "toolId": "header_inspect",
           "revealsField": "headers",
-          "summaryText": "SPF and DMARC failed, and the originating server has no connection to the company's real infrastructure."
+          "summaryText": "The automatic checks did not match, and the email did not come from any company computer."
         },
         {
           "toolId": "internal_db_lookup",
@@ -193,8 +193,8 @@
       },
       "riskLevel": "safe",
       "correctAction": "accept",
-      "primaryConcept": "fornecedor_comprometido",
-      "tags": ["fornecedor_comprometido"],
+      "primaryConcept": "legitimo",
+      "tags": ["fornecedor_comprometido", "legitimo"],
       "difficulty": 4,
       "investigationHints": [
         {
@@ -246,7 +246,7 @@
       },
       "internalDbRecord": {
         "senderStatus": "recently_created_domain",
-        "notes": "Domain registered 4 days ago. HR never requests bank details via QR code."
+        "notes": "Address created 4 days ago. HR never asks for bank details by QR code."
       },
       "riskLevel": "malicious",
       "correctAction": "report",
@@ -262,7 +262,7 @@
         {
           "toolId": "domain_inspect",
           "revealsField": "sender.domain",
-          "summaryText": "'leroymerlin-cadastro.com.br' is not a company domain — it's a lookalike domain registered by a third party."
+          "summaryText": "'leroymerlin-cadastro.com.br' is not the company's — it is a lookalike address registered by someone else."
         },
         {
           "toolId": "internal_db_lookup",
@@ -276,77 +276,6 @@
         "conceptGlossaryId": "qr_falso"
       },
       "idealInvestigationSeconds": 10
-    },
-    {
-      "id": "d4-e05",
-      "dayId": "day-04",
-      "order": 5,
-      "subject": "Found this in the parking lot, is it yours?",
-      "bodyHtml": "<p>Hi, how's it going?</p><p>I found a USB drive lying near your parking spot with a label that says 'Payroll - HR'. I opened it just to see whose it was and saw your name on a spreadsheet. I've attached the files here, take a look and confirm if it's yours.</p>",
-      "sender": {
-        "displayName": "Marcos (Physical Security)",
-        "emailAddressRaw": "seguranca.patrimonial@leroymerlin-rh.net",
-        "domain": "leroymerlin-rh.net",
-        "isSpoofed": true,
-        "spoofType": "lookalike_domain"
-      },
-      "links": [],
-      "attachments": [
-        {
-          "id": "d4-e05-att1",
-          "fileName": "payroll_backup.pdf.scr",
-          "declaredExtension": ".pdf",
-          "actualType": "application/x-msdownload",
-          "sizeKB": 340,
-          "hasMacro": false,
-          "isMalicious": true,
-          "sandboxResult": {
-            "outcome": "suspicious_connection",
-            "host": "185.220.101.99"
-          }
-        }
-      ],
-      "headers": {
-        "fromServer": "mail.leroymerlin-rh.net",
-        "sourceIp": "185.220.101.33",
-        "spf": "fail",
-        "dkim": "none",
-        "dmarc": "fail",
-        "sentAt": "2026-08-10T13:15:00Z",
-        "routeHops": ["185.220.101.33"]
-      },
-      "internalDbRecord": {
-        "senderStatus": "recently_created_domain",
-        "notes": "There is no 'Physical Security' team with this domain. The physical security team does not send files by email."
-      },
-      "riskLevel": "malicious",
-      "correctAction": "report",
-      "primaryConcept": "usb_infectado",
-      "tags": ["usb_infectado", "anexo_perigoso", "engenharia_social"],
-      "difficulty": 4,
-      "investigationHints": [
-        {
-          "toolId": "attachment_analysis",
-          "revealsField": "attachments[0].fileName",
-          "summaryText": "'payroll_backup.pdf.scr' uses a double extension — '.scr' is an executable disguised as a screensaver."
-        },
-        {
-          "toolId": "sandbox_execution",
-          "revealsField": "attachments[0].sandboxResult",
-          "summaryText": "In the sandbox, the file attempts to connect to an unknown external server."
-        },
-        {
-          "toolId": "internal_db_lookup",
-          "revealsField": "internalDbRecord",
-          "summaryText": "There is no such department with this address. Security never sends files by email."
-        }
-      ],
-      "explanation": {
-        "short": "'Found USB drive' excuse to justify a dangerous attachment.",
-        "detailed": "It's the old story of a USB drive left on the floor, now by email: instead of leaving an infected drive hoping someone plugs it in, the scammer pretends they found it and sends the 'content' by email. The file '.pdf.scr' hides a program, and the test confirms it's dangerous. Since it's a deliberate attack against the company, it's worth reporting to IT, not just deleting.",
-        "conceptGlossaryId": "usb_infectado"
-      },
-      "idealInvestigationSeconds": 14
     }
   ]
 }

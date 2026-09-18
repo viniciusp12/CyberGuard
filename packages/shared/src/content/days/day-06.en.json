@@ -34,91 +34,9 @@
   ],
   "emails": [
     {
-      "id": "d6-e01",
-      "dayId": "day-06",
-      "order": 1,
-      "subject": "Invoice 4102 - our provider's new email server",
-      "bodyHtml": "<p>Dear all,</p><p>We migrated our email provider last week, so this email might get flagged as suspicious by your filter. Please find attached invoice 4102 for this month's maintenance services.</p>",
-      "sender": {
-        "displayName": "Vendor ABC Finance",
-        "emailAddressRaw": "financeiro@fornecedorabc.com",
-        "domain": "fornecedorabc.com",
-        "isSpoofed": false,
-        "spoofType": "none"
-      },
-      "links": [],
-      "attachments": [
-        {
-          "id": "d6-e01-att1",
-          "fileName": "invoice_4102.pdf",
-          "declaredExtension": ".pdf",
-          "actualType": "application/pdf",
-          "sizeKB": 140,
-          "hasMacro": false,
-          "isMalicious": false,
-          "sandboxResult": { "outcome": "no_activity" }
-        }
-      ],
-      "certificate": {
-        "companyName": "Fornecedor ABC LTDA",
-        "issuer": "Let's Encrypt",
-        "validFrom": "2026-07-20T00:00:00Z",
-        "validTo": "2026-10-20T00:00:00Z",
-        "domain": "fornecedorabc.com",
-        "isTechnicallyValid": true,
-        "isTrustworthy": true
-      },
-      "headers": {
-        "fromServer": "mail-relay-02.emailpro-hosting.com",
-        "sourceIp": "138.68.44.190",
-        "spf": "neutral",
-        "dkim": "pass",
-        "dmarc": "pass",
-        "sentAt": "2026-08-12T08:30:00Z",
-        "routeHops": ["138.68.44.190", "mail.fornecedorabc.com"]
-      },
-      "internalDbRecord": {
-        "senderStatus": "trusted_vendor",
-        "notes": "Vendor active for 3 years. No history of security issues."
-      },
-      "outOfBandCheck": {
-        "channelDescription": "Call to Vendor ABC's already-known finance contact",
-        "outcome": "confirmed_legitimate",
-        "details": "The vendor confirmed by phone that they really did migrate email providers last week and that the invoice is genuine."
-      },
-      "riskLevel": "suspicious",
-      "correctAction": "accept",
-      "primaryConcept": "fornecedor_comprometido",
-      "tags": ["fornecedor_comprometido"],
-      "difficulty": 6,
-      "investigationHints": [
-        {
-          "toolId": "header_inspect",
-          "revealsField": "headers",
-          "summaryText": "SPF came back neutral because of the new relay server, but DKIM and DMARC are still valid and the routing reaches the vendor's real server."
-        },
-        {
-          "toolId": "attachment_analysis",
-          "revealsField": "attachments[0].actualType",
-          "summaryText": "The attachment is a real PDF, with no disguise or double extension."
-        },
-        {
-          "toolId": "out_of_band_verify",
-          "revealsField": "outOfBandCheck",
-          "summaryText": "The vendor confirmed by phone that they recently migrated email providers — that's exactly what's triggering the alerts."
-        }
-      ],
-      "explanation": {
-        "short": "Suspicious signs with a real explanation — not every yellow flag is an attack.",
-        "detailed": "One of the email's checks came back neutral and it left a server that isn't the usual one — which would look suspicious. But there's a real explanation (an email provider change), confirmed by phone. The rest of the checks are fine, the attachment is clean, and the confirmation through another channel closes the case. After so many hacked vendors, it's tempting to report out of caution. But that also has a cost: it delays real payments and floods IT with false alarms. Investigating properly, here, means recognizing when everything is fine.",
-        "conceptGlossaryId": "fornecedor_comprometido"
-      },
-      "idealInvestigationSeconds": 16
-    },
-    {
       "id": "d6-e02",
       "dayId": "day-06",
-      "order": 2,
+      "order": 1,
       "subject": "Urgent audio from the director - listen before you act",
       "bodyHtml": "<p>Attached is the audio that director Ricardo recorded in the car on the way to the airport, asking you to temporarily disable the branch firewall so the external audit team can access it remotely today.</p><p>Audio file attached, 0:38.</p>",
       "sender": {
@@ -155,7 +73,7 @@
       },
       "internalDbRecord": {
         "senderStatus": "recently_created_domain",
-        "notes": "Domain registered 3 days ago. No 'Executive Office' sends security requests by email."
+        "notes": "Address created 3 days ago. No 'Executive Office' asks for security changes by email."
       },
       "outOfBandCheck": {
         "channelDescription": "Call to Director Ricardo Almeida's registered extension",
@@ -171,7 +89,7 @@
         {
           "toolId": "attachment_analysis",
           "revealsField": "attachments[0].fileName",
-          "summaryText": "'urgent_director_audio.mp3.exe' uses a double extension — it's not an audio file, it's an executable."
+          "summaryText": "'urgent_director_audio.mp3.exe' has two file endings stuck together. It is not audio, it is a program."
         },
         {
           "toolId": "sandbox_execution",
@@ -194,7 +112,7 @@
     {
       "id": "d6-e03",
       "dayId": "day-06",
-      "order": 3,
+      "order": 2,
       "subject": "Reminder: mandatory security training due by Friday",
       "bodyHtml": "<p>Hello,</p><p>This is an automatic reminder that the annual information security training must be completed by Friday. Access it through the usual internal portal, under the 'Training' tab.</p>",
       "sender": {
@@ -217,12 +135,12 @@
       },
       "internalDbRecord": {
         "senderStatus": "trusted_vendor",
-        "notes": "Company's official domain, a recurring HR communication."
+        "notes": "The company's official address. It is a notice HR sends regularly."
       },
       "riskLevel": "safe",
       "correctAction": "accept",
-      "primaryConcept": "phishing",
-      "tags": ["phishing"],
+      "primaryConcept": "legitimo",
+      "tags": ["legitimo"],
       "difficulty": 6,
       "investigationHints": [
         {
@@ -233,7 +151,7 @@
         {
           "toolId": "header_inspect",
           "revealsField": "headers",
-          "summaryText": "SPF, DKIM, and DMARC pass — origin confirmed as legitimate."
+          "summaryText": "The automatic checks matched: the email really is from the company."
         }
       ],
       "explanation": {
@@ -246,7 +164,7 @@
     {
       "id": "d6-e04",
       "dayId": "day-06",
-      "order": 4,
+      "order": 3,
       "subject": "Review of the salary adjustment spreadsheet - just between us",
       "bodyHtml": "<p>Hi! I saw that you work with Camila in finance. She gave me your contact and asked me to send you this team salary adjustment spreadsheet for you to take a look before we go to management. It's still very confidential, please don't mention it to anyone.</p>",
       "sender": {
@@ -294,7 +212,7 @@
         {
           "toolId": "attachment_analysis",
           "revealsField": "attachments[0].hasMacro",
-          "summaryText": "The spreadsheet contains enabled macros — a classic vector for executing malicious code."
+          "summaryText": "The spreadsheet carries a program inside, which runs as soon as you open the file."
         },
         {
           "toolId": "sandbox_execution",
@@ -315,80 +233,9 @@
       "idealInvestigationSeconds": 18
     },
     {
-      "id": "d6-e05",
-      "dayId": "day-06",
-      "order": 5,
-      "subject": "Legal notice - case no. 0834521-77.2026.8.26.0100",
-      "bodyHtml": "<p>Dear Sir/Madam,</p><p>Leroy Merlin is hereby notified to present a defense in the attached case within 15 days, under penalty of default judgment.</p><p>Access the attached official document for more details.</p>",
-      "sender": {
-        "displayName": "Court of Justice - Notifications",
-        "emailAddressRaw": "notificacoes@tjsp-processos.org",
-        "domain": "tjsp-processos.org",
-        "isSpoofed": true,
-        "spoofType": "lookalike_domain"
-      },
-      "links": [],
-      "attachments": [
-        {
-          "id": "d6-e05-att1",
-          "fileName": "lawsuit_notice_0834521.pdf.exe",
-          "declaredExtension": ".pdf",
-          "actualType": "application/x-msdownload",
-          "sizeKB": 690,
-          "hasMacro": false,
-          "isMalicious": true,
-          "sandboxResult": {
-            "outcome": "ransomware_attempt",
-            "details": "The file attempted to encrypt files across multiple folders as soon as it was executed, including network shares."
-          }
-        }
-      ],
-      "headers": {
-        "fromServer": "mail.tjsp-processos.org",
-        "sourceIp": "185.220.101.150",
-        "spf": "fail",
-        "dkim": "none",
-        "dmarc": "fail",
-        "sentAt": "2026-08-12T11:50:00Z",
-        "routeHops": ["185.220.101.150"]
-      },
-      "internalDbRecord": {
-        "senderStatus": "recently_created_domain",
-        "notes": "Real courts of justice do not notify companies by email with executable attachments — the official domain is '.jus.br'."
-      },
-      "riskLevel": "malicious",
-      "correctAction": "report",
-      "primaryConcept": "ransomware",
-      "tags": ["ransomware", "anexo_perigoso", "phishing"],
-      "difficulty": 7,
-      "investigationHints": [
-        {
-          "toolId": "domain_inspect",
-          "revealsField": "sender.domain",
-          "summaryText": "'tjsp-processos.org' is not an official court domain — real Judiciary domains use '.jus.br'."
-        },
-        {
-          "toolId": "attachment_analysis",
-          "revealsField": "attachments[0].fileName",
-          "summaryText": "'lawsuit_notice_0834521.pdf.exe' uses a double extension — it's an executable, not a document."
-        },
-        {
-          "toolId": "sandbox_execution",
-          "revealsField": "attachments[0].sandboxResult",
-          "summaryText": "In the sandbox, the file attempts to encrypt files across multiple folders, including network shares — ransomware with the potential to spread."
-        }
-      ],
-      "explanation": {
-        "short": "Fake court notice using fear of a lawsuit to install a virus that locks your files.",
-        "detailed": "This scam uses the fear of legal trouble to get you to open the attachment without thinking. The address imitates a real court, but official Brazilian court sites use '.jus.br' — never '.org'. The attachment hides a disguised program, and the test shows it's a virus that locks your files and demands money, able to spread across the company's network.",
-        "conceptGlossaryId": "certificado_nao_garante_legitimidade"
-      },
-      "idealInvestigationSeconds": 16
-    },
-    {
       "id": "d6-e06",
       "dayId": "day-06",
-      "order": 6,
+      "order": 4,
       "subject": "Final notice - pending PIX payment for the maintenance contract",
       "bodyHtml": "<p>Dear all,</p><p>This is our final attempt to reach you before we suspend the maintenance contract. Please make the PIX payment of R$12,400 for the last 2 outstanding invoices to the key below today.</p><p>PIX key: 28.410.manutencao@quickpay.com.br</p>",
       "sender": {
@@ -446,7 +293,7 @@
       ],
       "explanation": {
         "short": "The vendor's same real account, compromised again — the change in payment method gives away the fraud.",
-        "detailed": "After email 1 from this same day (where a server change had a legitimate explanation), it's tempting to accept anything coming from this vendor without checking again — but every email needs to be evaluated on its own. Here, the strongest signal isn't technical, it's behavioral: this contract has always been paid via invoice, and now they're asking for PIX, with the urgency of a 'final notice.' The phone confirmation reveals it's the same previously compromised account, attacking again with a different pretext.",
+        "detailed": "After the first email from this same day, where a system change had a real explanation, it is tempting to accept anything from this supplier without checking — but every email has to be judged on its own. Here the strongest signal is not in the computer, it is in the behaviour: this contract has always been paid by invoice slip, and now they are asking for an instant transfer, with the urgency of a 'final notice.' The phone confirmation reveals it's the same previously compromised account, attacking again with a different pretext.",
         "conceptGlossaryId": "pix_falso"
       },
       "idealInvestigationSeconds": 16

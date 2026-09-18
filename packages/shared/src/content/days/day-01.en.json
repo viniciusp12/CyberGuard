@@ -2,7 +2,7 @@
   "id": "day-01",
   "dayNumber": 1,
   "title": "First day at Leroy Merlin",
-  "description": "Obviously fake emails. Learn to recognize the most basic signs of phishing.",
+  "description": "Fake emails you can spot a mile away. Learn the simplest signs.",
   "difficultyRange": [1, 1],
   "timeLimitSeconds": 240,
   "isBossDay": false,
@@ -32,12 +32,12 @@
       "attachments": [],
       "internalDbRecord": {
         "senderStatus": "recently_created_domain",
-        "notes": "Domain registered 6 days ago. No prior sending history."
+        "notes": "Address created 6 days ago. Never emailed the company before."
       },
       "aiAssistantHint": {
         "phishingProbability": 91,
         "isReliable": true,
-        "reasoning": "A recently registered domain combined with extreme urgency language is a pattern strongly associated with phishing."
+        "reasoning": "The address was created days ago and the message tells you to hurry. That pair is almost always a scam."
       },
       "headers": {
         "fromServer": "mail.leroymerlin-ti.com.br",
@@ -137,7 +137,7 @@
       "aiAssistantHint": {
         "phishingProbability": 38,
         "isReliable": false,
-        "reasoning": "Sender, domain, and certificate appear legitimate. The AI does not analyze the actual content of the attachment and did not detect the disguised executable."
+        "reasoning": "The sender and the address look real. But this helper does not open the attachment, and the file is a program in disguise."
       },
       "headers": {
         "fromServer": "mail.fornecedorabc.com",
@@ -275,8 +275,8 @@
       },
       "riskLevel": "safe",
       "correctAction": "accept",
-      "primaryConcept": "phishing",
-      "tags": ["phishing"],
+      "primaryConcept": "legitimo",
+      "tags": ["legitimo"],
       "difficulty": 1,
       "investigationHints": [
         {
@@ -292,7 +292,7 @@
       ],
       "explanation": {
         "short": "A real internal email. You can trust it.",
-        "detailed": "Not every email is a threat. Reporting or deleting a real message only disrupts the team. This one comes from the official address, doesn't rush you, doesn't ask for data, and has no suspicious link or attachment.",
+        "detailed": "Not every email is a threat. Calling a real message a scam only disrupts the team. This one comes from the official address, doesn't rush you, doesn't ask for data, and has no suspicious link or attachment.",
         "conceptGlossaryId": "nem_tudo_e_phishing"
       },
       "idealInvestigationSeconds": 3

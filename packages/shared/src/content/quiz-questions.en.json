@@ -14,20 +14,6 @@
     "explanation": "Creating pressure so you act without thinking is a classic scam tactic."
   },
   {
-    "id": "quiz-02",
-    "question": "What is a homograph attack?",
-    "options": [
-      "A virus that replicates across multiple machines",
-      "Using similar-looking letters (like an uppercase 'I' instead of a lowercase 'l') to imitate an address",
-      "Sending the same email to many people",
-      "A type of scam carried out only by phone"
-    ],
-    "correctIndex": 1,
-    "concept": "phishing",
-    "difficulty": 3,
-    "explanation": "Homograph attacks exploit similar-looking characters to create fake domains nearly indistinguishable from the original."
-  },
-  {
     "id": "quiz-03",
     "question": "You receive an urgent wire transfer request from the 'finance director' by email, asking for secrecy. What should you do?",
     "options": [
@@ -60,21 +46,21 @@
     "question": "A file named 'invoice.pdf.exe' was sent as an attachment. What does this indicate?",
     "options": [
       "It's a password-protected PDF",
-      "It's a double extension hiding a malicious executable",
+      "Two file endings stuck together, hiding a dangerous program",
       "It's a valid compression format",
       "Nothing is wrong, it's just a long file name"
     ],
     "correctIndex": 1,
     "concept": "anexo_perigoso",
     "difficulty": 1,
-    "explanation": "The real extension is '.exe' (executable); the '.pdf' before it is only there to visually deceive."
+    "explanation": "The file ends in '.exe', which means program. The '.pdf' before it is only there to fool you."
   },
   {
     "id": "quiz-06",
     "question": "A padlock (secure connection) on a website means:",
     "options": [
       "The site is 100% trustworthy and safe",
-      "The connection is encrypted, but that doesn't guarantee the content is legitimate",
+      "The conversation with the site is scrambled, but that says nothing about whether the site is honest",
       "The site belongs to the government",
       "No scams are possible on that site"
     ],
@@ -98,20 +84,6 @@
     "explanation": "Unknown flash drives may be intentionally infected — never plug them in, hand them over to IT."
   },
   {
-    "id": "quiz-08",
-    "question": "Which sign MOST indicates that a 'WhatsApp' email asking for session confirmation is fake?",
-    "options": [
-      "The logo is green",
-      "The sender's address has no relation to Meta/WhatsApp",
-      "The email arrived in the morning",
-      "The subject line has an emoji"
-    ],
-    "correctIndex": 1,
-    "concept": "whatsapp_falso",
-    "difficulty": 2,
-    "explanation": "Legitimate services don't send notifications from generic domains unassociated with the real company."
-  },
-  {
     "id": "quiz-09",
     "question": "A real, trusted supplier asks, only by email, to change their payment bank details. What might this indicate?",
     "options": [
@@ -130,7 +102,7 @@
     "question": "Before scanning an unknown QR code, what is recommended?",
     "options": [
       "Scan it and see what happens",
-      "Preview the actual destination/URL before accessing it",
+      "See where the link really goes before opening it",
       "Share it with a colleague first",
       "QR codes are always safe"
     ],
@@ -140,27 +112,13 @@
     "explanation": "You can preview a QR code's link before accessing it, avoiding disguised scams."
   },
   {
-    "id": "quiz-11",
-    "question": "What is the fake-payment scam in a boss's name?",
-    "options": [
-      "A virus that specifically attacks executives",
-      "A scammer impersonating an executive to induce payments or urgent actions",
-      "A security flaw in email servers",
-      "A common type of spam with no malicious intent"
-    ],
-    "correctIndex": 1,
-    "concept": "bec",
-    "difficulty": 4,
-    "explanation": "This scam uses a boss's authority to pressure the victim into acting without checking."
-  },
-  {
     "id": "quiz-12",
     "question": "Why should an address like 'microsoft-support-verification.com' raise suspicion?",
     "options": [
       "Because it's too long",
       "Because it's not Microsoft's official address, it just has the word 'microsoft' in it",
       "Because it uses a hyphen",
-      "Domains like this are always legitimate partners"
+      "Addresses like this are always from real partners"
     ],
     "correctIndex": 1,
     "concept": "microsoft_falso",
@@ -182,20 +140,6 @@
     "explanation": "Invoices can have the payee altered even when coming from a real supplier — always check before paying."
   },
   {
-    "id": "quiz-14",
-    "question": "A text message warns that a package is being held and asks you to click a link to release it. This is:",
-    "options": [
-      "Always true, packages get held frequently",
-      "Possibly an SMS scam, especially if you weren't expecting a package",
-      "Only a scam if it comes from an international number",
-      "Safe, as long as the link starts with 'https'"
-    ],
-    "correctIndex": 1,
-    "concept": "sms_falso",
-    "difficulty": 2,
-    "explanation": "SMS scams use the same manipulation as email scams, with pressure and fake links."
-  },
-  {
     "id": "quiz-15",
     "question": "Which of these is a good password practice?",
     "options": [
@@ -210,39 +154,11 @@
     "explanation": "Unique, long passwords per service, managed by a password manager, drastically reduce the risk of a cascading breach."
   },
   {
-    "id": "quiz-16",
-    "question": "The support tool flags only a 40% chance of a scam for an email that is actually dangerous. This means:",
-    "options": [
-      "The AI never makes mistakes, so the email is safe",
-      "AI tools are a support, but they can be wrong — human judgment is still necessary",
-      "40% is already enough proof that it's a scam",
-      "The tool should be disabled"
-    ],
-    "correctIndex": 1,
-    "concept": "phishing",
-    "difficulty": 4,
-    "explanation": "Automated tools help, but they don't replace human investigation, especially with sophisticated scams."
-  },
-  {
-    "id": "quiz-17",
-    "question": "Why are emails with extreme urgency ('reply within 10 minutes or...') a warning sign?",
-    "options": [
-      "Because urgent emails are always spam",
-      "Because time pressure is used to stop the victim from thinking calmly and checking",
-      "Because email servers take a long time to process them",
-      "It's not a warning sign, it's just good manners"
-    ],
-    "correctIndex": 1,
-    "concept": "engenharia_social",
-    "difficulty": 1,
-    "explanation": "Reducing the victim's time to think is one of the most commonly used tactics in scams."
-  },
-  {
     "id": "quiz-18",
     "question": "What should you do if you suspect an email is a scam, even without total certainty?",
     "options": [
-      "Ignore it and delete it without reporting",
-      "Report it to IT/information security for analysis",
+      "Delete it without telling anyone",
+      "Tell the company security team",
       "Reply to the sender asking if it's real",
       "Forward it to several colleagues asking for their opinion"
     ],

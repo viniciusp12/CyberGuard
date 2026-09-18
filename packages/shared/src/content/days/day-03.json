@@ -2,7 +2,7 @@
   "id": "day-03",
   "dayNumber": 3,
   "title": "Os golpes ficam sofisticados",
-  "description": "Domínios quase idênticos, PIX urgente, boleto adulterado, Microsoft falsa e fornecedor comprometido. Nada é o que parece à primeira vista.",
+  "description": "Endereços quase iguais ao verdadeiro, PIX urgente, boleto trocado e fornecedor invadido. Nada é o que parece.",
   "difficultyRange": [3, 3],
   "timeLimitSeconds": 360,
   "isBossDay": false,
@@ -18,53 +18,9 @@
   ],
   "emails": [
     {
-      "id": "d3-e01",
-      "dayId": "day-03",
-      "order": 1,
-      "subject": "Confirmação de acesso necessária",
-      "bodyHtml": "<p>Prezado colaborador, detectamos um novo dispositivo tentando acessar sua conta. Confirme que foi você clicando no link abaixo, ou sua conta será suspensa por segurança.</p>",
-      "sender": {
-        "displayName": "TI Leroy Merlin",
-        "emailAddressRaw": "seguranca@leroymerIin.com.br",
-        "domain": "leroymerIin.com.br",
-        "isSpoofed": true,
-        "spoofType": "homograph"
-      },
-      "links": [
-        { "id": "d3-e01-link1", "displayText": "Confirmar acesso", "actualUrl": "http://leroymerIin.com.br/confirmar-acesso", "isMalicious": true }
-      ],
-      "attachments": [],
-      "headers": {
-        "fromServer": "mail.leroymerIin.com.br",
-        "sourceIp": "185.220.102.8",
-        "spf": "fail",
-        "dkim": "fail",
-        "dmarc": "fail",
-        "sentAt": "2026-07-22T08:10:00Z",
-        "routeHops": ["185.220.102.8"]
-      },
-      "internalDbRecord": { "senderStatus": "recently_created_domain", "notes": "Domínio visualmente idêntico ao oficial, registrado há 3 dias." },
-      "riskLevel": "malicious",
-      "correctAction": "report",
-      "primaryConcept": "phishing",
-      "tags": ["phishing", "link_malicioso"],
-      "difficulty": 3,
-      "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Repare: o endereço usa um 'I' maiúsculo no lugar do 'l' minúsculo. É o truque da letra trocada, que engana o olho." },
-        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM e DMARC falharam todos." },
-        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Endereço igualzinho ao oficial na aparência, mas criado há só 3 dias." }
-      ],
-      "explanation": {
-        "short": "Ataque de homógrafos: 'I' maiúsculo no lugar de 'l' minúsculo.",
-        "detailed": "A letra 'I' maiúscula parece um 'l' minúsculo em muitas letras. Este e-mail usa 'leroymerIin.com.br' no lugar de 'leroymerlin.com.br': parece igual, mas é outro endereço, criado há só 3 dias. É o truque da letra trocada.",
-        "conceptGlossaryId": "ataque_homografos"
-      },
-      "idealInvestigationSeconds": 10
-    },
-    {
       "id": "d3-e02",
       "dayId": "day-03",
-      "order": 2,
+      "order": 1,
       "subject": "URGENTE: preciso que você faça um PIX agora",
       "bodyHtml": "<p>Estou em reunião com um fornecedor importante e preciso fechar um pagamento agora via PIX para não perder a condição especial. Me confirma quando fizer, te explico depois. Chave: 47.xxx.xxx/0001-xx</p>",
       "sender": {
@@ -88,7 +44,7 @@
       "aiAssistantHint": {
         "phishingProbability": 95,
         "isReliable": true,
-        "reasoning": "Pedido de PIX urgente, sem processo de aprovação formal, vindo de domínio corporativo não oficial — padrão clássico de BEC (Business Email Compromise)."
+        "reasoning": "PIX urgente, sem passar pela aprovação de sempre, vindo de um endereço que não é o da empresa. É o golpe do chefe falso."
       },
       "riskLevel": "malicious",
       "correctAction": "report",
@@ -97,8 +53,8 @@
       "difficulty": 3,
       "investigationHints": [
         { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'leroymerlin-corp.com' não é o endereço oficial da empresa." },
-        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF e DMARC falharam." },
-        { "toolId": "ai_assistant", "revealsField": "aiAssistantHint", "summaryText": "A IA identifica um padrão clássico de fraude de PIX/BEC com alta confiança." }
+        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "As conferências automáticas não bateram: não veio de quem diz vir." },
+        { "toolId": "ai_assistant", "revealsField": "aiAssistantHint", "summaryText": "A ajuda automática reconhece o golpe do chefe falso pedindo PIX." }
       ],
       "explanation": {
         "short": "Golpe do pagamento falso: PIX urgente fingindo ser a diretoria.",
@@ -110,7 +66,7 @@
     {
       "id": "d3-e03",
       "dayId": "day-03",
-      "order": 3,
+      "order": 2,
       "subject": "Boleto atualizado - Fornecedor Constrular",
       "bodyHtml": "<p>Segue em anexo o boleto atualizado referente à última remessa de materiais. Por favor, utilize apenas este boleto para pagamento, o anterior foi cancelado por erro no valor.</p>",
       "sender": {
@@ -150,11 +106,11 @@
       "investigationHints": [
         { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "O beneficiário cadastrado é 'Constrular Materiais de Construção LTDA' — confira se o boleto anexo bate com esse nome antes de pagar." },
         { "toolId": "attachment_analysis", "revealsField": "attachments[0].actualType", "summaryText": "O arquivo é um PDF legítimo tecnicamente, mas isso não garante que os dados bancários dentro dele não foram adulterados." },
-        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM e DMARC todos passam — o servidor de origem é realmente do fornecedor." }
+        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "As conferências automáticas bateram: o e-mail veio mesmo do fornecedor." }
       ],
       "explanation": {
         "short": "Fornecedor real, mas boleto com beneficiário adulterado.",
-        "detailed": "Este é o caso mais perigoso: remetente de verdade, endereço de verdade, checagens do e-mail todas certas. O golpe está dentro do PDF: quem recebe o boleto foi trocado por outra conta. A defesa aqui não é técnica. Sempre confirme mudança de forma de pagamento por telefone, com um contato que você já conhece do fornecedor. Nunca só pelo e-mail.",
+        "detailed": "Este é o caso mais perigoso: quem mandou é de verdade, o endereço é de verdade, as conferências do e-mail passam todas. O golpe está dentro do PDF: quem recebe o boleto foi trocado por outra conta. A defesa aqui não é técnica. Sempre confirme mudança de forma de pagamento por telefone, com um contato que você já conhece do fornecedor. Nunca só pelo e-mail.",
         "conceptGlossaryId": "boleto_adulterado_fornecedor_real"
       },
       "idealInvestigationSeconds": 12
@@ -162,7 +118,7 @@
     {
       "id": "d3-e04",
       "dayId": "day-03",
-      "order": 4,
+      "order": 3,
       "subject": "Microsoft: sua licença Office 365 expira hoje",
       "bodyHtml": "<p>Sua licença do Microsoft 365 expira hoje às 23h59. Clique abaixo para renovar automaticamente e evitar perda de acesso aos seus arquivos.</p>",
       "sender": {
@@ -201,8 +157,8 @@
       "difficulty": 3,
       "investigationHints": [
         { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'micros0ft-online.com' usa o número zero no lugar da letra 'o'. Não é um endereço da Microsoft." },
-        { "toolId": "certificate_view", "revealsField": "certificate", "summaryText": "O certificado é tecnicamente válido, mas emitido para o domínio falso, não para a Microsoft real." },
-        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM e DMARC falharam." }
+        { "toolId": "certificate_view", "revealsField": "certificate", "summaryText": "O cadeado é válido, mas foi emitido para o endereço falso — não para a Microsoft de verdade." },
+        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "As conferências automáticas não bateram: não veio de quem diz vir." }
       ],
       "explanation": {
         "short": "Endereço da Microsoft falso, com número no lugar de letra.",
@@ -212,60 +168,9 @@
       "idealInvestigationSeconds": 9
     },
     {
-      "id": "d3-e05",
-      "dayId": "day-03",
-      "order": 5,
-      "subject": "Atualização de dados bancários - Fornecedor Eletrotech",
-      "bodyHtml": "<p>Prezados, por motivos internos de reestruturação, nossa conta bancária foi alterada. Por favor, atualizem o cadastro para os próximos pagamentos com os dados anexos. Agradecemos a compreensão.</p>",
-      "sender": {
-        "displayName": "Financeiro Eletrotech",
-        "emailAddressRaw": "financeiro@eletrotech-suprimentos.com.br",
-        "domain": "eletrotech-suprimentos.com.br",
-        "isSpoofed": false,
-        "spoofType": "compromised_legit"
-      },
-      "links": [],
-      "attachments": [
-        {
-          "id": "d3-e05-att1",
-          "fileName": "novos_dados_bancarios.pdf",
-          "declaredExtension": ".pdf",
-          "actualType": "application/pdf",
-          "sizeKB": 98,
-          "hasMacro": false,
-          "isMalicious": true
-        }
-      ],
-      "headers": {
-        "fromServer": "mail.eletrotech-suprimentos.com.br",
-        "sourceIp": "191.252.88.30",
-        "spf": "pass",
-        "dkim": "pass",
-        "dmarc": "pass",
-        "sentAt": "2026-07-22T15:48:00Z",
-        "routeHops": ["191.252.88.30"]
-      },
-      "internalDbRecord": { "senderStatus": "trusted_vendor", "notes": "Fornecedor ativo há 4 anos. Nenhuma solicitação de troca de dados bancários em processo formal." },
-      "riskLevel": "malicious",
-      "correctAction": "report",
-      "primaryConcept": "fornecedor_comprometido",
-      "tags": ["fornecedor_comprometido", "bec", "engenharia_social"],
-      "difficulty": 3,
-      "investigationHints": [
-        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Não há nenhuma solicitação formal de troca de dados bancários em andamento para este fornecedor." },
-        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM e DMARC todos passam — o email realmente veio do servidor do fornecedor." }
-      ],
-      "explanation": {
-        "short": "Conta de fornecedor real comprometida para desviar pagamentos.",
-        "detailed": "Tudo aqui parece de verdade: endereço real, checagens do e-mail certas. O golpe é a troca de dados bancários pedida só por e-mail, sem processo nenhum. É sinal de fornecedor de verdade, mas com a conta invadida. Toda troca de dados bancários de fornecedor deve ser confirmada por telefone, com um contato que você já conhece. Nunca só pelo e-mail.",
-        "conceptGlossaryId": "fornecedor_comprometido_troca_bancaria"
-      },
-      "idealInvestigationSeconds": 8
-    },
-    {
       "id": "d3-e06",
       "dayId": "day-03",
-      "order": 6,
+      "order": 4,
       "subject": "Pauta da reunião mensal de operações",
       "bodyHtml": "<p>Segue a pauta da reunião mensal de operações de amanhã, às 10h na sala de treinamento. Participação obrigatória para líderes de setor.</p>",
       "sender": {
@@ -299,12 +204,12 @@
       "internalDbRecord": { "senderStatus": "trusted_vendor", "notes": "Departamento interno oficial." },
       "riskLevel": "safe",
       "correctAction": "accept",
-      "primaryConcept": "phishing",
-      "tags": ["phishing"],
+      "primaryConcept": "legitimo",
+      "tags": ["legitimo"],
       "difficulty": 3,
       "investigationHints": [
         { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Endereço oficial da empresa." },
-        { "toolId": "attachment_analysis", "revealsField": "attachments[0].actualType", "summaryText": "PDF legítimo, extensão e tipo real coincidem, sem macro." }
+        { "toolId": "attachment_analysis", "revealsField": "attachments[0].actualType", "summaryText": "É um PDF de verdade: o nome do arquivo combina com o conteúdo e não tem programa embutido." }
       ],
       "explanation": {
         "short": "Comunicado interno legítimo com anexo seguro.",

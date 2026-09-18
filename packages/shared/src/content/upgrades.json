@@ -26,7 +26,7 @@
   {
     "id": "upg-filtro-inteligente",
     "name": "Filtro Inteligente",
-    "description": "Destaca visualmente domínios suspeitos na caixa de entrada.",
+    "description": "Destaca na caixa de entrada os endereços suspeitos.",
     "icon": "filter",
     "priceMoney": 500,
     "effect": { "kind": "highlight_suspicious_domains" }

@@ -34,91 +34,9 @@
   ],
   "emails": [
     {
-      "id": "d6-e01",
-      "dayId": "day-06",
-      "order": 1,
-      "subject": "Nota fiscal 4102 - novo servidor de email do nosso provedor",
-      "bodyHtml": "<p>Prezados,</p><p>Migramos nosso provedor de email na semana passada, por isso pode ser que este email caia como suspeito no seu filtro. Segue a nota fiscal 4102 referente aos serviços de manutenção deste mês.</p>",
-      "sender": {
-        "displayName": "Financeiro Fornecedor ABC",
-        "emailAddressRaw": "financeiro@fornecedorabc.com",
-        "domain": "fornecedorabc.com",
-        "isSpoofed": false,
-        "spoofType": "none"
-      },
-      "links": [],
-      "attachments": [
-        {
-          "id": "d6-e01-att1",
-          "fileName": "nota_fiscal_4102.pdf",
-          "declaredExtension": ".pdf",
-          "actualType": "application/pdf",
-          "sizeKB": 140,
-          "hasMacro": false,
-          "isMalicious": false,
-          "sandboxResult": { "outcome": "no_activity" }
-        }
-      ],
-      "certificate": {
-        "companyName": "Fornecedor ABC LTDA",
-        "issuer": "Let's Encrypt",
-        "validFrom": "2026-07-20T00:00:00Z",
-        "validTo": "2026-10-20T00:00:00Z",
-        "domain": "fornecedorabc.com",
-        "isTechnicallyValid": true,
-        "isTrustworthy": true
-      },
-      "headers": {
-        "fromServer": "mail-relay-02.emailpro-hosting.com",
-        "sourceIp": "138.68.44.190",
-        "spf": "neutral",
-        "dkim": "pass",
-        "dmarc": "pass",
-        "sentAt": "2026-08-12T08:30:00Z",
-        "routeHops": ["138.68.44.190", "mail.fornecedorabc.com"]
-      },
-      "internalDbRecord": {
-        "senderStatus": "trusted_vendor",
-        "notes": "Fornecedor ativo há 3 anos. Nenhum histórico de problemas de segurança."
-      },
-      "outOfBandCheck": {
-        "channelDescription": "Ligação para o contato financeiro já conhecido do Fornecedor ABC",
-        "outcome": "confirmed_legitimate",
-        "details": "O fornecedor confirmou por telefone que realmente migrou de provedor de email na semana passada e que a nota fiscal é genuína."
-      },
-      "riskLevel": "suspicious",
-      "correctAction": "accept",
-      "primaryConcept": "fornecedor_comprometido",
-      "tags": ["fornecedor_comprometido"],
-      "difficulty": 6,
-      "investigationHints": [
-        {
-          "toolId": "header_inspect",
-          "revealsField": "headers",
-          "summaryText": "SPF ficou neutro por causa do novo servidor de relay, mas DKIM e DMARC continuam válidos e o roteamento chega até o servidor real do fornecedor."
-        },
-        {
-          "toolId": "attachment_analysis",
-          "revealsField": "attachments[0].actualType",
-          "summaryText": "O anexo é um PDF real, sem disfarce nem extensão dupla."
-        },
-        {
-          "toolId": "out_of_band_verify",
-          "revealsField": "outOfBandCheck",
-          "summaryText": "O fornecedor confirmou por telefone que migrou de provedor de email recentemente — é exatamente isso que está causando os alertas."
-        }
-      ],
-      "explanation": {
-        "short": "Sinais suspeitos com explicação real — nem toda bandeira amarela é um ataque.",
-        "detailed": "Uma das checagens do e-mail veio neutra e ele saiu de um servidor diferente do de sempre — o que pareceria suspeito. Mas há uma explicação real (troca de provedor de e-mail), confirmada por telefone. O resto das checagens está certo, o anexo está limpo, e a confirmação por outro canal fecha o caso. Depois de tantos fornecedores invadidos, dá vontade de reportar por precaução. Mas isso também custa: atrasa pagamento de verdade e enche a TI de alarme falso. Investigar direito, aqui, é reconhecer quando está tudo bem.",
-        "conceptGlossaryId": "fornecedor_comprometido"
-      },
-      "idealInvestigationSeconds": 16
-    },
-    {
       "id": "d6-e02",
       "dayId": "day-06",
-      "order": 2,
+      "order": 1,
       "subject": "Áudio urgente do diretor - ouça antes de agir",
       "bodyHtml": "<p>Segue o áudio que o diretor Ricardo gravou no carro a caminho do aeroporto, pedindo pra você desativar temporariamente o firewall da filial para o time de auditoria externa acessar remotamente hoje.</p><p>Arquivo de áudio anexado, 0:38.</p>",
       "sender": {
@@ -155,7 +73,7 @@
       },
       "internalDbRecord": {
         "senderStatus": "recently_created_domain",
-        "notes": "Domínio registrado há 3 dias. Nenhuma 'Secretaria da Diretoria' envia solicitações de segurança por email."
+        "notes": "Endereço criado há 3 dias. Nenhuma 'Secretaria da Diretoria' pede coisas de segurança por e-mail."
       },
       "outOfBandCheck": {
         "channelDescription": "Ligação para o ramal cadastrado do Diretor Ricardo Almeida",
@@ -171,7 +89,7 @@
         {
           "toolId": "attachment_analysis",
           "revealsField": "attachments[0].fileName",
-          "summaryText": "'audio_diretor_urgente.mp3.exe' usa extensão dupla — não é um áudio, é um executável."
+          "summaryText": "'audio_diretor_urgente.mp3.exe' tem dois nomes de arquivo colados. Não é áudio, é um programa."
         },
         {
           "toolId": "sandbox_execution",
@@ -194,7 +112,7 @@
     {
       "id": "d6-e03",
       "dayId": "day-06",
-      "order": 3,
+      "order": 2,
       "subject": "Lembrete: treinamento de segurança obrigatório até sexta",
       "bodyHtml": "<p>Olá,</p><p>Este é um lembrete automático de que o treinamento anual de segurança da informação deve ser concluído até sexta-feira. Acesse pelo portal interno de sempre, na aba 'Treinamentos'.</p>",
       "sender": {
@@ -217,12 +135,12 @@
       },
       "internalDbRecord": {
         "senderStatus": "trusted_vendor",
-        "notes": "Domínio oficial da empresa, comunicado recorrente do RH."
+        "notes": "Endereço oficial da empresa. É um comunicado que o RH manda sempre."
       },
       "riskLevel": "safe",
       "correctAction": "accept",
-      "primaryConcept": "phishing",
-      "tags": ["phishing"],
+      "primaryConcept": "legitimo",
+      "tags": ["legitimo"],
       "difficulty": 6,
       "investigationHints": [
         {
@@ -233,7 +151,7 @@
         {
           "toolId": "header_inspect",
           "revealsField": "headers",
-          "summaryText": "SPF, DKIM e DMARC passam — origem confirmada como legítima."
+          "summaryText": "As conferências automáticas bateram: o e-mail é mesmo da empresa."
         }
       ],
       "explanation": {
@@ -246,7 +164,7 @@
     {
       "id": "d6-e04",
       "dayId": "day-06",
-      "order": 4,
+      "order": 3,
       "subject": "Revisão da planilha de ajuste salarial - só entre nós",
       "bodyHtml": "<p>Oi! Vi que você trabalha com a Camila no financeiro. Ela me passou seu contato e pediu pra eu te enviar essa planilha de ajuste salarial do time pra você dar uma conferida antes de irmos pra diretoria. É bem sigiloso ainda, não comenta com ninguém.</p>",
       "sender": {
@@ -294,7 +212,7 @@
         {
           "toolId": "attachment_analysis",
           "revealsField": "attachments[0].hasMacro",
-          "summaryText": "A planilha contém macros habilitadas — um vetor clássico para executar código malicioso."
+          "summaryText": "A planilha traz um programa embutido, que roda assim que você abre o arquivo."
         },
         {
           "toolId": "sandbox_execution",
@@ -315,80 +233,9 @@
       "idealInvestigationSeconds": 18
     },
     {
-      "id": "d6-e05",
-      "dayId": "day-06",
-      "order": 5,
-      "subject": "Intimação judicial - processo nº 0834521-77.2026.8.26.0100",
-      "bodyHtml": "<p>Prezado(a),</p><p>Fica a empresa Leroy Merlin intimada a apresentar defesa no processo em anexo no prazo de 15 dias, sob pena de revelia.</p><p>Acesse o documento oficial anexo para mais detalhes.</p>",
-      "sender": {
-        "displayName": "Tribunal de Justiça - Notificações",
-        "emailAddressRaw": "notificacoes@tjsp-processos.org",
-        "domain": "tjsp-processos.org",
-        "isSpoofed": true,
-        "spoofType": "lookalike_domain"
-      },
-      "links": [],
-      "attachments": [
-        {
-          "id": "d6-e05-att1",
-          "fileName": "intimacao_processo_0834521.pdf.exe",
-          "declaredExtension": ".pdf",
-          "actualType": "application/x-msdownload",
-          "sizeKB": 690,
-          "hasMacro": false,
-          "isMalicious": true,
-          "sandboxResult": {
-            "outcome": "ransomware_attempt",
-            "details": "O arquivo tentou criptografar arquivos em múltiplas pastas assim que foi executado, incluindo compartilhamentos de rede."
-          }
-        }
-      ],
-      "headers": {
-        "fromServer": "mail.tjsp-processos.org",
-        "sourceIp": "185.220.101.150",
-        "spf": "fail",
-        "dkim": "none",
-        "dmarc": "fail",
-        "sentAt": "2026-08-12T11:50:00Z",
-        "routeHops": ["185.220.101.150"]
-      },
-      "internalDbRecord": {
-        "senderStatus": "recently_created_domain",
-        "notes": "Tribunais de justiça reais não notificam empresas por email com anexos executáveis — o domínio oficial é '.jus.br'."
-      },
-      "riskLevel": "malicious",
-      "correctAction": "report",
-      "primaryConcept": "ransomware",
-      "tags": ["ransomware", "anexo_perigoso", "phishing"],
-      "difficulty": 7,
-      "investigationHints": [
-        {
-          "toolId": "domain_inspect",
-          "revealsField": "sender.domain",
-          "summaryText": "'tjsp-processos.org' não é um domínio oficial de tribunal — domínios reais do Judiciário usam '.jus.br'."
-        },
-        {
-          "toolId": "attachment_analysis",
-          "revealsField": "attachments[0].fileName",
-          "summaryText": "'intimacao_processo_0834521.pdf.exe' usa extensão dupla — é um executável, não um documento."
-        },
-        {
-          "toolId": "sandbox_execution",
-          "revealsField": "attachments[0].sandboxResult",
-          "summaryText": "Em sandbox, o arquivo tenta criptografar arquivos em múltiplas pastas, incluindo compartilhamentos de rede — ransomware com potencial de se espalhar."
-        }
-      ],
-      "explanation": {
-        "short": "Falsa intimação da Justiça usando medo de processo para instalar um vírus que tranca arquivos.",
-        "detailed": "Esse golpe usa o medo de problema na Justiça para você abrir o anexo sem pensar. O endereço imita um tribunal de verdade, mas site oficial da Justiça no Brasil usa '.jus.br' — nunca '.org'. O anexo esconde um programa disfarçado, e o teste mostra que é um vírus que tranca seus arquivos e pede dinheiro, capaz de se espalhar pela rede da empresa.",
-        "conceptGlossaryId": "certificado_nao_garante_legitimidade"
-      },
-      "idealInvestigationSeconds": 16
-    },
-    {
       "id": "d6-e06",
       "dayId": "day-06",
-      "order": 6,
+      "order": 4,
       "subject": "Última cobrança - PIX pendente do contrato de manutenção",
       "bodyHtml": "<p>Prezados,</p><p>Esta é nossa última tentativa de contato antes de suspendermos o contrato de manutenção. Por favor, efetue o PIX de R$12.400 referente às últimas 2 faturas em aberto para a chave abaixo ainda hoje.</p><p>Chave PIX: 28.410.manutencao@quickpay.com.br</p>",
       "sender": {
@@ -446,7 +293,7 @@
       ],
       "explanation": {
         "short": "Mesma conta real do fornecedor, comprometida de novo — mudança na forma de pagamento denuncia a fraude.",
-        "detailed": "Depois do email 1 deste mesmo dia (onde uma mudança de servidor tinha explicação legítima), é tentador aceitar qualquer coisa vinda desse fornecedor sem checar de novo — mas cada email precisa ser avaliado por conta própria. Aqui, o sinal mais forte não é técnico, é comportamental: esse contrato sempre foi pago por boleto, e agora pedem PIX, com urgência de 'última cobrança'. A confirmação por telefone revela que é a mesma conta comprometida de antes, atacando de novo com um pretexto diferente.",
+        "detailed": "Depois do primeiro e-mail deste mesmo dia, em que uma troca de sistema tinha explicação de verdade, é tentador aceitar qualquer coisa desse fornecedor sem conferir — mas cada e-mail precisa ser julgado sozinho. Aqui o sinal mais forte não está no computador, está no comportamento: esse contrato sempre foi pago por boleto, e agora pedem PIX, com pressa de 'última cobrança'. A confirmação por telefone revela que é a mesma conta comprometida de antes, atacando de novo com um pretexto diferente.",
         "conceptGlossaryId": "pix_falso"
       },
       "idealInvestigationSeconds": 16

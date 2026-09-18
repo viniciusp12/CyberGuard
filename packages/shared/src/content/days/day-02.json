@@ -2,7 +2,7 @@
   "id": "day-02",
   "dayNumber": 2,
   "title": "A rotina aperta",
-  "description": "Links parecidos, WhatsApp e SMS falsos, MFA e USB desconhecido. Preste atenção nos detalhes.",
+  "description": "Links parecidos, WhatsApp e SMS falsos e um pendrive achado. Repare nos detalhes.",
   "difficultyRange": [2, 2],
   "timeLimitSeconds": 300,
   "isBossDay": false,
@@ -43,7 +43,7 @@
         "sentAt": "2026-07-21T09:15:00Z",
         "routeHops": ["45.146.164.22"]
       },
-      "internalDbRecord": { "senderStatus": "never_used", "notes": "Nenhum contato anterior deste remetente." },
+      "internalDbRecord": { "senderStatus": "never_used", "notes": "Nenhum contato anterior deste endereço." },
       "riskLevel": "malicious",
       "correctAction": "report",
       "primaryConcept": "whatsapp_falso",
@@ -52,104 +52,19 @@
       "investigationHints": [
         { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "O WhatsApp não avisa por um endereço como este. É um endereço qualquer, sem ligação com o WhatsApp." },
         { "toolId": "link_hover", "revealsField": "links[0].actualUrl", "summaryText": "O link não leva ao WhatsApp Web oficial (web.whatsapp.com), e sim a um endereço desconhecido." },
-        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Remetente nunca utilizado antes." }
+        { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Endereço nunca usado antes." }
       ],
       "explanation": {
         "short": "Notificação falsa de WhatsApp usada para roubar sessão de login.",
-        "detailed": "Serviços como WhatsApp nunca pedem para 'confirmar sessão' por email usando domínios genéricos. O link real não aponta para web.whatsapp.com, e o remetente nunca havia enviado nada à empresa antes — três sinais independentes que juntos confirmam o golpe.",
+        "detailed": "O WhatsApp nunca pede para 'confirmar sessão' por e-mail. O link não leva para web.whatsapp.com, e quem mandou nunca tinha escrito para a empresa antes — três sinais que, juntos, não deixam dúvida.",
         "conceptGlossaryId": "whatsapp_falso"
       },
       "idealInvestigationSeconds": 6
     },
     {
-      "id": "d2-e02",
-      "dayId": "day-02",
-      "order": 2,
-      "subject": "Você tem 1 SMS pendente de visualização",
-      "bodyHtml": "<p>Sua operadora reteve uma mensagem SMS por falta de espaço na caixa. Visualize online antes que seja apagada permanentemente.</p>",
-      "sender": {
-        "displayName": "Central de Mensagens",
-        "emailAddressRaw": "sms@central-mensagens-brasil.info",
-        "domain": "central-mensagens-brasil.info",
-        "isSpoofed": true,
-        "spoofType": "lookalike_domain"
-      },
-      "links": [
-        { "id": "d2-e02-link1", "displayText": "Visualizar SMS", "actualUrl": "http://central-mensagens-brasil.info/ver?id=8823", "isMalicious": true }
-      ],
-      "attachments": [],
-      "headers": {
-        "fromServer": "mail.central-mensagens-brasil.info",
-        "sourceIp": "185.220.101.44",
-        "spf": "fail",
-        "dkim": "fail",
-        "dmarc": "fail",
-        "sentAt": "2026-07-21T10:02:00Z",
-        "routeHops": ["185.220.101.44"]
-      },
-      "riskLevel": "malicious",
-      "correctAction": "delete",
-      "primaryConcept": "sms_falso",
-      "tags": ["sms_falso", "phishing", "link_malicioso"],
-      "difficulty": 2,
-      "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Nenhuma operadora de celular usa um endereço '.info' qualquer como este para avisar você." },
-        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF, DKIM e DMARC falharam todos — o servidor de origem não está autorizado." }
-      ],
-      "explanation": {
-        "short": "Central de SMS falsa criando urgência com 'mensagem será apagada'.",
-        "detailed": "Operadora de celular não guarda SMS para você ver por um link de e-mail. A pressa ('será apagada para sempre') é para você não pensar. E as checagens automáticas do e-mail falharam: não veio de operadora nenhuma.",
-        "conceptGlossaryId": "sms_falso"
-      },
-      "idealInvestigationSeconds": 5
-    },
-    {
-      "id": "d2-e03",
-      "dayId": "day-02",
-      "order": 3,
-      "subject": "Atualize seus dados cadastrais no portal do RH",
-      "bodyHtml": "<p>Prezado colaborador, o RH está atualizando o cadastro de todos os funcionários. Acesse o portal e confirme seus dados até sexta-feira.</p>",
-      "sender": {
-        "displayName": "RH Leroy Merlin",
-        "emailAddressRaw": "rh@rh-leroymerlin.com",
-        "domain": "rh-leroymerlin.com",
-        "isSpoofed": true,
-        "spoofType": "lookalike_domain"
-      },
-      "links": [
-        { "id": "d2-e03-link1", "displayText": "Acessar portal do RH", "actualUrl": "http://rh-leroymerlin.com/portal/login", "isMalicious": true }
-      ],
-      "attachments": [],
-      "headers": {
-        "fromServer": "mail.rh-leroymerlin.com",
-        "sourceIp": "103.99.1.18",
-        "spf": "fail",
-        "dkim": "none",
-        "dmarc": "fail",
-        "sentAt": "2026-07-21T08:30:00Z",
-        "routeHops": ["103.99.1.18"]
-      },
-      "riskLevel": "malicious",
-      "correctAction": "report",
-      "primaryConcept": "link_malicioso",
-      "tags": ["link_malicioso", "phishing"],
-      "difficulty": 2,
-      "investigationHints": [
-        { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "'rh-leroymerlin.com' não é o endereço oficial da empresa. Foi criado só para parecer que é do RH." },
-        { "toolId": "link_hover", "revealsField": "links[0].actualUrl", "summaryText": "O link leva ao mesmo endereço falso, não ao portal de verdade." },
-        { "toolId": "domain_inspect", "revealsField": "sender.domain", "summaryText": "Domínio registrado separadamente do domínio oficial da empresa, sem qualquer relação corporativa real." }
-      ],
-      "explanation": {
-        "short": "Endereço parecido, mas não é o oficial.",
-        "detailed": "Um endereço como 'rh-leroymerlin.com' parece ser da empresa, mas não é. Qualquer um pode criar um endereço com o nome de uma empresa dentro. O link de 'acessar portal' leva para esse mesmo endereço falso.",
-        "conceptGlossaryId": "link_malicioso_dominio_parecido"
-      },
-      "idealInvestigationSeconds": 7
-    },
-    {
       "id": "d2-e04",
       "dayId": "day-02",
-      "order": 4,
+      "order": 2,
       "subject": "Ação necessária: desative temporariamente sua verificação em duas etapas",
       "bodyHtml": "<p>Durante a migração do nosso sistema, pedimos que desative por um tempo a verificação em duas etapas da sua conta para evitar bloqueios. Reative após 24h.</p>",
       "sender": {
@@ -175,7 +90,7 @@
       "aiAssistantHint": {
         "phishingProbability": 88,
         "isReliable": true,
-        "reasoning": "Pedidos para desativar MFA por email são um padrão de golpe bem conhecido, combinado com falha de autenticação do servidor."
+        "reasoning": "Pedir para desligar a verificação em duas etapas por e-mail é golpe conhecido. E as conferências do e-mail não bateram."
       },
       "riskLevel": "malicious",
       "correctAction": "report",
@@ -184,8 +99,8 @@
       "difficulty": 2,
       "investigationHints": [
         { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "O endereço não é da empresa nem de nenhum fornecedor de TI conhecido." },
-        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "SPF e DKIM falharam." },
-        { "toolId": "ai_assistant", "revealsField": "aiAssistantHint", "summaryText": "A IA aponta alta probabilidade de phishing de forma confiável." }
+        { "toolId": "header_inspect", "revealsField": "headers", "summaryText": "As conferências automáticas não bateram: não veio de quem diz vir." },
+        { "toolId": "ai_assistant", "revealsField": "aiAssistantHint", "summaryText": "A ajuda automática aponta grande chance de golpe, e desta vez está certa." }
       ],
       "explanation": {
         "short": "Equipe de TI de verdade nunca pede para desligar a confirmação em duas etapas.",
@@ -197,7 +112,7 @@
     {
       "id": "d2-e05",
       "dayId": "day-02",
-      "order": 5,
+      "order": 3,
       "subject": "Achei um pendrive no estacionamento, é seu?",
       "bodyHtml": "<p>Oi! Achei um pendrive caído perto da entrada da loja com um adesivo com iniciais parecidas com as suas. Tirei fotos do conteúdo antes de entregar na portaria, dá uma olhada no anexo pra ver se é seu.</p>",
       "sender": {
@@ -231,12 +146,12 @@
       },
       "internalDbRecord": { "senderStatus": "never_used", "notes": "Nenhum colaborador com este nome registrado na loja 12." },
       "riskLevel": "malicious",
-      "correctAction": "delete",
+      "correctAction": "report",
       "primaryConcept": "usb_infectado",
       "tags": ["usb_infectado", "anexo_perigoso", "malware", "engenharia_social"],
       "difficulty": 2,
       "investigationHints": [
-        { "toolId": "attachment_analysis", "revealsField": "attachments[0].actualType", "summaryText": "O arquivo '.zip' na verdade é um executável do Windows, não fotos." },
+        { "toolId": "attachment_analysis", "revealsField": "attachments[0].actualType", "summaryText": "O arquivo '.zip' é na verdade um programa do Windows, não fotos." },
         { "toolId": "sandbox_execution", "revealsField": "attachments[0].sandboxResult", "summaryText": "Em sandbox, o arquivo criou um processo com nome que imita um processo do sistema (svhost32.exe, não svchost.exe)." },
         { "toolId": "internal_db_lookup", "revealsField": "internalDbRecord", "summaryText": "Nenhum colaborador com esse nome está registrado na loja mencionada." }
       ],
@@ -250,7 +165,7 @@
     {
       "id": "d2-e06",
       "dayId": "day-02",
-      "order": 6,
+      "order": 4,
       "subject": "Inscrições abertas: treinamento de segurança da informação",
       "bodyHtml": "<p>Olá! As inscrições para o treinamento presencial de segurança da informação deste mês já estão abertas. Vagas limitadas, inscreva-se pelo sistema interno de treinamentos.</p>",
       "sender": {
@@ -284,12 +199,12 @@
       },
       "riskLevel": "safe",
       "correctAction": "accept",
-      "primaryConcept": "phishing",
-      "tags": ["phishing"],
+      "primaryConcept": "legitimo",
+      "tags": ["legitimo"],
       "difficulty": 2,
       "investigationHints": [
         { "toolId": "sender_address", "revealsField": "sender.domain", "summaryText": "Endereço oficial da empresa." },
-        { "toolId": "certificate_view", "revealsField": "certificate", "summaryText": "Certificado válido e confiável, emitido para o domínio oficial." }
+        { "toolId": "certificate_view", "revealsField": "certificate", "summaryText": "O cadeado é válido e foi emitido para o endereço oficial da empresa." }
       ],
       "explanation": {
         "short": "Comunicado interno legítimo.",
