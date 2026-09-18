@@ -13,9 +13,14 @@ packages:
 overrides:
   postcss: ^8.5.23
   nanoid: ^3.3.17
-  sharp: ^0.35.0
-  # Transitivas do Express que o NestJS 11 ainda arrasta em versão vulnerável.
-  qs: ^6.15.2
+  # 0.35.4 corrige a falha herdada do libvips que o audit apontava em <0.35.4.
+  sharp: ^0.35.4
+  # Transitivas que o NestJS 11 ainda arrasta em versão vulnerável.
+  # qs precisa de 6.16.0: as falhas cobrem tudo abaixo disso.
+  qs: ^6.16.0
+  # multer vem do @nestjs/platform-express. A API não recebe upload de arquivo
+  # em lugar nenhum, mas o audit acusa mesmo assim.
+  multer: ^2.4.0
   body-parser: ^1.20.6
 
 allowBuilds:
