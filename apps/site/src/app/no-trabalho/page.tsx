@@ -47,7 +47,7 @@ export default function NoTrabalhoPage() {
             itens={[
               "No trabalho, o golpe mira pagamentos, senhas e fornecedores.",
               "Caiu? Avise na hora. Quem tem medo de avisar deixa o problema crescer.",
-              "Se vazar dado pessoal, a LGPD dá prazo para avisar a ANPD. Ele começa na descoberta.",
+              "Se vazar dado de cliente, a empresa tem poucos dias para avisar o governo e as pessoas.",
             ]}
           />
         </div>
@@ -282,13 +282,8 @@ export default function NoTrabalhoPage() {
             ids={[
               "phishing",
               "engenharia-social",
-              "2fa",
-              "ransomware",
               "malware",
-              "vazamento",
               "lgpd",
-              "vpn",
-              "rede-aberta",
             ]}
           />
 

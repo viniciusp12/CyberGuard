@@ -6,7 +6,7 @@ import { ListaGlossario } from "./ListaGlossario";
 export const metadata: Metadata = {
   title: "Glossário",
   description:
-    "Servidor, IP, HTTPS, phishing, deepfake, MED e outros termos técnicos, explicados de um jeito simples.",
+    "As palavras que você vê no noticiário e nas configurações do celular, explicadas em português comum.",
 };
 
 export default function GlossarioPage() {
@@ -14,29 +14,22 @@ export default function GlossarioPage() {
     <>
       <PageHeader
         eyebrow="Glossário"
-        title="Os termos técnicos, em português simples"
-        description="Você não precisa disto para se proteger. É para quando você vê uma palavra e quer saber o que ela quer dizer."
+        title="As palavras, em português comum"
+        description="Você não precisa disto para se proteger. É para quando você ouve uma palavra e quer saber o que ela quer dizer."
       />
 
       <section className="py-14 md:py-20">
         <div className="container-page">
           <div className="mb-10 max-w-2xl border-l-2 border-menta pl-5">
             <p className="text-body text-papel-2 text-pretty">
-              Se for ler só dois, leia estes:{" "}
+              Se for ler só um, leia{" "}
               <Link
                 href="/glossario#https"
                 className="text-papel underline decoration-menta/50 underline-offset-4 hover:decoration-menta"
               >
                 o cadeado do navegador
-              </Link>{" "}
-              e{" "}
-              <Link
-                href="/glossario#vpn"
-                className="text-papel underline decoration-menta/50 underline-offset-4 hover:decoration-menta"
-              >
-                a VPN
               </Link>
-              . Nenhum dos dois protege como muita gente acha.
+              . Ele não protege como muita gente acha.
             </p>
           </div>
 

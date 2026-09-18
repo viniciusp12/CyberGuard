@@ -36,15 +36,6 @@ const ITENS: Item[] = [
     prioridade: 1,
   },
   {
-    id: "sms-fraco",
-    titulo: "Onde der, receba o código por aplicativo, não por SMS",
-    oQue: "Apps como Google Authenticator, Authy e Aegis criam o código no celular.",
-    porque: "O SMS pode ser pedido a você por telefone ou desviado para outro chip.",
-    impacto: "O código não passa pela operadora.",
-    como: "Se o serviço só oferece SMS, use SMS. É muito melhor que nada.",
-    prioridade: 1,
-  },
-  {
     id: "gerenciador",
     titulo: "Instale um gerenciador de senhas",
     oQue: "Um app que cria e guarda uma senha para cada site.",
@@ -60,15 +51,6 @@ const ITENS: Item[] = [
     porque: "Depois do conserto, a falha fica conhecida.",
     impacto: "Você deixa de ser alvo fácil.",
     como: "Ligue a atualização automática. No computador, não adie o reinício.",
-    prioridade: 2,
-  },
-  {
-    id: "sessoes",
-    titulo: "Confira os aparelhos conectados às suas contas",
-    oQue: "Os serviços mostram onde sua conta está aberta.",
-    porque: "Em alguns serviços, trocar a senha não tira quem já entrou.",
-    impacto: "Você desconecta quem não reconhece.",
-    como: "Procure “aparelhos conectados” no e-mail, no WhatsApp e no banco.",
     prioridade: 2,
   },
   {

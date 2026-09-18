@@ -57,19 +57,6 @@ export const TRIAGEM: ItemTriagem[] = [
     motivo:
       "Nunca. Ela fica guardada lá e pode ser lida por pessoas. Para testar, use o Teste de senha deste site.",
   },
-  {
-    id: "contrato",
-    texto: "Um contrato ou documento interno da empresa, para resumir",
-    seguro: false,
-    motivo: "Siga a regra da empresa. Use só a IA aprovada por ela, ou nenhuma.",
-  },
-  {
-    id: "carta-pessoal",
-    texto: "Um texto pessoal seu, como carta ou diário, para revisar",
-    seguro: true,
-    motivo:
-      "A escolha é sua. Mas ele fica no histórico. Se for íntimo, use a conversa sem histórico.",
-  },
 ];
 
 export type Mudanca = {
@@ -103,14 +90,6 @@ export const MUDANCAS: Mudanca[] = [
       "Agora ela pode citar sua empresa, sua cidade e o que você postou.",
     oQueFazer:
       "Não importa o quanto ela sabe de você. Importa o que ela pede.",
-  },
-  {
-    titulo: "A IA também inventa respostas",
-    oQueEra: "Você achava uma fonte e via se era confiável.",
-    oQueMudou:
-      "A IA responde tudo com segurança, até telefone de banco que ela inventou.",
-    oQueFazer:
-      "Nunca peça a uma IA o contato do seu banco ou de um órgão público. Use o verso do cartão ou o site oficial.",
   },
 ];
 

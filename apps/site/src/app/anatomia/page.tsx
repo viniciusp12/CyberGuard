@@ -48,11 +48,9 @@ export default function AnatomiaPage() {
             <TermosRelacionados
               ids={[
                 "engenharia-social",
-                "2fa",
                 "sim-swap",
-                "vazamento",
+                "2fa",
                 "chave-pix",
-                "fingerprinting",
               ]}
             />
           </div>

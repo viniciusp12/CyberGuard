@@ -208,10 +208,8 @@ export default function IaPage() {
 
           <TermosRelacionados
             ids={[
-              "modelo-de-linguagem",
-              "alucinacao",
               "deepfake",
-              "treinamento",
+              "phishing",
               "engenharia-social",
               "lgpd",
             ]}

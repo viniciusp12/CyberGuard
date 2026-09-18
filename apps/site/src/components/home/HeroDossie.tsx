@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useReducedMotion } from "framer-motion";
-import { Termo } from "@/components/ui/Termo";
 import {
   coletarDossie,
   lerCamposVivos,
@@ -179,9 +178,8 @@ export function HeroDossie() {
                 dado sai do seu aparelho. Tudo some quando você fecha a aba.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-papel-2">
-                Só a última linha fica guardada, como uma marca na{" "}
-                <Termo id="armazenamento-local">memória do navegador</Termo>.
-                Não sai daqui.
+                Só a última linha fica guardada, como uma marca na memória do
+                navegador. Não sai daqui.
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <button
@@ -246,9 +244,8 @@ export function HeroDossie() {
             </p>
             <p className="mt-7 max-w-2xl text-bodyLg text-papel-2 text-pretty">
               Não é invasão, é como a internet funciona. Juntos, esses dados
-              formam um{" "}
-              <Termo id="fingerprinting">rastro que o navegador deixa</Termo>.
-              Com ele, o golpista faz a mensagem parecer pessoal.
+              formam um rastro que o navegador deixa. Com ele, o golpista faz a
+              mensagem parecer pessoal.
             </p>
             <p className="mt-5 max-w-2xl text-bodyLg text-papel-2 text-pretty">
               A seguir: como se proteger.

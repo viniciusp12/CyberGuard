@@ -269,7 +269,12 @@ export default function JaCaiPage() {
           </p>
 
           <TermosRelacionados
-            ids={["med", "chave-pix", "registrato", "conta-gov-br", "sim-swap", "lgpd"]}
+            ids={[
+              "med",
+              "chave-pix",
+              "registrato",
+              "conta-gov-br",
+            ]}
           />
         </div>
       </section>

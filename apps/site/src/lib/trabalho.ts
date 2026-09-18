@@ -61,18 +61,6 @@ export const CATEGORIAS: Categoria[] = [
         oQueFazer:
           "Só pague depois de ligar para a pessoa, no número que você já tinha. Nunca use o número da mensagem.",
       },
-      {
-        id: "falso-tecnico",
-        titulo: "O falso técnico na loja",
-        comoChega:
-          "Alguém de uniforme diz ser da manutenção e quer entrar no estoque ou usar o computador do caixa.",
-        porQueFunciona:
-          "Uniforme parece crachá.",
-        pontoDeQuebra:
-          "Visita que ninguém da loja marcou não entra.",
-        oQueFazer:
-          "Confirme com o responsável antes de liberar. Não deixe visitante sozinho no computador.",
-      },
     ],
   },
   {
@@ -137,18 +125,6 @@ export const CATEGORIAS: Categoria[] = [
         oQueFazer:
           "Na dúvida, não abra: mande para a TI. Se tudo travar e pedirem dinheiro, tire o cabo de rede, desligue o Wi-Fi, avise a TI e não pague.",
       },
-      {
-        id: "dados-fora",
-        titulo: "Dados de cliente fora do lugar",
-        comoChega:
-          "Planilha com CPF no e-mail pessoal, print de cadastro no WhatsApp, relatório esquecido no balcão.",
-        porQueFunciona:
-          "A intenção é boa: adiantar o trabalho.",
-        pontoDeQuebra:
-          "Na hora de tirar o dado do sistema.",
-        oQueFazer:
-          "Dado de cliente só circula nos sistemas da empresa. Suspeita de vazamento? Avise na hora o encarregado de dados.",
-      },
     ],
   },
 ];
@@ -200,6 +176,6 @@ export const PASSOS_INCIDENTE = [
     quando: "responsabilidade da empresa",
     titulo: "Se vazou dado pessoal, a LGPD tem prazo",
     texto:
-      "A empresa avalia se precisa avisar a ANPD e as pessoas afetadas. O prazo é curto e conta de quando ela soube.",
+      "A empresa avalia se precisa avisar o governo e as pessoas atingidas. O prazo é curto e conta de quando ela soube.",
   },
 ];

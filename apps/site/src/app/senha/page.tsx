@@ -40,13 +40,10 @@ export default function SenhaPage() {
 
           <TermosRelacionados
             ids={[
-              "hash",
-              "forca-bruta",
-              "entropia",
               "gerenciador-de-senhas",
               "frase-senha",
-              "credential-stuffing",
               "vazamento",
+              "2fa",
             ]}
           />
         </div>

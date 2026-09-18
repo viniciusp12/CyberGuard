@@ -41,10 +41,8 @@ export default function AgoraPage() {
           <TermosRelacionados
             ids={[
               "2fa",
-              "totp",
-              "passkey",
-              "sim-swap",
               "gerenciador-de-senhas",
+              "frase-senha",
               "chave-pix",
             ]}
           />

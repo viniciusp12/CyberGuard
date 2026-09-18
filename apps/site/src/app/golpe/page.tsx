@@ -48,10 +48,7 @@ export default function GolpePage() {
               "dominio",
               "https",
               "phishing",
-              "smishing-vishing",
               "engenharia-social",
-              "chave-pix",
-              "vazamento",
             ]}
           />
         </div>
