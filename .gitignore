@@ -35,3 +35,7 @@ Jogo/.godot/
 
 # Assets CraftPix — licença freebie NÃO permite redistribuir os arquivos.
 Jogo/art/craftpix-net-*/
+
+# Relatorios com usuarios e senhas — nunca versionar.
+*Status e Usuarios*.pdf
+*.pdf
