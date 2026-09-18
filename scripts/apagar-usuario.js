@@ -43,6 +43,44 @@ Exemplo:
   process.exit(1);
 }
 
+
+/**
+ * Traduz falha de conexão em instrução acionável.
+ *
+ * O erro cru do Prisma ("Can't reach database server at …:6543") descreve o
+ * sintoma e não a causa, e a causa mais comum aqui não é o banco: é a rede
+ * bloqueando a porta. Redes de empresa, faculdade e alguns provedores liberam
+ * 80 e 443 e barram 5432/6543, então o site e a API funcionam normalmente
+ * enquanto a conexão direta falha — o que engana, porque tudo "parece no ar".
+ */
+function explicarFalha(erro) {
+  const msg = String(erro?.message ?? erro);
+  const semAlcance = /Can't reach database server|ETIMEDOUT|ECONNREFUSED|ENOTFOUND/i.test(msg);
+
+  if (!semAlcance) return null;
+
+  return `
+Não consegui alcançar o banco de dados.
+
+Antes de suspeitar do Supabase, vale saber que a causa mais comum é a REDE:
+muitas redes bloqueiam as portas de banco (5432 e 6543) e liberam só as de
+web (80 e 443). Nesse caso o site e a API continuam funcionando, porque falam
+por HTTPS — só a conexão direta daqui é barrada.
+
+Como confirmar, no PowerShell:
+  Test-NetConnection aws-0-us-east-1.pooler.supabase.com -Port 6543
+
+  TcpTestSucceeded : False  -> a rede está bloqueando; use outra (o roteador
+                              de dados do celular resolve na hora)
+  TcpTestSucceeded : True   -> a rede está ok, e aí sim vale conferir se o
+                              projeto no Supabase está ativo, e o DATABASE_URL
+
+Alternativa sem depender da rede: entre no jogo como admin e crie a conta pela
+tela /admin, que passa pela API por HTTPS. A senha sai gerada, e a pessoa troca
+no primeiro acesso.
+`;
+}
+
 (async () => {
   const { PrismaClient } = require(path.join(RAIZ_API, "node_modules", "@prisma", "client"));
   const prisma = new PrismaClient();

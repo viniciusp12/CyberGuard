@@ -1,3 +1,4 @@
+// Segunda rodada de corte de texto (site + jogo) publicada em 18/09/2026.
 import type { Metadata } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
