@@ -193,14 +193,6 @@ input {
   animation: book-overlay-out 300ms ease-in both;
 }
 
-.glossary-nav-btn {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.glossary-nav-btn:active {
-  opacity: 0.8;
-}
-
 .glossary-book-cover {
   transition: box-shadow 0.3s ease;
 }
