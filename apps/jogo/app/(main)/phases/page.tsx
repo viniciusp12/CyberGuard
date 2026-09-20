@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Lock, PlayCircle, CheckCircle2, Sparkles } from "lucide-react";
+import { Lock, PlayCircle, CheckCircle2 } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -30,13 +30,6 @@ export default function PhasesPage() {
         locked,
       };
     }),
-    {
-      id: "coming-soon",
-      title: t("mainPages.phasesComingSoonTitle"),
-      description: t("mainPages.phasesComingSoonDescription"),
-      tag: t("mainPages.comingSoonTag"),
-      locked: true,
-    },
   ];
 
   const selectedDay = activeIndex < days.length ? days[activeIndex] : undefined;
@@ -55,7 +48,7 @@ export default function PhasesPage() {
 
       <Card className="mt-4">
         <CardContent className="flex flex-col items-center gap-3 py-6 text-center">
-          {selectedDay ? (
+          {selectedDay && (
             <>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-medium uppercase tracking-wide text-text-muted">
@@ -98,19 +91,6 @@ export default function PhasesPage() {
                   </Link>
                 </Button>
               )}
-            </>
-          ) : (
-            <>
-              <Sparkles className="h-8 w-8 text-text-muted" />
-              <h2 className="font-stencil text-lg font-semibold uppercase tracking-wide">
-                {t("mainPages.phasesComingSoonTitle")}
-              </h2>
-              <p className="max-w-md text-sm text-text-muted">
-                {t("mainPages.phasesComingSoonDescription")}
-              </p>
-              <Button variant="outline" disabled className="mt-2 w-full max-w-xs">
-                <Lock className="h-4 w-4" /> {t("mainPages.locked")}
-              </Button>
             </>
           )}
         </CardContent>

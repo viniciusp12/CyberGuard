@@ -9,19 +9,12 @@ export const mainPages: DictionaryTable = {
   },
   dayTitle: { pt: "Dia {{number}} — {{title}}", en: "Day {{number}} — {{title}}" },
   difficultyTag: { pt: "Dificuldade {{min}}-{{max}}", en: "Difficulty {{min}}-{{max}}" },
-  phasesComingSoonTitle: { pt: "Mais desafios chegando", en: "More challenges coming" },
-  phasesComingSoonDescription: {
-    pt: "Microsoft falsa, chefe falso, voz clonada e golpes misturados.",
-    en: "Fake Microsoft, fake boss, cloned voice and mixed scams.",
-  },
-  comingSoonTag: { pt: "Em breve", en: "Coming soon" },
   dayNumber: { pt: "Dia {{number}}", en: "Day {{number}}" },
   completed: { pt: "Concluído", en: "Completed" },
   emailsAndMinutes: { pt: "{{count}} e-mails", en: "{{count}} emails" },
   completePreviousDay: { pt: "Complete o dia anterior", en: "Complete the previous day" },
   playAgain: { pt: "Jogar novamente", en: "Play again" },
   start: { pt: "Iniciar", en: "Start" },
-  locked: { pt: "Bloqueado", en: "Locked" },
 
   // /shop
   shopTitle: { pt: "Loja", en: "Shop" },
