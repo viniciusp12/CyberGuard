@@ -35,6 +35,26 @@ function shuffle<T>(arr: T[]): T[] {
   return copy;
 }
 
+/**
+ * Embaralha as alternativas de uma pergunta e reaponta a resposta certa.
+ *
+ * No conteúdo escrito à mão, a resposta certa caiu na segunda alternativa em
+ * 11 das 12 perguntas. Sem embaralhar, quem percebe o padrão gabarita sem ler
+ * — e um quiz que premia contar posição não ensina nada.
+ *
+ * Embaralha a ORDEM dos índices, e não a lista de textos, para reencontrar a
+ * resposta certa pela posição original. Procurar pelo texto quebraria se duas
+ * alternativas fossem iguais.
+ */
+function embaralharAlternativas(q: QuizQuestion): QuizQuestion {
+  const ordem = shuffle(q.options.map((_, i) => i));
+  return {
+    ...q,
+    options: ordem.map((i) => q.options[i]!),
+    correctIndex: ordem.indexOf(q.correctIndex),
+  };
+}
+
 export default function QuizPage() {
   const { locale, t } = useLocale();
   const router = useRouter();
@@ -58,7 +78,7 @@ export default function QuizPage() {
   const isAnswered = selectedIndex !== null;
 
   function start() {
-    setQuestions(shuffle(quizQuestions));
+    setQuestions(shuffle(quizQuestions).map(embaralharAlternativas));
     setCurrentIndex(0);
     setSelectedIndex(null);
     setScore(0);
