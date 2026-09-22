@@ -20,10 +20,16 @@ import { PrismaService } from "../prisma/prisma.service";
  *
  * ── Exceção para uso acadêmico ──────────────────────────────────────────────
  *
- * `RANKING_INDIVIDUAL_DEPARTMENT` liga um placar individual para UM setor só,
- * pensado para turma de faculdade, onde os participantes são contas
- * descartáveis e pseudônimas ("Aluno 35") criadas para a aula, e a disputa
- * entre alunos é o próprio objetivo didático.
+ * Existe um placar individual para UM setor só, pensado para turma de
+ * faculdade, onde os participantes são contas descartáveis e pseudônimas
+ * ("Aluno 35") criadas para a aula, e a disputa entre alunos é o próprio
+ * objetivo didático — o professor precisa dela para premiar.
+ *
+ * O setor é o TURMA_PADRAO abaixo. `RANKING_INDIVIDUAL_DEPARTMENT` troca esse
+ * valor sem mexer no código, e defini-la como vazia desliga o recurso. O
+ * padrão vem no código de propósito: depender só da variável significa acertar
+ * projeto, ambiente e republicação na Vercel, e qualquer um dos três errado
+ * faz o recurso sumir sem dizer por quê.
  *
  * Três limites de propósito:
  *   1. Só vale para o setor nomeado na variável. Qualquer outro setor continua
@@ -34,9 +40,13 @@ import { PrismaService } from "../prisma/prisma.service";
  *      revela nada novo para ele. Um funcionário de OUTRO setor não vê.
  *   3. Sem a variável definida, o comportamento é exatamente o de antes.
  *
- * Para desligar: apague a variável de ambiente e republique. Nada mais muda.
- * Ela NÃO deve ficar ligada num ambiente com gente de verdade.
+ * Para desligar depois da aula: defina RANKING_INDIVIDUAL_DEPARTMENT como
+ * vazia, ou remova este bloco. Nenhum setor com gente de verdade se chama
+ * "Alunos", então o padrão não afeta a operação da empresa.
  */
+
+/** Setor tratado como turma quando a variável de ambiente não diz outra coisa. */
+const TURMA_PADRAO = "Alunos";
 
 /** Mesma normalização do agrupamento: "TI", "ti " e "Ti" são o mesmo setor. */
 function normalizar(valor: string | null | undefined): string {
@@ -92,7 +102,9 @@ export class RankingService {
     currentKey: string | null,
     currentUserRole: Role,
   ) {
-    const turma = normalizar(process.env.RANKING_INDIVIDUAL_DEPARTMENT).toLowerCase();
+    // Variável definida (mesmo vazia) manda; ausente cai no padrão do código.
+    const bruto = process.env.RANKING_INDIVIDUAL_DEPARTMENT ?? TURMA_PADRAO;
+    const turma = normalizar(bruto).toLowerCase();
     if (!turma) return null;
 
     const podeVer = currentUserRole === "ADMIN" || currentKey === turma;
