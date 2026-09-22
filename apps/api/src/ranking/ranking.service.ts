@@ -20,10 +20,10 @@ import { PrismaService } from "../prisma/prisma.service";
  *
  * ── Exceção para uso acadêmico ──────────────────────────────────────────────
  *
- * Existe um placar individual para UM setor só, pensado para turma de
- * faculdade, onde os participantes são contas descartáveis e pseudônimas
- * ("Aluno 35") criadas para a aula, e a disputa entre alunos é o próprio
- * objetivo didático — o professor precisa dela para premiar.
+ * Um setor pode abrir a lista aluno a aluno dentro da própria linha do placar:
+ * é a turma de faculdade, onde os participantes são contas descartáveis e
+ * pseudônimas ("Aluno 35") criadas para a aula, e a disputa entre alunos é o
+ * próprio objetivo didático — o professor precisa dela para premiar.
  *
  * O setor é o TURMA_PADRAO abaixo. `RANKING_INDIVIDUAL_DEPARTMENT` troca esse
  * valor sem mexer no código, e defini-la como vazia desliga o recurso. O
@@ -31,14 +31,12 @@ import { PrismaService } from "../prisma/prisma.service";
  * projeto, ambiente e republicação na Vercel, e qualquer um dos três errado
  * faz o recurso sumir sem dizer por quê.
  *
- * Três limites de propósito:
- *   1. Só vale para o setor nomeado na variável. Qualquer outro setor continua
- *      vendo apenas o placar somado, sem nome.
- *   2. Recebem a lista: quem PERTENCE a esse setor e quem é ADMIN — o
- *      professor precisa dela para premiar, e o administrador já enxerga
- *      todo mundo pelo nome no painel de administração, então isso não
- *      revela nada novo para ele. Um funcionário de OUTRO setor não vê.
- *   3. Sem a variável definida, o comportamento é exatamente o de antes.
+ * Dois limites, que continuam valendo:
+ *   1. Só esse setor abre. Todos os outros seguem somados e sem nome.
+ *   2. Recebem a lista quem PERTENCE ao setor e quem é ADMIN — o professor
+ *      precisa dela, e o administrador já enxerga todo mundo pelo nome no
+ *      painel de administração, então não revela nada novo para ele. Um
+ *      funcionário de outro setor não vê.
  *
  * Para desligar depois da aula: defina RANKING_INDIVIDUAL_DEPARTMENT como
  * vazia, ou remova este bloco. Nenhum setor com gente de verdade se chama
@@ -52,6 +50,13 @@ const TURMA_PADRAO = "Alunos";
 function normalizar(valor: string | null | undefined): string {
   return (valor ?? "").trim().replace(/\s+/g, " ");
 }
+
+type Membro = {
+  id: string;
+  department: string | null;
+  xp: number;
+  displayName: string;
+};
 
 @Injectable()
 export class RankingService {
@@ -88,16 +93,19 @@ export class RankingService {
     return {
       entries,
       currentDepartment: currentKey ? grupos.get(currentKey)!.label : null,
-      individual: this.rankingIndividual(users, currentUserId, currentKey, currentUserRole),
+      individual: this.turmaAberta(users, grupos, currentUserId, currentKey, currentUserRole),
     };
   }
 
   /**
-   * Placar individual do setor de turma, ou null quando o recurso está
-   * desligado ou quem pergunta não é da turma.
+   * A turma que a tela pode abrir dentro da linha dela, ou null.
+   *
+   * Devolve junto o rótulo do setor, para a tela casar com a linha certa do
+   * placar sem precisar repetir a regra de normalização.
    */
-  private rankingIndividual(
-    users: { id: string; department: string | null; xp: number; displayName: string }[],
+  private turmaAberta(
+    users: Membro[],
+    grupos: Map<string, { label: string; xp: number }>,
     currentUserId: string,
     currentKey: string | null,
     currentUserRole: Role,
@@ -110,14 +118,22 @@ export class RankingService {
     const podeVer = currentUserRole === "ADMIN" || currentKey === turma;
     if (!podeVer) return null;
 
-    return users
-      .filter((u) => normalizar(u.department).toLowerCase() === turma)
-      .sort((a, b) => b.xp - a.xp || a.displayName.localeCompare(b.displayName))
-      .map((u, i) => ({
-        rank: i + 1,
-        name: u.displayName,
-        xp: u.xp,
-        isYou: u.id === currentUserId,
-      }));
+    const grupo = grupos.get(turma);
+    if (!grupo) return null;
+
+    const membros = users.filter((u) => normalizar(u.department).toLowerCase() === turma);
+    if (membros.length === 0) return null;
+
+    return {
+      department: grupo.label,
+      entries: membros
+        .sort((a, b) => b.xp - a.xp || a.displayName.localeCompare(b.displayName))
+        .map((u, i) => ({
+          rank: i + 1,
+          name: u.displayName,
+          xp: u.xp,
+          isYou: u.id === currentUserId,
+        })),
+    };
   }
 }

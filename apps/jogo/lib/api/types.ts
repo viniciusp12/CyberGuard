@@ -49,10 +49,10 @@ export interface RankingResponse {
   // Nome do setor do próprio jogador, só para a tela destacar a linha dele.
   currentDepartment: string | null;
   /**
-   * Placar aluno a aluno. Vem preenchido apenas para quem é do setor de turma
-   * configurado em RANKING_INDIVIDUAL_DEPARTMENT na API; null no resto.
+   * A turma que a linha do placar pode abrir, com o setor a que pertence.
+   * Vem preenchida só para quem é da turma ou é administrador; null no resto.
    */
-  individual: IndividualRankingEntry[] | null;
+  individual: { department: string; entries: IndividualRankingEntry[] } | null;
 }
 
 export interface Employee {
