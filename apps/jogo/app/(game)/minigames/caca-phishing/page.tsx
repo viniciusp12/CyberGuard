@@ -22,7 +22,7 @@ import { MeterBadge } from "@/components/hud/MeterBadge";
 import { Stamp } from "@/components/game/DecisionStamp";
 import { BotaoSair } from "@/components/game/BotaoSair";
 import { useSavePhaseResult } from "@/lib/hooks/usePlayerProfile";
-import { cn } from "@/lib/utils";
+import { cn, embaralhar } from "@/lib/utils";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 
 // O id fica como está: é a chave gravada nos resultados já salvos no banco.
@@ -48,15 +48,6 @@ const LIMIAR_ARRASTO = 110; // px percorridos que já valem como decisão
 const LIMIAR_VELOCIDADE = 450; // px/s — um peteleco rápido decide antes do limiar
 
 type Decisao = { item: ArcadeItem; disseGolpe: boolean; acertou: boolean };
-
-function shuffle<T>(arr: T[]): T[] {
-  const copy = [...arr];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
-  }
-  return copy;
-}
 
 export default function CacaGolpePage() {
   const { locale, t } = useLocale();
@@ -93,7 +84,7 @@ export default function CacaGolpePage() {
 
   function start() {
     if (timerRef.current) clearTimeout(timerRef.current);
-    setItems(shuffle(arcadeItems));
+    setItems(embaralhar(arcadeItems));
     setIndice(0);
     setDecisoes([]);
     setScore(0);

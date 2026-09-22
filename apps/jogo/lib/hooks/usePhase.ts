@@ -5,6 +5,7 @@ import { getDayById } from "@repo/shared/content";
 import type { PhaseState } from "@repo/shared/engine";
 import type { Locale } from "@/lib/i18n/locale";
 import { useGameSessionStore } from "@/lib/stores/gameSessionStore";
+import { embaralhar } from "@/lib/utils";
 
 function currentStateDayId(state: PhaseState | null): string | undefined {
   if (!state) return undefined;
@@ -20,7 +21,9 @@ export function usePhase(dayId: string, locale?: Locale) {
   useEffect(() => {
     if (!loaded) return;
     if (currentStateDayId(state) !== dayId) {
-      initPhase(loaded.day, loaded.emails);
+      // Ordem sorteada a cada partida: os 4 e-mails do dia são os mesmos,
+      // mas ninguém recebe na mesma sequência do colega.
+      initPhase(loaded.day, embaralhar(loaded.emails));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dayId]);

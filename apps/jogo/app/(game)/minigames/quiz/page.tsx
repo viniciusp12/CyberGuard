@@ -12,7 +12,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { MeterBadge } from "@/components/hud/MeterBadge";
 import { BotaoSair } from "@/components/game/BotaoSair";
 import { useSavePhaseResult } from "@/lib/hooks/usePlayerProfile";
-import { cn } from "@/lib/utils";
+import { cn, embaralhar } from "@/lib/utils";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 
 const DAY_ID = "quiz-seguranca";
@@ -26,15 +26,6 @@ const DAY_ID = "quiz-seguranca";
  * quando quiser, pelo botão.
  */
 
-function shuffle<T>(arr: T[]): T[] {
-  const copy = [...arr];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
-  }
-  return copy;
-}
-
 /**
  * Embaralha as alternativas de uma pergunta e reaponta a resposta certa.
  *
@@ -47,7 +38,7 @@ function shuffle<T>(arr: T[]): T[] {
  * alternativas fossem iguais.
  */
 function embaralharAlternativas(q: QuizQuestion): QuizQuestion {
-  const ordem = shuffle(q.options.map((_, i) => i));
+  const ordem = embaralhar(q.options.map((_, i) => i));
   return {
     ...q,
     options: ordem.map((i) => q.options[i]!),
@@ -78,7 +69,7 @@ export default function QuizPage() {
   const isAnswered = selectedIndex !== null;
 
   function start() {
-    setQuestions(shuffle(quizQuestions).map(embaralharAlternativas));
+    setQuestions(embaralhar(quizQuestions).map(embaralharAlternativas));
     setCurrentIndex(0);
     setSelectedIndex(null);
     setScore(0);
