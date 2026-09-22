@@ -37,6 +37,7 @@ export const mainPages: DictionaryTable = {
   coins: { pt: "moedas", en: "coins" },
 
   // /ranking — por setor, nunca por pessoa (LGPD)
+  you: { pt: "Você", en: "You" },
   rankingTitle: { pt: "Ranking por setor", en: "Ranking by department" },
   rankingDescription: {
     pt: "A pontuação é somada por setor. Nomes de pessoas não aparecem.",

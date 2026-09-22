@@ -36,10 +36,23 @@ export interface RankingEntry {
   xp: number;
 }
 
+/** Uma linha do placar individual (só existe no setor de turma). */
+export interface IndividualRankingEntry {
+  rank: number;
+  name: string;
+  xp: number;
+  isYou: boolean;
+}
+
 export interface RankingResponse {
   entries: RankingEntry[];
   // Nome do setor do próprio jogador, só para a tela destacar a linha dele.
   currentDepartment: string | null;
+  /**
+   * Placar aluno a aluno. Vem preenchido apenas para quem é do setor de turma
+   * configurado em RANKING_INDIVIDUAL_DEPARTMENT na API; null no resto.
+   */
+  individual: IndividualRankingEntry[] | null;
 }
 
 export interface Employee {

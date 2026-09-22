@@ -16,7 +16,30 @@ import { PrismaService } from "../prisma/prisma.service";
  *
  * O único dado ligado ao usuário atual é o NOME do próprio setor dele, para a
  * tela poder destacar "o seu setor" — e isso a pessoa já sabe sobre si mesma.
+ *
+ * ── Exceção para uso acadêmico ──────────────────────────────────────────────
+ *
+ * `RANKING_INDIVIDUAL_DEPARTMENT` liga um placar individual para UM setor só,
+ * pensado para turma de faculdade, onde os participantes são contas
+ * descartáveis e pseudônimas ("Aluno 35") criadas para a aula, e a disputa
+ * entre alunos é o próprio objetivo didático.
+ *
+ * Três limites de propósito:
+ *   1. Só vale para o setor nomeado na variável. Qualquer outro setor continua
+ *      vendo apenas o placar somado, sem nome.
+ *   2. Só quem PERTENCE a esse setor recebe a lista individual. Um funcionário
+ *      de outro setor não enxerga os nomes da turma.
+ *   3. Sem a variável definida, o comportamento é exatamente o de antes.
+ *
+ * Para desligar: apague a variável de ambiente e republique. Nada mais muda.
+ * Ela NÃO deve ficar ligada num ambiente com gente de verdade.
  */
+
+/** Mesma normalização do agrupamento: "TI", "ti " e "Ti" são o mesmo setor. */
+function normalizar(valor: string | null | undefined): string {
+  return (valor ?? "").trim().replace(/\s+/g, " ");
+}
+
 @Injectable()
 export class RankingService {
   constructor(private readonly prisma: PrismaService) {}
@@ -24,7 +47,7 @@ export class RankingService {
   async getRanking(currentUserId: string) {
     const users = await this.prisma.user.findMany({
       where: { role: "EMPLOYEE" },
-      select: { id: true, department: true, xp: true },
+      select: { id: true, department: true, xp: true, displayName: true },
     });
 
     // Agrupa por setor. A chave normaliza (minúsculas, espaços colapsados) para
@@ -34,7 +57,7 @@ export class RankingService {
     let currentKey: string | null = null;
 
     for (const u of users) {
-      const bruto = (u.department ?? "").trim().replace(/\s+/g, " ");
+      const bruto = normalizar(u.department);
       const key = bruto.toLowerCase() || "__sem_setor__";
       const label = bruto || "Sem setor";
 
@@ -52,6 +75,30 @@ export class RankingService {
     return {
       entries,
       currentDepartment: currentKey ? grupos.get(currentKey)!.label : null,
+      individual: this.rankingIndividual(users, currentUserId, currentKey),
     };
+  }
+
+  /**
+   * Placar individual do setor de turma, ou null quando o recurso está
+   * desligado ou quem pergunta não é da turma.
+   */
+  private rankingIndividual(
+    users: { id: string; department: string | null; xp: number; displayName: string }[],
+    currentUserId: string,
+    currentKey: string | null,
+  ) {
+    const turma = normalizar(process.env.RANKING_INDIVIDUAL_DEPARTMENT).toLowerCase();
+    if (!turma || currentKey !== turma) return null;
+
+    return users
+      .filter((u) => normalizar(u.department).toLowerCase() === turma)
+      .sort((a, b) => b.xp - a.xp || a.displayName.localeCompare(b.displayName))
+      .map((u, i) => ({
+        rank: i + 1,
+        name: u.displayName,
+        xp: u.xp,
+        isYou: u.id === currentUserId,
+      }));
   }
 }
