@@ -38,6 +38,11 @@ export const mainPages: DictionaryTable = {
 
   // /ranking — por setor, nunca por pessoa (LGPD)
   you: { pt: "Você", en: "You" },
+  rankingClassTitle: { pt: "Ranking da turma", en: "Class ranking" },
+  rankingClassDescription: {
+    pt: "Pontuação aluno a aluno.",
+    en: "Score student by student.",
+  },
   rankingTitle: { pt: "Ranking por setor", en: "Ranking by department" },
   rankingDescription: {
     pt: "A pontuação é somada por setor. Nomes de pessoas não aparecem.",

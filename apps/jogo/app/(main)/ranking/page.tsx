@@ -30,7 +30,12 @@ export default function RankingPage() {
 
   return (
     <div>
-      <PageHeader title={t("mainPages.rankingTitle")} description={t("mainPages.rankingDescription")} />
+      <PageHeader
+        title={t(mostrarIndividual ? "mainPages.rankingClassTitle" : "mainPages.rankingTitle")}
+        description={t(
+          mostrarIndividual ? "mainPages.rankingClassDescription" : "mainPages.rankingDescription",
+        )}
+      />
       <Card>
         <CardContent className="py-2">
           {isLoading && <p className="py-6 text-center text-sm text-text-muted">{t("common.loading")}</p>}

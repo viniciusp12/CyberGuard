@@ -11,6 +11,6 @@ export class RankingController {
 
   @Get()
   getRanking(@CurrentUser() user: JwtPayload) {
-    return this.rankingService.getRanking(user.sub);
+    return this.rankingService.getRanking(user.sub, user.role);
   }
 }

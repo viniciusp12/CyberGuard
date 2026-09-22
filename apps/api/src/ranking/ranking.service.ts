@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import type { Role } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 
 /**
@@ -27,8 +28,10 @@ import { PrismaService } from "../prisma/prisma.service";
  * Três limites de propósito:
  *   1. Só vale para o setor nomeado na variável. Qualquer outro setor continua
  *      vendo apenas o placar somado, sem nome.
- *   2. Só quem PERTENCE a esse setor recebe a lista individual. Um funcionário
- *      de outro setor não enxerga os nomes da turma.
+ *   2. Recebem a lista: quem PERTENCE a esse setor e quem é ADMIN — o
+ *      professor precisa dela para premiar, e o administrador já enxerga
+ *      todo mundo pelo nome no painel de administração, então isso não
+ *      revela nada novo para ele. Um funcionário de OUTRO setor não vê.
  *   3. Sem a variável definida, o comportamento é exatamente o de antes.
  *
  * Para desligar: apague a variável de ambiente e republique. Nada mais muda.
@@ -44,7 +47,7 @@ function normalizar(valor: string | null | undefined): string {
 export class RankingService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getRanking(currentUserId: string) {
+  async getRanking(currentUserId: string, currentUserRole: Role) {
     const users = await this.prisma.user.findMany({
       where: { role: "EMPLOYEE" },
       select: { id: true, department: true, xp: true, displayName: true },
@@ -75,7 +78,7 @@ export class RankingService {
     return {
       entries,
       currentDepartment: currentKey ? grupos.get(currentKey)!.label : null,
-      individual: this.rankingIndividual(users, currentUserId, currentKey),
+      individual: this.rankingIndividual(users, currentUserId, currentKey, currentUserRole),
     };
   }
 
@@ -87,9 +90,13 @@ export class RankingService {
     users: { id: string; department: string | null; xp: number; displayName: string }[],
     currentUserId: string,
     currentKey: string | null,
+    currentUserRole: Role,
   ) {
     const turma = normalizar(process.env.RANKING_INDIVIDUAL_DEPARTMENT).toLowerCase();
-    if (!turma || currentKey !== turma) return null;
+    if (!turma) return null;
+
+    const podeVer = currentUserRole === "ADMIN" || currentKey === turma;
+    if (!podeVer) return null;
 
     return users
       .filter((u) => normalizar(u.department).toLowerCase() === turma)
