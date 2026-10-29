@@ -126,11 +126,10 @@ antigo, que não existe mais — então **defina a variável**.
 
 ---
 
-## 5. Depois de tudo no ar
+## 5. A aplicação está no ar — confira
 
 - [ ] A API responde 401 em `/api/ranking`
 - [ ] O login do jogo funciona com a conta de administrador
-- [ ] O ranking abre (e a linha "Alunos" expande, se as contas de aula existirem)
 - [ ] O site abre e o glossário mostra **17 termos**
 - [ ] O domínio `hackudinhos.com.br` aponta para o site
 
@@ -140,3 +139,74 @@ Commit cuja autoria não é de um membro do projeto na Vercel fica com status
 **Blocked** e não constrói. E um build pronto pode não ir sozinho para o
 domínio: confira na lista de deploys qual tem a etiqueta **Production**
 destacada e, se não for o mais novo, use **Promote to Production**.
+
+---
+
+# Parte 2 — GitHub, para a esteira DevSecOps
+
+Daqui em diante é a configuração que a atividade exige. A aplicação já precisa
+estar no ar antes disto.
+
+## 6. Tornar o repositório público
+
+A entrega é "link do repositório **público**". Em **Settings → General**, role
+até **Danger Zone → Change repository visibility → Make public**.
+
+> O histórico já foi limpo: o PDF com credenciais e os assets de terceiros
+> foram removidos de todos os commits, e nenhuma senha real está versionada.
+> Pode publicar.
+
+## 7. Permitir que o workflow publique pacotes
+
+Em **Settings → Actions → General → Workflow permissions**, marque
+**Read and write permissions**.
+
+Sem isso, a Etapa 5 não consegue enviar a imagem para o GHCR. O workflow ainda
+declara `permissions: contents: read` no topo e só pede `packages: write` no
+job que publica — a configuração aqui é o teto, e o workflow fica abaixo dele.
+
+## 8. Criar os dois environments
+
+Em **Settings → Environments**, crie:
+
+### `homologacao`
+Sem regra nenhuma. Serve só para a Etapa 7 aparecer identificada no histórico
+de deployments.
+
+### `producao`
+1. **Required reviewers** → adicione pelo menos uma pessoa (pode ser você).
+   É isto que faz a Etapa 8 ficar parada esperando aprovação — o controle de
+   mudança que a atividade avalia.
+2. *(opcional)* **Deployment branches** → `Selected branches` → `main`.
+
+## 9. Secrets do deploy de produção
+
+A Etapa 8 publica na Vercel a partir do GitHub Actions, então precisa de
+credencial. Ela fica **dentro do environment `producao`**, nunca em
+`Repository secrets` — assim só um job que passou pela aprovação consegue ler.
+
+Em **Settings → Environments → producao → Environment secrets**, crie:
+
+| Secret | Onde obter |
+|---|---|
+| `VERCEL_TOKEN` | Vercel → Account Settings → Tokens → Create |
+| `VERCEL_ORG_ID` | Vercel → Settings da equipe → ID |
+| `VERCEL_PROJECT_ID` | Vercel → projeto do jogo → Settings → Project ID |
+
+> Credencial de nuvem em environment secret, e não no código, é um dos itens
+> cobrados em "Boas práticas". O ideal seria OIDC em vez de token de longa
+> duração, mas a Vercel não oferece OIDC para deploy — registre essa limitação
+> em `docs/observacoes.md`.
+
+## 10. Checklist antes de rodar a esteira
+
+- [ ] Repositório público
+- [ ] Workflow permissions em **Read and write**
+- [ ] Environment `homologacao` criado
+- [ ] Environment `producao` criado **com revisor obrigatório**
+- [ ] Os três secrets dentro do environment `producao`
+- [ ] `Dockerfile` e `.dockerignore` na raiz (já estão)
+- [ ] Aplicação acessível no ar (Parte 1)
+
+Com isso pronto, a esteira roda sozinha a cada push na `main`, e para na
+Etapa 8 esperando você aprovar.
