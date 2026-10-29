@@ -66,16 +66,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Analisar o código
+      - name: Analisar o código (relatório JSON)
+        # Um formato de saída por execução. O Semgrep NÃO aceita --json e
+        # --sarif na mesma chamada: ele sai com código 2 (erro de uso) e não
+        # escreve relatório nenhum — foi o que derrubou a execução #3.
+        #
+        # Sem --error aqui de propósito: a etapa precisa terminar para o
+        # relatório existir. Quem decide passar ou barrar é o gate abaixo, que
+        # ainda lista os achados no log.
         run: |
-          semgrep scan \
-            --config=p/default \
-            --config=p/owasp-top-ten \
-            --json --output=semgrep.json \
-            --sarif --sarif-output=semgrep.sarif \
-            --error \
-            --metrics=off
-        # --error faz a esteira falhar quando há achado bloqueante.
+          semgrep scan             --config=p/default             --config=p/owasp-top-ten             --json --output=semgrep.json             --metrics=off             --disable-version-check
+
+      - name: Gerar SARIF para a aba Security
+        if: always()
+        run: |
+          semgrep scan             --config=p/default             --config=p/owasp-top-ten             --sarif --output=semgrep.sarif             --metrics=off             --disable-version-check
+
+      - name: Quality gate — falha com achado bloqueante
+        run: |
+          python3 - <<'EOF'
+          import json, sys
+          achados = json.load(open("semgrep.json"))["results"]
+          print(f"Achados: {len(achados)}")
+          for a in achados:
+              sev = a.get("extra", {}).get("severity", "?")
+              print(f"  [{sev}] {a['check_id']}")
+              print(f"        {a['path']}:{a['start']['line']}")
+              msg = a.get("extra", {}).get("message", "").strip().splitlines()
+              if msg:
+                  print(f"        {msg[0][:120]}")
+          sys.exit(1 if achados else 0)
+          EOF
 
       - uses: actions/upload-artifact@v4
         if: always()
