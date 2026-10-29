@@ -23,3 +23,21 @@
 #
 # Registrado em docs/observacoes.md, seção "Etapa 1".
 f253b0c3dbc7c3cd149002049ae6fa2f2aa8ab5f:apps/api/src/common/password.util.ts:generic-api-key:14
+
+# ─────────────────────────────────────────────────────────────────────────────
+# generic-api-key · docs/observacoes.md:29 · commit 4a5af42
+#
+# MESMO falso positivo acima, agora dentro da documentação.
+#
+# A primeira versão de docs/observacoes.md citava o valor completo de
+# TEMP_PASSWORD_ALPHABET para explicar por que ele não é segredo — e o Gitleaks
+# marcou o literal dentro do próprio relatório. A documentação já foi corrigida
+# para citar o valor truncado, mas o commit 4a5af42 continua no histórico, e a
+# varredura cobre o histórico inteiro (fetch-depth: 0).
+#
+# Reescrever o histórico de novo por causa de um falso positivo não se paga:
+# não há segredo a proteger, e force-push em repositório compartilhado tem
+# custo real para quem já clonou.
+#
+# Registrado em docs/observacoes.md, seção "Etapa 1".
+4a5af42266bd08889cae6bd49ff68df71c3c25dc:docs/observacoes.md:generic-api-key:29

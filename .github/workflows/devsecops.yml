@@ -38,9 +38,10 @@ jobs:
 
       - name: Varrer o histórico
         run: |
-          docker run --rm -v "$PWD:/repo" \
+          docker run --rm -v "$PWD:/repo" -w /repo \
             zricethezav/gitleaks:${{ env.GITLEAKS_VERSION }} \
             detect --source=/repo \
+              --gitleaks-ignore-path=/repo/.gitleaksignore \
               --redact \
               --report-format json \
               --report-path /repo/gitleaks.json \

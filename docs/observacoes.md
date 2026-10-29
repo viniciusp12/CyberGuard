@@ -23,11 +23,13 @@ não quer, e some com a informação que a próxima pessoa precisaria.
 
 **Por que é falso positivo**
 
-A constante marcada é esta:
+A constante marcada é `TEMP_PASSWORD_ALPHABET`, em
+`apps/api/src/common/password.util.ts`. São 56 caracteres: as letras maiúsculas
+e minúsculas **sem** `I`, `l` e `O`, mais os dígitos de `2` a `9` — sem `0` e
+sem `1`.
 
-```ts
-const TEMP_PASSWORD_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
-```
+> O valor **não é reproduzido aqui de propósito**. Ver a nota ao fim desta
+> seção: colá-lo faz a ferramenta marcar este próprio arquivo.
 
 Não é credencial. É o conjunto de caracteres de onde `generateTemporaryPassword`
 sorteia cada letra da senha provisória que o administrador entrega a um
@@ -57,7 +59,32 @@ falso positivo que essa regra produz.
 - Execução #1: Etapa 1 falhou com `exit code 1`, etapas 2 a 8 ficaram `skipped`,
   e o Resumo da Esteira registrou "1 segredos". Relatório em
   `relatorio-01-gitleaks`.
-- Execução seguinte, após o `.gitleaksignore`: Etapa 1 verde.
+- Execução #3, após a supressão e as duas correções abaixo: Etapa 1 verde.
+
+**Duas armadilhas que custaram uma execução cada**
+
+A execução #2, que deveria ter passado, falhou de novo — por dois motivos que
+valem registro, porque qualquer um repetiria:
+
+1. **O `.gitleaksignore` não era lido no CI.** O Gitleaks procura esse arquivo
+   no **diretório de trabalho**, não no caminho passado em `--source` (o padrão
+   da opção é `"."`). Como a etapa roda o Gitleaks dentro de um contêiner, o
+   diretório de trabalho não era o do repositório, e a supressão era ignorada
+   em silêncio. Corrigido com `--gitleaks-ignore-path` explícito e `-w /repo`.
+   Reproduzido localmente rodando a varredura de outra pasta: mesmo resultado
+   do CI.
+
+2. **A própria documentação reintroduziu o achado.** A primeira versão desta
+   seção colava o valor completo de `TEMP_PASSWORD_ALPHABET` para explicar por
+   que ele não é segredo — e o Gitleaks marcou o literal **dentro do
+   `observacoes.md`**, com um fingerprint novo.
+
+   A primeira tentativa de conserto foi citar o valor **truncado**. Não
+   resolveu: mesmo cortado pela metade, o trecho ainda era uma string longa de
+   letras e dígitos misturados, e a heurística disparou de novo, em mais um
+   commit. Só parou quando o literal saiu por completo e virou descrição em
+   prosa. A lição prática: contra regra de entropia, encurtar não serve —
+   tem que não haver string.
 
 ---
 
@@ -163,3 +190,17 @@ lê-lo.
 2. **Gitleaks não lê PDF.** O único segredo real do repositório estava dentro
    de um binário e passou despercebido pela ferramenta; quem achou foi
    inspeção manual.
+3. **Supressão que não é lida falha em silêncio.** O `.gitleaksignore` existia,
+   estava correto e passava localmente — mas no contêiner o Gitleaks procurava
+   em outro diretório. Não houve aviso de "arquivo de ignore não encontrado":
+   a esteira só continuou falhando. Vale sempre reproduzir a execução do CI
+   com as mesmas condições, e não só rodar a ferramenta na própria máquina.
+4. **Documentar um falso positivo pode criar outro.** Colar o valor marcado
+   dentro do relatório faz a ferramenta marcar o relatório — e truncar não
+   basta, porque a regra olha entropia, não tamanho. Em documentação de
+   segurança, descreva o valor em prosa em vez de reproduzi-lo.
+5. **Achado em commit antigo não sai corrigindo o arquivo.** A varredura cobre
+   todo o histórico, então um literal que já foi enviado continua sendo
+   encontrado mesmo depois de o arquivo mudar. Ou se reescreve o histórico, ou
+   se suprime o fingerprint com justificativa — e, para falso positivo, a
+   segunda opção é a proporcional.
