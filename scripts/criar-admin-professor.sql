@@ -9,7 +9,14 @@
 -- única via para promover alguém a admin é esta.
 --
 -- Usuário: karlos.miguel
--- Senha provisória: NVbPb*x8k6jk
+--
+-- ANTES DE RODAR: troque TROQUE_ESTA_SENHA (nas duas ocorrências abaixo) por
+-- uma senha provisória de verdade, com 8 caracteres ou mais. Ela some no
+-- primeiro acesso, porque mustChangePassword = true obriga a trocar.
+--
+-- A senha NÃO fica neste arquivo de propósito: o repositório é público, e
+-- credencial em repositório é exatamente o que a Etapa 1 da esteira
+-- (Gitleaks) existe para barrar.
 --
 -- mustChangePassword = true de propósito: no primeiro acesso o sistema obriga
 -- a trocar, e aí ele escolhe uma senha segura que ninguém mais conhece. A
@@ -26,7 +33,7 @@ INSERT INTO "User"
 VALUES
   (gen_random_uuid()::text,
    'karlos.miguel',
-   crypt('NVbPb*x8k6jk', gen_salt('bf', 10)),
+   crypt('TROQUE_ESTA_SENHA', gen_salt('bf', 10)),
    'Karlos Miguel',
    'Professor',
    'ADMIN',
