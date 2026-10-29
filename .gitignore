@@ -39,3 +39,6 @@ Jogo/art/craftpix-net-*/
 # Relatorios com usuarios e senhas — nunca versionar.
 *Status e Usuarios*.pdf
 *.pdf
+
+# Configuracao do servidor proprio antigo (play.mizanis.com.br), fora de uso.
+deploy/

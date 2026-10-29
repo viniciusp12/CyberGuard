@@ -12,7 +12,7 @@
 --   2. registra essas migrations na tabela de controle do Prisma, para que um
 --      `prisma migrate deploy` futuro não tente aplicá-las de novo e quebre.
 --
--- Depois de rodar: crie o admin com scripts/criar-admin-professor.sql e, se
+-- Depois de rodar: crie o admin com scripts/criar-admin.sql e, se
 -- quiser, os usuários de demonstração com scripts/seed-demo.sql.
 -- ============================================================================
 

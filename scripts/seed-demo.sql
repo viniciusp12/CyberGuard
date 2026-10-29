@@ -21,8 +21,8 @@ INSERT INTO "User"
    "mustChangePassword", level, xp, money, reputation, "createdAt", "updatedAt")
 VALUES
   -- TI (total do setor: 5300 → 1º no ranking)
-  (gen_random_uuid()::text, 'vinicius.olivetti', crypt('Senhavinicius.olivetti', gen_salt('bf', 10)),
-   'Vinícius Souza Olivetti (Loja Morumbi)', 'TI', 'EMPLOYEE', false, 4, 3200, 0, 100, now(), now()),
+  (gen_random_uuid()::text, 'marcos.tavares', crypt('Senhamarcos.tavares', gen_salt('bf', 10)),
+   'Marcos Tavares Lima (Loja Morumbi)', 'TI', 'EMPLOYEE', false, 4, 3200, 0, 100, now(), now()),
   (gen_random_uuid()::text, 'camila.rocha', crypt('Senhacamila.rocha', gen_salt('bf', 10)),
    'Camila Duarte Rocha (Loja Interlagos)', 'TI', 'EMPLOYEE', false, 3, 2100, 0, 100, now(), now()),
 
@@ -55,7 +55,7 @@ ON CONFLICT (username) DO NOTHING;
 SELECT department AS setor, SUM(xp) AS pontos_do_setor, COUNT(*) AS pessoas
 FROM "User"
 WHERE role = 'EMPLOYEE' AND username IN (
-  'vinicius.olivetti','camila.rocha','rafael.lima','juliana.pereira',
+  'marcos.tavares','camila.rocha','rafael.lima','juliana.pereira',
   'fernando.barbosa','sandra.correia','bruno.almeida','patricia.santos',
   'diego.martins','tatiane.ribeiro')
 GROUP BY department

@@ -1,0 +1,62 @@
+# O que NÃO entra no contexto enviado ao Docker.
+#
+# Vale por três motivos: build mais rápido, imagem menor e — o que importa
+# para a esteira — nenhum arquivo sensível dentro da imagem por acidente.
+# Tudo que entra no contexto pode acabar numa camada, e camada publicada no
+# registro é leitura pública para quem tem acesso a ele.
+
+# Dependências e artefatos de build: a imagem instala e compila do zero.
+node_modules
+**/node_modules
+.next
+**/.next
+dist
+**/dist
+out
+**/out
+.turbo
+**/.turbo
+
+# Segredos. Nenhum arquivo de ambiente preenchido chega perto do contexto.
+.env
+.env.*
+!.env.example
+
+# Git. O histórico inteiro não tem utilidade dentro do contêiner, e é o maior
+# item do contexto depois das dependências.
+.git
+.gitignore
+.gitleaksignore
+.trivyignore
+
+# Documentação, relatórios e material de apoio.
+docs
+*.md
+!README.md
+*.pdf
+
+# Protótipo em Godot e ideias: não fazem parte da aplicação publicada.
+Jogo
+Ideias jogos
+Contexto Claude
+
+# Scripts de operação, que rodam contra o banco a partir de uma máquina de
+# quem administra — nunca de dentro do contêiner.
+scripts
+
+# Os outros apps do monorepo. A imagem é só do jogo; a API e o site publicam
+# por outro caminho. Os manifestos deles entram pelo COPY explícito do
+# Dockerfile, porque o pnpm precisa do workspace completo para resolver.
+apps/site/app
+apps/site/src
+apps/site/public
+apps/api/src
+apps/api/prisma
+apps/api/api
+
+# Ruído de editor e de sistema.
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+*.log
