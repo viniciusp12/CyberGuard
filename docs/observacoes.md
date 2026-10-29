@@ -163,13 +163,23 @@ inclusive da Etapa 4.
 |---|---|
 | **Onde** | `pnpm-workspace.yaml` |
 | **Classificação** | Vulnerabilidade real |
-| **Ação tomada** | `minimumReleaseAge: 1440` (24 horas) |
+| **Ação tomada** | `minimumReleaseAge: 10080` (7 dias) |
 | **Resultado** | `pnpm install --frozen-lockfile` segue passando |
 
 Ataque de conta de mantenedor comprometida costuma ser descoberto e a versão
-despublicada em horas. Esperar um dia antes de aceitar uma versão nova pega a
-maior parte desses casos, e custa pouco: ninguém aqui precisa de um pacote
-publicado hoje de manhã.
+despublicada em dias. Esperar antes de aceitar uma versão nova pega a maior
+parte desses casos, e custa pouco: ninguém aqui precisa de um pacote publicado
+hoje de manhã.
+
+**O primeiro valor não bastou.** A correção inicial foi `1440` (24 horas), e a
+execução #5 continuou acusando o mesmo achado — agora apontando para a linha da
+própria chave. Lendo a regra na fonte, o motivo ficou claro: ela compara
+`int(AGE) < 10080` e exige **no mínimo sete dias**. O valor foi corrigido para
+`10080`.
+
+Vale como método: quando a ferramenta continua reclamando de algo que parece
+corrigido, **ler a regra** responde mais rápido do que tentar valores. As
+regras do Semgrep são públicas em `semgrep.dev/c/r/<id>`.
 
 ### Achado 2.3 · Sem política contra rebaixamento — RISCO ACEITO
 
@@ -208,6 +218,13 @@ mesmo grau de confiança de antes. São dependências indiretas e populares.
 **Plano.** Reconstruir o lockfile numa branch, rodar a esteira inteira contra
 ela, comparar o relatório da Etapa 4 antes e depois e, passando, ligar a
 política e remover o `nosemgrep`.
+
+**Detalhe da supressão.** Esta regra não ancora o achado na configuração que
+falta — ancora na linha `packages:`, porque é ali que ela detecta um documento
+de workspace sem a chave. Como o `nosemgrep` só vale na mesma linha ou na
+imediatamente anterior, o comentário precisou ir para o **topo do arquivo**,
+colado no `packages:`. A primeira tentativa o colocou perto das outras
+configurações, no meio do arquivo, e não surtiu efeito nenhum.
 
 ### Achado 2.4 · Sem middleware de CSRF — MITIGADO POR OUTRO CONTROLE
 
@@ -322,7 +339,12 @@ lê-lo.
    derrubou o `pnpm install`. Testar localmente antes de enviar economizou uma
    execução vermelha e revelou um problema de procedência que ninguém sabia
    que existia.
-7. **Achado em commit antigo não sai corrigindo o arquivo.** A varredura cobre
+7. **Supressão só funciona onde a ferramenta ancora o achado, não onde o
+   problema parece estar.** O `nosemgrep` da política de confiança só passou a
+   valer depois de subir para a primeira linha do arquivo, porque é lá que a
+   regra marca. Vale conferir a linha exata do relatório antes de escrever a
+   supressão.
+8. **Achado em commit antigo não sai corrigindo o arquivo.** A varredura cobre
    todo o histórico, então um literal que já foi enviado continua sendo
    encontrado mesmo depois de o arquivo mudar. Ou se reescreve o histórico, ou
    se suprime o fingerprint com justificativa — e, para falso positivo, a

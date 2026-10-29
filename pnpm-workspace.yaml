@@ -1,3 +1,16 @@
+# `trustPolicy: no-downgrade` NAO foi aplicado, e a supressao fica aqui porque
+# a regra ancora o achado na linha `packages:` — o nosemgrep so vale na mesma
+# linha ou na imediatamente anterior.
+#
+# Ele funciona, e e justamente esse o problema: rejeita 6 entradas do lockfile
+# atual (chokidar, eslint-import-resolver-typescript, semver, tailwind-merge,
+# undici-types e vite) como possivel tomada de pacote, e derruba o
+# `pnpm install --frozen-lockfile`. Liga-lo exige reconstruir o lockfile do
+# zero e revalidar build, testes, imagem e os tres deploys — mudanca grande
+# demais para entrar sem janela de teste.
+#
+# Registrado em docs/observacoes.md, achado 2.3, com plano.
+# nosemgrep: package_managers.pnpm.pnpm-trust-policy.pnpm-trust-policy
 packages:
   - "apps/*"
   - "packages/*"
@@ -8,21 +21,13 @@ packages:
 #   fonte exótica (git, tarball por URL, link local). É por aí que entra
 #   pacote que não passa pelo registro e, portanto, por nenhuma varredura.
 #
-# minimumReleaseAge: ignora versão publicada há menos de 24h (1440 minutos).
-#   Ataque de conta comprometida costuma ser descoberto e despublicado em
-#   horas; esperar um dia pega a maior parte desses casos sem travar o time.
+# minimumReleaseAge: ignora versão publicada há menos de 7 dias (10080
+#   minutos). Ataque de conta de mantenedor comprometida costuma ser descoberto
+#   e a versão despublicada em dias. O primeiro valor tentado foi 1440 (24h), e
+#   a regra continuou acusando: ela exige no mínimo 10080.
 #
-# O terceiro ajuste que o Semgrep pede, `trustPolicy: no-downgrade`, NÃO foi
-# aplicado. Ele funciona, e é justamente esse o problema: rejeita 6 entradas do
-# lockfile atual (chokidar, eslint-import-resolver-typescript, semver,
-# tailwind-merge, undici-types e vite) como possível tomada de pacote, e
-# derruba o `pnpm install --frozen-lockfile`. Ligá-lo exige reconstruir o
-# lockfile do zero e revalidar build, testes e os três deploys — mudança grande
-# demais para entrar sem janela de teste. Registrado em docs/observacoes.md.
-#
-# nosemgrep: package_managers.pnpm.pnpm-trust-policy.pnpm-trust-policy
 blockExoticSubdeps: true
-minimumReleaseAge: 1440
+minimumReleaseAge: 10080
 
 # A partir do pnpm 10 estes ajustes moraram do package.json para cá.
 #
