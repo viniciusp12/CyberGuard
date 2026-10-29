@@ -33,6 +33,12 @@ const handler = require(path.join(RAIZ, "api", "index.js"));
 
 let houveFalha = false;
 
+// HTTP sem TLS de propósito: este servidor existe só dentro deste script, sobe
+// em 127.0.0.1 para exercitar o handler da Vercel e morre ao fim da execução.
+// Não é servido a ninguém, não sai da máquina e nunca vai para produção —
+// gerar certificado aqui seria cerimônia sem ganho de segurança.
+//
+// nosemgrep: problem-based-packs.insecure-transport.js-node.using-http-server.using-http-server
 const servidor = http.createServer((req, res) => {
   Promise.resolve(handler(req, res)).catch((erro) => {
     houveFalha = true;

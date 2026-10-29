@@ -53,6 +53,17 @@ let cached = null;
 let iniciando = null;
 
 async function criarApp() {
+  // A proteção contra CSRF aqui não é middleware, é a configuração do cookie
+  // de sessão: ele nasce com SameSite=Lax (ver auth.controller.ts), e o
+  // navegador não envia cookie Lax em POST, PUT ou DELETE vindos de outro
+  // site. Como toda rota que muda estado nesta API é POST ou DELETE, a janela
+  // que o csurf fecharia já está fechada. Soma-se o CORS negado por padrão em
+  // produção, que impede o navegador de sequer ler a resposta.
+  //
+  // Um token anti-CSRF ainda seria defesa em profundidade, e entra se algum
+  // dia existir rota que muda estado por GET.
+  //
+  // nosemgrep: javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
   const servidor = express();
 
   const app = await NestFactory.create(AppModule, new ExpressAdapter(servidor), {

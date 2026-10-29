@@ -132,7 +132,121 @@ passa batido. A varredura automática não substitui disciplina no `git add`.
 
 ## Etapa 2 — Análise estática (Semgrep)
 
-*A preencher na primeira execução que chegar aqui.*
+Execução #4: 5 achados, com os rulesets `p/default` e `p/owasp-top-ten`.
+Dois corrigidos, três classificados e suprimidos com justificativa.
+
+| # | Regra | Severidade | Classificação | Ação |
+|---|---|---|---|---|
+| 2.1 | `pnpm-block-exotic-sub-dependencies` | MEDIUM | Real | **Corrigido** |
+| 2.2 | `pnpm-minimum-release-age` | MEDIUM | Real | **Corrigido** |
+| 2.3 | `pnpm-trust-policy` | MEDIUM | Real | Risco aceito, com plano |
+| 2.4 | `express-check-csurf-middleware-usage` | INFO | Mitigado por outro controle | Suprimido |
+| 2.5 | `using-http-server` | WARNING | Falso positivo | Suprimido |
+
+### Achado 2.1 · Dependência transitiva de fonte exótica — CORRIGIDO
+
+| Campo | Conteúdo |
+|---|---|
+| **Onde** | `pnpm-workspace.yaml` |
+| **Classificação** | Vulnerabilidade real |
+| **Ação tomada** | `blockExoticSubdeps: true` |
+| **Resultado** | `pnpm install --frozen-lockfile` segue passando |
+
+Sem esse ajuste, uma dependência indireta pode ser puxada de git, tarball por
+URL ou link local. O problema não é o formato: é que esse pacote **não passa
+pelo registro**, e portanto escapa de qualquer varredura que confie nele —
+inclusive da Etapa 4.
+
+### Achado 2.2 · Sem idade mínima de publicação — CORRIGIDO
+
+| Campo | Conteúdo |
+|---|---|
+| **Onde** | `pnpm-workspace.yaml` |
+| **Classificação** | Vulnerabilidade real |
+| **Ação tomada** | `minimumReleaseAge: 1440` (24 horas) |
+| **Resultado** | `pnpm install --frozen-lockfile` segue passando |
+
+Ataque de conta de mantenedor comprometida costuma ser descoberto e a versão
+despublicada em horas. Esperar um dia antes de aceitar uma versão nova pega a
+maior parte desses casos, e custa pouco: ninguém aqui precisa de um pacote
+publicado hoje de manhã.
+
+### Achado 2.3 · Sem política contra rebaixamento — RISCO ACEITO
+
+| Campo | Conteúdo |
+|---|---|
+| **Onde** | `pnpm-workspace.yaml` |
+| **Classificação** | **Vulnerabilidade real**, não corrigida agora |
+| **Ação tomada** | Suprimido com `nosemgrep` e plano registrado |
+| **Resultado** | Pendente |
+
+Este é o achado mais interessante dos cinco, e o único que fica em aberto.
+
+`trustPolicy: no-downgrade` impede que uma atualização **rebaixe** a versão de
+um pacote — truque usado para reintroduzir falha já corrigida. A configuração
+foi aplicada e testada. Ela funciona, e é exatamente por isso que não ficou:
+ao ligá-la, o `pnpm install --frozen-lockfile` passou a **rejeitar 6 entradas
+do lockfile atual**.
+
+```
+[ERR_PNPM_TRUST_DOWNGRADE] 6 lockfile entries failed verification:
+  chokidar@4.0.3, eslint-import-resolver-typescript@3.10.1, semver@6.3.1,
+  tailwind-merge@2.6.1, undici-types@6.21.0, vite@5.4.21
+  "High-risk trust downgrade (possible package takeover)"
+```
+
+**Por que não corrigimos agora.** Ligar a política exige reconstruir o lockfile
+do zero (`pnpm clean --lockfile` e nova resolução), o que muda versões de
+dependências transitivas em todo o monorepo. Isso pede revalidar build, testes,
+a imagem e os três deploys — janela de teste que não existe a dias da entrega,
+num projeto que acabou de voltar ao ar.
+
+**O que isso não significa.** O alerta não é prova de pacote comprometido. Ele
+diz que o pnpm não conseguiu confirmar a procedência daquelas versões com o
+mesmo grau de confiança de antes. São dependências indiretas e populares.
+
+**Plano.** Reconstruir o lockfile numa branch, rodar a esteira inteira contra
+ela, comparar o relatório da Etapa 4 antes e depois e, passando, ligar a
+política e remover o `nosemgrep`.
+
+### Achado 2.4 · Sem middleware de CSRF — MITIGADO POR OUTRO CONTROLE
+
+| Campo | Conteúdo |
+|---|---|
+| **Onde** | `apps/api/api/index.js:56` |
+| **Classificação** | Risco real, já mitigado |
+| **Ação tomada** | Suprimido com `nosemgrep` e justificativa no código |
+| **Resultado** | Etapa 2 verde |
+
+A regra procura um middleware como `csurf` e não encontra. Ela não tem como
+saber que a defesa está em outro lugar: **na configuração do cookie**.
+
+O cookie de sessão nasce com `sameSite: "lax"`
+(`apps/api/src/auth/auth.controller.ts:25`), e o navegador **não envia cookie
+Lax em POST, PUT ou DELETE vindos de outro site**. Como toda rota que muda
+estado nesta API é POST ou DELETE, a janela que o `csurf` fecharia já está
+fechada. Soma-se o CORS negado por padrão em produção.
+
+Onde a mitigação falharia: se algum dia existir rota que muda estado por GET,
+porque navegação GET de topo *carrega* cookie Lax. Hoje não existe nenhuma, e
+um token anti-CSRF entra como defesa em profundidade se isso mudar.
+
+### Achado 2.5 · Servidor HTTP sem TLS — FALSO POSITIVO
+
+| Campo | Conteúdo |
+|---|---|
+| **Onde** | `scripts/testar-handler.js:36` |
+| **Classificação** | **Falso positivo** |
+| **Ação tomada** | Suprimido com `nosemgrep` e justificativa no código |
+| **Resultado** | Etapa 2 verde |
+
+O arquivo é um arranjo de teste local: sobe um servidor em `127.0.0.1` para
+exercitar o handler da Vercel fora do ambiente serverless e encerra ao fim da
+execução. Não é servido a ninguém, não sai da máquina, não é publicado.
+
+A regra é certa no caso geral — servidor HTTP em produção é problema. Mas ela
+não distingue aplicação de ferramenta de desenvolvimento, e gerar certificado
+para um processo que vive 3 segundos em `localhost` é cerimônia sem ganho.
 
 ## Etapa 3 — Build e dependências
 
@@ -199,7 +313,16 @@ lê-lo.
    dentro do relatório faz a ferramenta marcar o relatório — e truncar não
    basta, porque a regra olha entropia, não tamanho. Em documentação de
    segurança, descreva o valor em prosa em vez de reproduzi-lo.
-5. **Achado em commit antigo não sai corrigindo o arquivo.** A varredura cobre
+5. **Nem todo achado se resolve corrigindo o código — alguns se resolvem
+   corrigindo a configuração do gerenciador de pacotes.** Três dos cinco
+   achados do Semgrep eram sobre cadeia de suprimentos, e nenhum apontava uma
+   linha de código nossa: apontavam o que o `pnpm-workspace.yaml` não dizia.
+6. **Aplicar a correção sugerida sem testar pode quebrar a esteira.** O
+   `trustPolicy: no-downgrade` é exatamente o que a ferramenta pediu, e
+   derrubou o `pnpm install`. Testar localmente antes de enviar economizou uma
+   execução vermelha e revelou um problema de procedência que ninguém sabia
+   que existia.
+7. **Achado em commit antigo não sai corrigindo o arquivo.** A varredura cobre
    todo o histórico, então um literal que já foi enviado continua sendo
    encontrado mesmo depois de o arquivo mudar. Ou se reescreve o histórico, ou
    se suprime o fingerprint com justificativa — e, para falso positivo, a

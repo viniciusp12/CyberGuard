@@ -2,6 +2,28 @@ packages:
   - "apps/*"
   - "packages/*"
 
+# Defesas de cadeia de suprimentos, apontadas pelo Semgrep na Etapa 2.
+#
+# blockExoticSubdeps: impede que uma dependência transitiva seja puxada de
+#   fonte exótica (git, tarball por URL, link local). É por aí que entra
+#   pacote que não passa pelo registro e, portanto, por nenhuma varredura.
+#
+# minimumReleaseAge: ignora versão publicada há menos de 24h (1440 minutos).
+#   Ataque de conta comprometida costuma ser descoberto e despublicado em
+#   horas; esperar um dia pega a maior parte desses casos sem travar o time.
+#
+# O terceiro ajuste que o Semgrep pede, `trustPolicy: no-downgrade`, NÃO foi
+# aplicado. Ele funciona, e é justamente esse o problema: rejeita 6 entradas do
+# lockfile atual (chokidar, eslint-import-resolver-typescript, semver,
+# tailwind-merge, undici-types e vite) como possível tomada de pacote, e
+# derruba o `pnpm install --frozen-lockfile`. Ligá-lo exige reconstruir o
+# lockfile do zero e revalidar build, testes e os três deploys — mudança grande
+# demais para entrar sem janela de teste. Registrado em docs/observacoes.md.
+#
+# nosemgrep: package_managers.pnpm.pnpm-trust-policy.pnpm-trust-policy
+blockExoticSubdeps: true
+minimumReleaseAge: 1440
+
 # A partir do pnpm 10 estes ajustes moraram do package.json para cá.
 #
 # postcss e nanoid: correções de XSS e path traversal via sourceMappingURL.
