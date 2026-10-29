@@ -1,0 +1,25 @@
+# Supressões do Gitleaks.
+#
+# Regra da casa: nada entra aqui sem justificativa técnica escrita e sem o
+# achado correspondente registrado em docs/observacoes.md. Ignorar em massa
+# para "deixar a esteira verde" derrota o propósito da Etapa 1.
+#
+# Formato: <commit>:<arquivo>:<regra>:<linha>
+
+# ─────────────────────────────────────────────────────────────────────────────
+# generic-api-key · apps/api/src/common/password.util.ts:14
+#
+# FALSO POSITIVO. A constante TEMP_PASSWORD_ALPHABET não é uma credencial: é o
+# conjunto de caracteres de onde `generateTemporaryPassword` sorteia cada letra
+# da senha provisória. O valor é público por natureza — está no código aberto e
+# conhecê-lo não ajuda a adivinhar senha nenhuma, porque a aleatoriedade vem de
+# `randomBytes`, não do alfabeto.
+#
+# O alfabeto omite de propósito os caracteres ambíguos (I, l, O, 0, 1), para a
+# senha poder ser ditada por telefone sem erro.
+#
+# A regra disparou por heurística: nome de variável com "PASSWORD" e valor
+# longo de alta entropia. É exatamente o perfil de um falso positivo.
+#
+# Registrado em docs/observacoes.md, seção "Etapa 1".
+f253b0c3dbc7c3cd149002049ae6fa2f2aa8ab5f:apps/api/src/common/password.util.ts:generic-api-key:14
