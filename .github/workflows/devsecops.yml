@@ -1,0 +1,489 @@
+name: Esteira DevSecOps
+
+# A esteira é sequencial: cada etapa só roda se a anterior passar. O resumo no
+# fim roda SEMPRE (if: always()), para que o ponto de quebra fique visível
+# mesmo quando algo falha — que é justamente quando ele é mais útil.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Permissão mínima no topo. Cada job pede a mais só se precisar, e nenhum
+# herda mais do que usa: a escrita de pacotes aparece uma vez só, na etapa 5.
+permissions:
+  contents: read
+
+env:
+  # GHCR exige o nome em minúsculas.
+  IMAGE_NAME: ghcr.io/viniciusp12/cyberguard
+  # Versões fixas. Tag móvel muda de conteúdo sem avisar, e aí o relatório de
+  # hoje não descreve o que roda amanhã.
+  GITLEAKS_VERSION: v8.21.2
+  SEMGREP_VERSION: 1.95.0
+  TRIVY_VERSION: 0.57.0
+
+jobs:
+  # ─── Etapa 1 ──────────────────────────────────────────────────────────────
+  secrets-scan:
+    name: 1 · Segredos (Gitleaks)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # O histórico inteiro: segredo removido no último commit continua
+          # nos anteriores, e é lá que ele precisa ser encontrado.
+          fetch-depth: 0
+
+      - name: Varrer o histórico
+        run: |
+          docker run --rm -v "$PWD:/repo" \
+            zricethezav/gitleaks:${{ env.GITLEAKS_VERSION }} \
+            detect --source=/repo \
+              --redact \
+              --report-format json \
+              --report-path /repo/gitleaks.json \
+              --exit-code 1
+        # --redact impede que o relatório reexponha o segredo encontrado.
+        # --exit-code 1 é o quality gate: achou, a esteira para aqui.
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relatorio-01-gitleaks
+          path: gitleaks.json
+          if-no-files-found: warn
+
+  # ─── Etapa 2 ──────────────────────────────────────────────────────────────
+  sast:
+    name: 2 · Análise estática (Semgrep)
+    needs: secrets-scan
+    runs-on: ubuntu-24.04
+    container:
+      image: semgrep/semgrep:1.95.0
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Analisar o código
+        run: |
+          semgrep scan \
+            --config=p/default \
+            --config=p/owasp-top-ten \
+            --json --output=semgrep.json \
+            --sarif --sarif-output=semgrep.sarif \
+            --error \
+            --metrics=off
+        # --error faz a esteira falhar quando há achado bloqueante.
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relatorio-02-semgrep
+          path: |
+            semgrep.json
+            semgrep.sarif
+          if-no-files-found: warn
+
+  # ─── Etapa 3 ──────────────────────────────────────────────────────────────
+  build:
+    name: 3 · Build, dependências e artefato
+    needs: sast
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.18.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar de forma determinística
+        # --frozen-lockfile falha se o lockfile não bater com os manifestos,
+        # em vez de resolver versões por conta própria.
+        run: pnpm install --frozen-lockfile
+
+      - name: Árvore de dependências
+        run: pnpm list --recursive --depth 2 > arvore-dependencias.txt
+
+      - name: Auditoria do gerenciador de pacotes
+        # Informativa nesta etapa: o bloqueio por dependência é da etapa 4.
+        run: pnpm audit --json > npm-audit.json || true
+
+      - name: Validar o conteúdo do jogo
+        run: pnpm validate-content
+
+      - name: Testes
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relatorio-03-build
+          path: |
+            arvore-dependencias.txt
+            npm-audit.json
+          if-no-files-found: warn
+
+      - name: Publicar o artefato versionado pelo commit
+        uses: actions/upload-artifact@v4
+        with:
+          name: artefato-aplicacao-${{ github.sha }}
+          path: |
+            apps/jogo/.next
+            packages/shared/dist
+          retention-days: 7
+
+  # ─── Etapa 4 ──────────────────────────────────────────────────────────────
+  sca:
+    name: 4 · Dependências (Trivy fs)
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Relatório completo, para leitura humana
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,misconfig,secret
+          format: table
+          output: trivy-fs.txt
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          exit-code: "0"
+
+      - name: Quality gate — falha em HIGH ou CRITICAL
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,misconfig,secret
+          format: json
+          output: trivy-fs.json
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relatorio-04-trivy-sca
+          path: |
+            trivy-fs.txt
+            trivy-fs.json
+          if-no-files-found: warn
+
+  # ─── Etapa 5 ──────────────────────────────────────────────────────────────
+  docker-build:
+    name: 5 · Imagem no GHCR
+    needs: sca
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      # Única etapa que escreve pacote. Nenhuma outra herda isto.
+      packages: write
+    outputs:
+      digest: ${{ steps.push.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Construir e publicar
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          # Tag pelo SHA do commit, nunca latest: latest é mutável e impede
+          # saber o que de fato está publicado.
+          tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Registrar imagem, digest e manifesto
+        run: |
+          {
+            echo "# Etapa 5 — Imagem publicada"
+            echo
+            echo "| Campo | Valor |"
+            echo "|---|---|"
+            echo "| Imagem | \`${IMAGE_NAME}:${GITHUB_SHA}\` |"
+            echo "| Digest | \`${{ steps.push.outputs.digest }}\` |"
+            echo "| Commit | ${GITHUB_SHA} |"
+            echo "| Execução | ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID} |"
+            echo
+            echo "## Manifesto"
+            echo '```json'
+            docker buildx imagetools inspect "${IMAGE_NAME}:${GITHUB_SHA}" --raw || true
+            echo '```'
+          } > docker-build.md
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relatorio-05-docker-build
+          path: docker-build.md
+          if-no-files-found: warn
+
+  # ─── Etapa 6 ──────────────────────────────────────────────────────────────
+  image-scan:
+    name: 6 · Varredura da imagem (Trivy)
+    needs: docker-build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Relatório completo, para leitura humana
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: image
+          image-ref: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: table
+          output: trivy-image.txt
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          exit-code: "0"
+
+      - name: Quality gate — HIGH/CRITICAL que já têm correção
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: image
+          image-ref: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: json
+          output: trivy-image.json
+          severity: HIGH,CRITICAL
+          # --ignore-unfixed: falhar por falha sem correção disponível só
+          # bloqueia a entrega sem dar ação possível ao time.
+          ignore-unfixed: true
+          exit-code: "1"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relatorio-06-trivy-image
+          path: |
+            trivy-image.txt
+            trivy-image.json
+          if-no-files-found: warn
+
+  # ─── Etapa 7 ──────────────────────────────────────────────────────────────
+  dast-staging:
+    name: 7 · Homologação + DAST (OWASP ZAP)
+    needs: image-scan
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+    environment: homologacao
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Subir a homologação a partir da imagem aprovada
+        # O próprio runner é o ambiente de homologação, caminho que o enunciado
+        # permite. Varredura dinâmica só contra ambiente do próprio grupo.
+        run: |
+          docker run -d --name homologacao -p 3000:3000 \
+            -e API_ORIGIN=https://cyber-guard-api.vercel.app \
+            "${IMAGE_NAME}:${GITHUB_SHA}"
+
+      - name: Esperar a aplicação responder
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:3000/login > /dev/null; then
+              echo "Homologação no ar após ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "A aplicação não respondeu em 30s. Log do contêiner:"
+          docker logs homologacao
+          exit 1
+
+      - name: Descobrir o endereço da homologação
+        id: alvo
+        # O ZAP roda dentro de um contêiner, então "localhost" apontaria para
+        # ele mesmo. O IP do runner é alcançável de qualquer rede do Docker,
+        # porque a porta 3000 foi publicada em todas as interfaces.
+        run: echo "url=http://$(hostname -I | awk '{print $1}'):3000" >> "$GITHUB_OUTPUT"
+
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: ${{ steps.alvo.outputs.url }}
+          # Informativo nesta atividade: quem decide seguir para produção é a
+          # pessoa aprovadora, com o relatório na mão.
+          fail_action: false
+          cmd_options: -a -j
+          allow_issue_writing: false
+
+      - name: Log do contêiner, para o relatório
+        if: always()
+        run: docker logs homologacao > homologacao-container.log 2>&1 || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relatorio-07-homologacao-zap
+          path: |
+            report_html.html
+            report_json.json
+            report_md.md
+            homologacao-container.log
+          if-no-files-found: warn
+
+      - name: Derrubar a homologação
+        if: always()
+        run: docker rm -f homologacao || true
+
+  # ─── Etapa 8 ──────────────────────────────────────────────────────────────
+  deploy-prod:
+    name: 8 · Aprovação e produção
+    needs: dast-staging
+    runs-on: ubuntu-24.04
+    # O environment "producao" tem revisor obrigatório: o job fica parado aqui
+    # até alguém revisar os relatórios das etapas 1 a 7 e aprovar.
+    # Os secrets abaixo vivem DENTRO do environment, então só um job já
+    # aprovado consegue lê-los.
+    environment:
+      name: producao
+      url: https://cyber-guard-jogo.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.18.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Publicar na Vercel
+        # A Vercel constrói a partir do código e não aceita imagem de
+        # contêiner. A rastreabilidade vem do commit: o deploy é preso ao
+        # mesmo SHA que gerou a imagem escaneada nas etapas 5 e 6. A adaptação
+        # está justificada no README.
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npx --yes vercel@39.1.1 pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx --yes vercel@39.1.1 build --prod --token="$VERCEL_TOKEN"
+          npx --yes vercel@39.1.1 deploy --prebuilt --prod --token="$VERCEL_TOKEN" > url-producao.txt
+          echo "Publicado em: $(cat url-producao.txt)"
+
+      - name: Relatório do deploy
+        if: always()
+        run: |
+          {
+            echo "# Etapa 8 — Deploy em produção"
+            echo
+            echo "| Campo | Valor |"
+            echo "|---|---|"
+            echo "| Imagem auditada | \`${IMAGE_NAME}:${GITHUB_SHA}\` |"
+            echo "| Commit | ${GITHUB_SHA} |"
+            echo "| Aprovado e disparado por | @${GITHUB_ACTOR} |"
+            echo "| Data | $(date -u '+%Y-%m-%d %H:%M:%S UTC') |"
+            echo "| URL de produção | $(cat url-producao.txt 2>/dev/null || echo 'não publicada') |"
+            echo "| Execução | ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID} |"
+          } > deploy-producao.md
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relatorio-08-producao
+          path: deploy-producao.md
+          if-no-files-found: warn
+
+  # ─── Resumo ───────────────────────────────────────────────────────────────
+  pipeline-summary:
+    name: ★ Resumo da Esteira
+    # Depende de todas as etapas e roda SEMPRE: é o que mostra onde quebrou.
+    needs:
+      [secrets-scan, sast, build, sca, docker-build, image-scan, dast-staging, deploy-prod]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Baixar todos os relatórios
+        uses: actions/download-artifact@v4
+        with:
+          path: relatorios
+          merge-multiple: false
+
+      - name: Consolidar
+        run: |
+          set -u
+          achados() {
+            local arquivo="$1" filtro="$2" rotulo="$3"
+            if [ -f "$arquivo" ]; then
+              local n
+              n=$(jq "$filtro" "$arquivo" 2>/dev/null || echo 0)
+              echo "${n} ${rotulo}"
+            else
+              echo "sem relatório"
+            fi
+          }
+
+          G=$(achados relatorios/relatorio-01-gitleaks/gitleaks.json 'length' 'segredos')
+          S=$(achados relatorios/relatorio-02-semgrep/semgrep.json '.results | length' 'achados')
+          A=$(achados relatorios/relatorio-03-build/npm-audit.json '[.advisories // {} | to_entries[]] | length' 'avisos')
+          F=$(achados relatorios/relatorio-04-trivy-sca/trivy-fs.json '[.Results[]?.Vulnerabilities[]?] | length' 'HIGH/CRITICAL')
+          I=$(achados relatorios/relatorio-06-trivy-image/trivy-image.json '[.Results[]?.Vulnerabilities[]?] | length' 'HIGH/CRITICAL')
+          Z=$(achados relatorios/relatorio-07-homologacao-zap/report_json.json '[.site[]?.alerts[]?] | length' 'alertas')
+
+          {
+            echo "# Resumo da Esteira"
+            echo
+            echo "Commit \`${GITHUB_SHA:0:7}\` · execução [#${GITHUB_RUN_NUMBER}](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})"
+            echo
+            echo "| # | Etapa | Resultado | Achados |"
+            echo "|---|---|---|---|"
+            echo "| 1 | Segredos (Gitleaks) | ${{ needs['secrets-scan'].result }} | ${G} |"
+            echo "| 2 | SAST (Semgrep) | ${{ needs.sast.result }} | ${S} |"
+            echo "| 3 | Build + dependências | ${{ needs.build.result }} | ${A} |"
+            echo "| 4 | SCA (Trivy fs) | ${{ needs.sca.result }} | ${F} |"
+            echo "| 5 | Imagem no GHCR | ${{ needs['docker-build'].result }} | — |"
+            echo "| 6 | Varredura da imagem | ${{ needs['image-scan'].result }} | ${I} |"
+            echo "| 7 | Homologação + ZAP | ${{ needs['dast-staging'].result }} | ${Z} |"
+            echo "| 8 | Aprovação + produção | ${{ needs['deploy-prod'].result }} | — |"
+            echo
+            echo "Imagem auditada: \`${IMAGE_NAME}:${GITHUB_SHA}\`"
+          } > resumo-esteira.md
+
+          cat resumo-esteira.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: resumo-da-esteira
+          path: resumo-esteira.md
