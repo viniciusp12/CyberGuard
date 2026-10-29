@@ -26,7 +26,6 @@ No painel do Supabase, vá em **SQL Editor** e rode, nesta ordem:
 | 1 | `scripts/restaurar-banco.sql` | Cria as 4 tabelas, os índices e as chaves estrangeiras |
 | 2 | `scripts/criar-admin.sql` | Cria a conta de administrador (`vinicius.olivetti`) |
 | 3 | `scripts/seed-demo.sql` | *(opcional)* 10 usuários de demonstração |
-| 4 | `scripts/seed-alunos.sql` | *(opcional)* 60 contas de aluno |
 
 > **Por que pelo SQL Editor e não pelo `prisma migrate deploy`?**
 > O comando do Prisma precisa falar com a porta 5432 do Postgres, e redes de
