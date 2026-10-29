@@ -38,15 +38,39 @@ No painel do Supabase, vá em **SQL Editor** e rode, nesta ordem:
 
 ### 1.3 Pegar as duas URLs de conexão
 
-Em **Project Settings → Database → Connection string**:
+Clique no botão **`Connect`**, no topo do painel do projeto, ao lado do nome.
+Abre um modal com abas.
 
-- **`DATABASE_URL`** — aba **Transaction** (porta **6543**). Acrescente no fim:
-  `?pgbouncer=true&connection_limit=1`
-- **`DIRECT_URL`** — aba **Session** (porta **5432**), sem parâmetros extras.
+> Não procure em Project Settings → Database: a Supabase mudou a interface e
+> tirou as connection strings de lá.
 
-A primeira é o *pooler*: em serverless cada invocação pode abrir a própria
-conexão, e o Postgres direto estoura o limite em minutos. A segunda só é usada
-por migrations, que precisam de conexão real.
+| Aba do modal | Serve para | Porta |
+|---|---|---|
+| **Transaction pooler** | `DATABASE_URL` | 6543 |
+| **Session pooler** | `DIRECT_URL` | 5432 |
+
+Acrescente `?pgbouncer=true&connection_limit=1` no fim **apenas** da
+`DATABASE_URL`. A `DIRECT_URL` vai sem parâmetro nenhum.
+
+As duas ficam assim, mudando só a porta e o sufixo:
+
+```
+DATABASE_URL="postgresql://postgres.SEUREF:SENHA@aws-0-REGIAO.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
+DIRECT_URL="postgresql://postgres.SEUREF:SENHA@aws-0-REGIAO.pooler.supabase.com:5432/postgres"
+```
+
+Onde `SENHA` vem escrito `[YOUR-PASSWORD]` no texto copiado — troque pela senha
+definida na criação do projeto. `SEUREF` é o **Reference ID**, em
+Settings → General.
+
+**Ignore a aba "Direct connection".** Ela é a conexão real ao banco, mas hoje
+responde só em IPv6, e a maioria das redes não alcança. A "Session pooler" faz
+o mesmo papel e funciona em IPv4.
+
+Por que duas URLs: a de 6543 é o *pooler*, e existe porque em serverless cada
+invocação pode abrir a própria conexão — o Postgres estoura o limite em
+minutos. A de 5432 é usada só por migrations, que precisam de uma sessão que o
+pooler em modo transação não consegue manter.
 
 ---
 
