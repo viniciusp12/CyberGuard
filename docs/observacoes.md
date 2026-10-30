@@ -267,7 +267,17 @@ para um processo que vive 3 segundos em `localhost` é cerimônia sem ganho.
 
 ## Etapa 3 — Build e dependências
 
-*A preencher.*
+Passou sem achado bloqueante em todas as execuções que chegaram aqui.
+
+A auditoria do gerenciador de pacotes (`pnpm audit`) é informativa nesta etapa
+de propósito: o bloqueio por dependência vulnerável acontece na Etapa 4, com o
+Trivy, que tem base de dados mais ampla e classifica severidade de forma
+consistente com a varredura da imagem. Duas ferramentas barrando a mesma coisa
+em etapas seguidas só duplicaria o trabalho de triagem.
+
+O que esta etapa garante: instalação determinística (`--frozen-lockfile`),
+validação do conteúdo do jogo, **66 testes automatizados** e o artefato
+publicado com o SHA do commit.
 
 ## Etapa 4 — SCA (Trivy fs)
 
@@ -424,10 +434,6 @@ bem o ponto:
 Uma etapa não substitui a outra. Um projeto com zero vulnerabilidades no
 lockfile pode publicar uma imagem cheia delas.
 
-## Etapa 6 — Varredura da imagem (Trivy)
-
-*A preencher.*
-
 ## Etapa 7 — Homologação e DAST (OWASP ZAP)
 
 Primeira execução que chegou aqui: **60 regras PASS, 0 FAIL, 11 WARN**.
@@ -490,7 +496,52 @@ aplicação rodando, no ambiente empacotado.
 
 ## Etapa 8 — Aprovação e produção
 
-*A preencher quando a esteira chegar aqui e o deploy for aprovado.*
+A esteira fechou inteira na execução #14: **8 etapas e o resumo, em 11
+minutos**, com o deploy aprovado por uma pessoa antes de ir ao ar.
+
+### Um achado de ferramenta, não de aplicação
+
+A primeira tentativa de deploy falhou:
+
+```
+Error: Found invalid Node.js Version: "26.x".
+Please set Node.js Version to 22.x in your Project Settings.
+```
+
+A versão do CLI da Vercel fixada no workflow (39.1.1) era antiga demais e não
+reconhecia a versão de Node que o projeto usa.
+
+Havia duas saídas: **rebaixar o Node do projeto** para 22, ou **atualizar o
+CLI**. A primeira faria o ambiente de produção regredir para acomodar uma
+ferramenta velha — a troca errada. O CLI subiu para 65.8.0, e segue fixo.
+
+### O que foi verificado depois do deploy
+
+Em `https://cyber-guard-jogo.vercel.app`:
+
+| Verificação | Resultado |
+|---|---|
+| Aplicação responde | HTTP 200 |
+| `Content-Security-Policy` | presente |
+| `X-Content-Type-Options: nosniff` | presente |
+| `X-Frame-Options: DENY` | presente |
+| `Referrer-Policy` | presente |
+| `Permissions-Policy` | presente |
+| `X-Powered-By` | **removido** |
+| `/api/players/me` sem sessão | **401**, e não mais 500 |
+
+As correções das Etapas 7 e 8 chegaram à produção de verdade, não ficaram só
+no relatório.
+
+### A adaptação do deploy, declarada
+
+A Vercel constrói a partir do código e **não aceita imagem de contêiner**. A
+imagem é construída, publicada no GHCR e escaneada (Etapas 5 e 6), e é ela que
+sobe na homologação para o ZAP atacar — mas a produção é montada pela Vercel.
+
+A rastreabilidade vem do commit: o deploy é preso ao mesmo SHA que gerou a
+imagem auditada. Não é o ideal do enunciado, que pede deploy pela imagem, e
+está registrado aqui como desvio consciente em vez de ser omitido.
 
 ---
 
