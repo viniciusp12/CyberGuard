@@ -430,11 +430,67 @@ lockfile pode publicar uma imagem cheia delas.
 
 ## Etapa 7 — Homologação e DAST (OWASP ZAP)
 
-*A preencher.*
+Primeira execução que chegou aqui: **60 regras PASS, 0 FAIL, 11 WARN**.
+
+O ZAP é informativo nesta atividade, então nada disso barrou a esteira. Ainda
+assim os alertas foram tratados — é a etapa que encontra o que as outras não
+veem, porque olha a aplicação **de fora, rodando**.
+
+### Corrigidos: cabeçalhos de segurança ausentes
+
+| Alerta ZAP | Correção |
+|---|---|
+| Missing Anti-clickjacking Header [10020] | `X-Frame-Options: DENY` + `frame-ancestors 'none'` |
+| X-Content-Type-Options Missing [10021] | `X-Content-Type-Options: nosniff` |
+| X-Powered-By leak [10037] | `poweredByHeader: false` |
+| CSP Header Not Set [10038] | `Content-Security-Policy` completa |
+| Permissions Policy Not Set [10063] | `Permissions-Policy` negando câmera, microfone, localização |
+
+Tudo em `apps/jogo/next.config.ts`. Antes de escrever a CSP, foi verificado que
+o jogo **não carrega nada de origem externa**: as fontes vêm do `next/font`,
+servidas pelo próprio app, e a API é chamada em `/api/...`, mesma origem. Por
+isso `default-src 'self'` não quebra nada.
+
+**Limitação assumida:** `script-src` aceita `'unsafe-inline'`. O Next injeta
+scripts embutidos para hidratar a página e, sem isso, a aplicação não carrega.
+A forma correta de fechar essa brecha é CSP por *nonce*, gerado a cada
+requisição num middleware — exige mudar o fluxo de renderização e revalidar o
+jogo inteiro, então fica registrado como melhoria, não como feito. Mesmo
+permissiva, a diretiva já barra script de outra origem.
+
+### O achado que só o DAST encontraria
+
+O alerta **Application Error Disclosure [90022]** apontou um **500** em
+`/api/players/me`. A mesma rota em produção devolve **401**, como deveria.
+
+A causa: **o Next congela os rewrites no manifesto durante o build**, não os lê
+do ambiente quando o servidor sobe. O `docker run` da homologação passava
+`-e API_ORIGIN=...`, mas quando o contêiner iniciava a rota já estava gravada —
+apontando para `localhost:3003`, que não existe dentro do contêiner. O proxy
+falhava e devolvia 500.
+
+Corrigido: `API_ORIGIN` virou `ARG` do Dockerfile, presente em tempo de build,
+e a Etapa 5 passa o `build-args`. O `-e` do `docker run` saiu, porque não fazia
+nada.
+
+Esse é o exemplo mais claro do valor desta etapa. As Etapas 1 a 6 passaram
+todas — nenhuma análise de código, de dependência ou de imagem poderia ver
+isso, porque **não é erro de código**: é configuração que só se manifesta com a
+aplicação rodando, no ambiente empacotado.
+
+### Classificados como ruído
+
+| Alerta | Por quê |
+|---|---|
+| Sec-Fetch-Dest Missing [90005] | É cabeçalho de **requisição**, enviado pelo navegador. O ZAP reclama das próprias requisições, não da aplicação. |
+| Modern Web Application [10109] | Informativo: só diz que a página usa JavaScript. |
+| Non-Storable Content [10049] | Conteúdo autenticado **não deve** ser armazenado em cache. O alerta aqui descreve o comportamento correto. |
+| Cross-Origin-Embedder-Policy [90004] | Não aplicado: `require-corp` quebra carregamento de recursos e o ganho, num app que não usa isolamento de origem, não paga o risco. |
+| Content-Type Missing [10019] | Apareceu só na resposta 500 acima. Deve desaparecer junto com ela.
 
 ## Etapa 8 — Aprovação e produção
 
-*A preencher.*
+*A preencher quando a esteira chegar aqui e o deploy for aprovado.*
 
 ---
 

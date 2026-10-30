@@ -230,6 +230,10 @@ jobs:
         with:
           context: .
           push: true
+          # O Next congela os rewrites no build, entao o endereco da API
+          # precisa estar presente aqui — nao adianta passar no docker run.
+          build-args: |
+            API_ORIGIN=https://cyber-guard-api.vercel.app
           # Tag pelo SHA do commit, nunca latest: latest é mutável e impede
           # saber o que de fato está publicado.
           tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
@@ -333,7 +337,6 @@ jobs:
         # permite. Varredura dinâmica só contra ambiente do próprio grupo.
         run: |
           docker run -d --name homologacao -p 3000:3000 \
-            -e API_ORIGIN=https://cyber-guard-api.vercel.app \
             "${IMAGE_NAME}:${GITHUB_SHA}"
 
       - name: Esperar a aplicação responder
@@ -357,7 +360,7 @@ jobs:
         run: echo "url=http://$(hostname -I | awk '{print $1}'):3000" >> "$GITHUB_OUTPUT"
 
       - name: ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.12.0
+        uses: zaproxy/action-baseline@v0.15.0
         with:
           target: ${{ steps.alvo.outputs.url }}
           # Informativo nesta atividade: quem decide seguir para produção é a
@@ -365,6 +368,10 @@ jobs:
           fail_action: false
           cmd_options: -a -j
           allow_issue_writing: false
+          # A v0.12.0 publicava o relatorio pela API antiga de artifacts, que o
+          # GitHub desativou: a varredura terminava e o job morria logo depois
+          # com "The artifact name zap_scan is not valid". A v0.15.0 usa a API
+          # atual. O upload proprio desta etapa continua logo abaixo.
 
       - name: Log do contêiner, para o relatório
         if: always()

@@ -56,6 +56,21 @@ RUN pnpm install --frozen-lockfile
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DOCKER_BUILD=1
 
+# Endereco da API, em tempo de BUILD.
+#
+# O Next congela os rewrites no manifesto durante o `next build` — eles nao sao
+# lidos do ambiente quando o servidor sobe. Passar -e API_ORIGIN no `docker run`
+# nao tem efeito nenhum: quando o conteiner inicia, a rota ja esta gravada.
+#
+# Sem isto, a imagem saia com o proxy apontando para localhost:3003, que nao
+# existe dentro do conteiner. O sintoma apareceu so na Etapa 7: o ZAP pegou um
+# 500 em /api/players/me, enquanto a mesma rota em producao devolve 401. Foi
+# exatamente o tipo de falha que so a analise dinamica encontra.
+#
+# Nao e segredo: e uma URL publica. Segredo continua fora de ARG e ENV.
+ARG API_ORIGIN=https://cyber-guard-api.vercel.app
+ENV API_ORIGIN=${API_ORIGIN}
+
 # O turbo compila @repo/shared antes do jogo, porque o jogo depende dele.
 RUN pnpm turbo run build --filter=jogo
 

@@ -44,7 +44,54 @@ const API_ORIGIN =
  */
 const buildDocker = process.env.DOCKER_BUILD === "1";
 
+/**
+ * Cabeçalhos de segurança, em resposta aos alertas do ZAP na Etapa 7.
+ *
+ * Uma observação honesta sobre a CSP: `script-src` aceita `'unsafe-inline'`.
+ * Não é descuido — o Next injeta scripts embutidos para hidratar a página, e
+ * sem isso a aplicação não carrega. A forma correta de remover essa brecha é
+ * CSP por nonce, gerado a cada requisição num middleware; fica registrado em
+ * docs/observacoes.md como melhoria, porque exige mudar o fluxo de renderização
+ * e revalidar o jogo inteiro.
+ *
+ * Mesmo assim a diretiva vale: ela barra script de outra origem, que é o vetor
+ * mais comum de XSS armazenado.
+ */
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self' data:",
+  "connect-src 'self'",
+  // Impede que a página seja embutida em iframe de terceiro. É a versão
+  // moderna do X-Frame-Options, que vai junto por compatibilidade.
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+].join("; ");
+
+const CABECALHOS_SEGURANCA = [
+  // Impede o navegador de adivinhar o tipo do arquivo. Sem isto, um upload
+  // de texto servido como imagem pode acabar executado como script.
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "Content-Security-Policy", value: CSP },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  // Recursos que o jogo não usa ficam negados por padrão.
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
+];
+
 const nextConfig: NextConfig = {
+  // Remove o X-Powered-By, que anuncia a tecnologia e a versão para quem
+  // estiver procurando alvo com falha conhecida.
+  poweredByHeader: false,
+
+  async headers() {
+    return [{ source: "/:path*", headers: CABECALHOS_SEGURANCA }];
+  },
+
   ...(buildDocker
     ? {
         output: "standalone" as const,
