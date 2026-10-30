@@ -27,7 +27,18 @@
 FROM node:22.11.0-alpine3.20 AS deps
 WORKDIR /app
 
-RUN corepack enable
+# pnpm instalado direto, em versão fixa, sem passar pelo corepack.
+#
+# O corepack que acompanha o Node 22.11.0 carrega chaves de assinatura do
+# registro já vencidas, e quebra com "Cannot find matching keyid" ao resolver
+# a versão do pnpm. A saída que circula é desligar a verificação de assinatura
+# (COREPACK_INTEGRITY_KEYS=0) — o que é exatamente o contrário do que esta
+# esteira defende: seria renunciar à checagem de procedência do gerenciador de
+# pacotes para fazer o build passar.
+#
+# Instalar a versão exata pelo npm mantém a verificação de integridade e ainda
+# fixa o que roda, que é o que o enunciado pede.
+RUN npm install --global pnpm@11.18.0
 
 # Só os manifestos. O pnpm precisa do desenho completo do workspace para
 # resolver os links entre os pacotes.
@@ -45,7 +56,7 @@ RUN pnpm install --frozen-lockfile
 FROM node:22.11.0-alpine3.20 AS builder
 WORKDIR /app
 
-RUN corepack enable
+RUN npm install --global pnpm@11.18.0
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/jogo/node_modules ./apps/jogo/node_modules
