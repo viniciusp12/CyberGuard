@@ -322,7 +322,107 @@ ponto de partida, não inventário completo.
 
 ## Etapa 5 — Imagem no GHCR
 
-*A preencher.*
+Nenhuma vulnerabilidade: esta etapa constrói e publica. O que ela rendeu foram
+**cinco erros de construção**, todos encontrados e corrigidos. Vale registrar
+porque a maioria só aparece dentro do contêiner, nunca na máquina de quem
+desenvolve.
+
+| # | Sintoma | Causa |
+|---|---|---|
+| 1 | `Cannot find matching keyid` | corepack do Node com chaves de assinatura vencidas |
+| 2 | `pnpm requires Node >= 22.13` | base em 22.11.0 |
+| 3 | `tsup: No input files` | `prepare` do workspace rodando sem código-fonte |
+| 4 | `Could not find Prisma Schema` | `.dockerignore` excluía o schema |
+| 5 | — | `.dockerbuild` quebrando o download do resumo |
+
+### O erro do corepack, e por que não desligamos a verificação
+
+O corepack que acompanha a imagem do Node carrega chaves de assinatura do
+registro já vencidas e falha ao resolver a versão do pnpm. **A solução que
+circula na internet é `COREPACK_INTEGRITY_KEYS=0`**, que desliga a verificação
+de assinatura.
+
+Não foi o caminho escolhido. Seria renunciar à checagem de procedência do
+gerenciador de pacotes para fazer o build passar — numa esteira cujo propósito
+declarado é o contrário disso. A saída foi instalar o pnpm pelo npm, em versão
+exata: mantém a verificação de integridade e ainda fixa o que roda.
+
+### O estágio separado que não funcionava
+
+O Dockerfile começou com três estágios, separando "instalar dependências" de
+"compilar" para aproveitar cache de camada. Não funciona neste repositório:
+`packages/shared` tem um script `prepare` que roda `tsup` **durante a
+instalação**, e o estágio de dependências copiava só os `package.json`. Sem
+código-fonte, o tsup falha com "No input files".
+
+Os estágios viraram um. Cache de camada é otimização; build correto não é.
+
+### O `.dockerignore` que escondia o schema
+
+`apps/api/prisma` estava na lista de exclusão, porque a imagem é do jogo e não
+da API. Só que o `package.json` da API entra no contexto, e o `pnpm install`
+executa o `postinstall` de **todos** os pacotes do workspace — inclusive o
+`prisma generate` da API, que não achava o schema.
+
+Lição: `.dockerignore` não é só sobre tamanho. Excluir um arquivo que um script
+de instalação espera quebra o build de um jeito que não aparece na máquina de
+quem desenvolve, onde o arquivo está lá.
+
+## Etapa 6 — Varredura da imagem (Trivy)
+
+Execução local da mesma varredura do CI: **10 vulnerabilidades HIGH**, todas
+com correção. **Todas eliminadas**, e nenhuma por atualização de versão.
+
+### O achado: nada vinha da aplicação
+
+| Pacote | Falhas | De onde vinha |
+|---|---|---|
+| `brace-expansion` | 5 HIGH | npm embutido na imagem base |
+| `pacote` | 2 HIGH | npm embutido na imagem base |
+| `ip-address` | 1 HIGH | npm embutido na imagem base |
+| `picomatch` | 1 HIGH | npm embutido na imagem base |
+| `sigstore` | 1 HIGH | npm embutido na imagem base |
+
+`pacote` e `sigstore` são dependências internas do **npm**. Nenhum desses
+pacotes é usado pelo jogo. Eles chegaram na imagem porque a imagem oficial do
+Node traz o npm instalado.
+
+### A correção: remover, não atualizar
+
+A aplicação **não instala nada em produção** — ela executa `node server.js`.
+O npm na imagem final é peso morto e superfície de ataque. Em vez de esperar
+o npm publicar versões corrigidas, o estágio de execução passou a removê-lo:
+
+```
+RUN rm -rf /usr/local/lib/node_modules/npm            /usr/local/lib/node_modules/corepack            /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack
+```
+
+### Antes e depois
+
+| | Antes | Depois |
+|---|---|---|
+| HIGH/CRITICAL com correção | **10** | **0** |
+| Gate da Etapa 6 | barra | passa |
+| `/login` responde | HTTP 200 | HTTP 200 |
+| Usuário do processo | `nextjs` (1001) | `nextjs` (1001) |
+
+Verificado localmente, com o mesmo Trivy 0.70.0 do CI, e o contêiner continua
+servindo a aplicação sem o npm dentro.
+
+### A diferença entre a Etapa 4 e a Etapa 6
+
+O enunciado pede essa comparação, e os dois relatórios desta execução mostram
+bem o ponto:
+
+- A **Etapa 4** varre o que o projeto **declara** — o `pnpm-lock.yaml`. Os 10
+  achados eram dependências da aplicação: `next`, `body-parser`, `multer`.
+  Corrigem-se mudando versão no projeto.
+- A **Etapa 6** varre o que a imagem **contém**, incluindo o que ninguém pediu:
+  sistema operacional base e ferramentas que vieram junto. Os 10 achados aqui
+  não apareciam em lock nenhum, porque **nenhum arquivo do projeto os declara**.
+
+Uma etapa não substitui a outra. Um projeto com zero vulnerabilidades no
+lockfile pode publicar uma imagem cheia delas.
 
 ## Etapa 6 — Varredura da imagem (Trivy)
 

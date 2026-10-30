@@ -68,6 +68,19 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
+# Fora o npm e o corepack da imagem que roda.
+#
+# A aplicacao nao instala nada em producao: ela executa `node server.js`, e so.
+# O npm que vem na imagem base e peso morto e superficie de ataque — e nao e
+# teorico: a varredura da Etapa 6 encontrou 10 falhas HIGH, TODAS em
+# dependencias internas do proprio npm (pacote, sigstore, brace-expansion,
+# picomatch, ip-address). Nenhuma delas vinha do codigo do jogo.
+#
+# Remover resolve as 10 de uma vez, sem precisar esperar o npm atualizar, e
+# ainda encolhe a imagem. Se um dia for preciso instalar algo em tempo de
+# execucao, a decisao certa e um estagio proprio, nao devolver o npm aqui.
+RUN rm -rf /usr/local/lib/node_modules/npm            /usr/local/lib/node_modules/corepack            /usr/local/bin/npm            /usr/local/bin/npx            /usr/local/bin/corepack
+
 # Usuario proprio, sem shell de login e sem senha.
 RUN addgroup --system --gid 1001 nodejs  && adduser --system --uid 1001 --ingroup nodejs nextjs
 

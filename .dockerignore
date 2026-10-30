@@ -51,8 +51,12 @@ apps/site/app
 apps/site/src
 apps/site/public
 apps/api/src
-apps/api/prisma
 apps/api/api
+
+# apps/api/prisma NAO entra nesta lista: o package.json da API tem um
+# postinstall que roda `prisma generate`, e o pnpm executa o postinstall de
+# todos os pacotes do workspace ao instalar. Sem o schema no contexto, a
+# instalacao falha com "Could not find Prisma Schema" e o build nem comeca.
 
 # Ruído de editor e de sistema.
 .vscode
