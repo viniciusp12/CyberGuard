@@ -10,12 +10,11 @@ com a Leroy Merlin. São duas frentes que se completam:
 
 ## Equipe
 
-<!-- PREENCHER: nome completo e RM de cada integrante -->
-
 | Integrante | RM |
 |---|---|
-| Vinicius Olivetti | RM______ |
-| Pedro Frommer | RM______ |
+| Vinícius Pinheiro Olivetti | 98255 |
+| Eduardo José Araujo dos Santos | 564584 |
+| Pedro Frommer Furlani | 564137 |
 
 ## No ar
 
