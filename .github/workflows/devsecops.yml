@@ -460,6 +460,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: relatorios
+          # Só os relatórios das etapas. Sem o filtro, ele tenta baixar também
+          # o artefato da aplicação e o `.dockerbuild` que a própria action do
+          # Docker publica — e foi engasgando neste último que o resumo falhou.
+          pattern: relatorio-*
           merge-multiple: false
 
       - name: Consolidar
