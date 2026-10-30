@@ -425,10 +425,14 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        # Versao do CLI fixa, como o enunciado pede para toda ferramenta. A
+        # 39.1.1 era antiga demais: recusava o deploy com "Found invalid
+        # Node.js Version: 26.x", porque nao conhecia a versao de Node que o
+        # projeto usa hoje na Vercel.
         run: |
-          npx --yes vercel@39.1.1 pull --yes --environment=production --token="$VERCEL_TOKEN"
-          npx --yes vercel@39.1.1 build --prod --token="$VERCEL_TOKEN"
-          npx --yes vercel@39.1.1 deploy --prebuilt --prod --token="$VERCEL_TOKEN" > url-producao.txt
+          npx --yes vercel@65.8.0 pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx --yes vercel@65.8.0 build --prod --token="$VERCEL_TOKEN"
+          npx --yes vercel@65.8.0 deploy --prebuilt --prod --token="$VERCEL_TOKEN" > url-producao.txt
           echo "Publicado em: $(cat url-producao.txt)"
 
       - name: Relatório do deploy
