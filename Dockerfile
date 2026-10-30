@@ -11,7 +11,9 @@
 #
 #   Alpine com versão fixa. Base mínima e previsível. Sem tag móvel: "node:22"
 #   muda de conteúdo sem avisar, e aí o relatório de varredura de hoje não
-#   descreve a imagem de amanhã.
+#   descreve a imagem de amanhã. A versão escolhida é a mais recente do Node 22
+#   LTS: base velha carrega CVE já corrigida, que apareceria na Etapa 6 sem
+#   motivo. O piso é o Node 22.13, exigido pelo pnpm 11.
 #
 #   Usuário não-root. Processo em contêiner que roda como root vira root no
 #   host se escapar do isolamento. O Node não precisa de privilégio para ouvir
@@ -24,14 +26,14 @@
 # ─── Estágio 1: dependências ────────────────────────────────────────────────
 # Separado do código para aproveitar o cache: mexer numa página do jogo não
 # obriga a reinstalar o mundo.
-FROM node:22.11.0-alpine3.20 AS deps
+FROM node:22.23.4-alpine3.24 AS deps
 WORKDIR /app
 
 # pnpm instalado direto, em versão fixa, sem passar pelo corepack.
 #
-# O corepack que acompanha o Node 22.11.0 carrega chaves de assinatura do
-# registro já vencidas, e quebra com "Cannot find matching keyid" ao resolver
-# a versão do pnpm. A saída que circula é desligar a verificação de assinatura
+# O corepack que acompanha o Node carrega chaves de assinatura do registro já
+# vencidas, e quebra com "Cannot find matching keyid" ao resolver a versão do
+# pnpm. A saída que circula é desligar a verificação de assinatura
 # (COREPACK_INTEGRITY_KEYS=0) — o que é exatamente o contrário do que esta
 # esteira defende: seria renunciar à checagem de procedência do gerenciador de
 # pacotes para fazer o build passar.
@@ -53,7 +55,7 @@ COPY packages/shared/package.json packages/shared/
 RUN pnpm install --frozen-lockfile
 
 # ─── Estágio 2: build ───────────────────────────────────────────────────────
-FROM node:22.11.0-alpine3.20 AS builder
+FROM node:22.23.4-alpine3.24 AS builder
 WORKDIR /app
 
 RUN npm install --global pnpm@11.18.0
@@ -70,7 +72,7 @@ ENV DOCKER_BUILD=1
 RUN pnpm turbo run build --filter=jogo
 
 # ─── Estágio 3: execução ────────────────────────────────────────────────────
-FROM node:22.11.0-alpine3.20 AS runner
+FROM node:22.23.4-alpine3.24 AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
