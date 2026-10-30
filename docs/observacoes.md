@@ -271,7 +271,54 @@ para um processo que vive 3 segundos em `localhost` é cerimônia sem ganho.
 
 ## Etapa 4 — SCA (Trivy fs)
 
-*A preencher.*
+Execução #7: **10 vulnerabilidades HIGH/CRITICAL**, todas com correção
+disponível. **Todas corrigidas** — nenhuma supressão foi necessária.
+
+| Pacote | Era | Virou | Falhas |
+|---|---|---|---|
+| `next` | 16.3.5 | 16.4.1 | 3 CRITICAL + 2 HIGH |
+| `proxy-addr` | 2.0.7 | 2.0.8 | 1 CRITICAL |
+| `body-parser` | 1.20.6 | 1.20.9 | 1 HIGH |
+| `multer` | 2.4.0 | 2.5.0 | 1 HIGH |
+| `sharp` | 0.35.4 | 0.35.5 | 1 HIGH |
+| `source-map-js` | 1.2.1 | 1.2.2 | 1 HIGH |
+
+| Campo | Conteúdo |
+|---|---|
+| **Classificação** | Vulnerabilidades reais |
+| **Ação tomada** | Atualização de versão, direta e por `overrides` |
+| **Resultado** | Nova varredura: **0 HIGH/CRITICAL**, gate passa |
+
+### Como foram corrigidas
+
+Duas vias, conforme a dependência seja direta ou indireta:
+
+- **`next` é dependência direta**, declarada em cada app. A versão subiu no
+  `package.json` dos dois. Continua **presa sem `^`**, de propósito: a versão
+  exata é parte da estratégia do projeto, e o `^` traria atualização silenciosa
+  de minor.
+- **As outras cinco são transitivas** — nenhum `package.json` as declara, elas
+  vêm arrastadas por outros pacotes. Para essas, o caminho é `overrides` no
+  `pnpm-workspace.yaml`, que força a versão corrigida em toda a árvore sem
+  esperar o pacote-pai atualizar.
+
+### O site também foi atualizado, mesmo sem ser apontado
+
+O Trivy reportou apenas `next 16.3.5`, do jogo. Mas o aviso dizia que a falha
+**corrige em `15.5.28` ou `16.4.1`** — e o site rodava `15.5.25`, abaixo do
+primeiro. Ou seja, estava na faixa vulnerável e não apareceu no relatório.
+
+O site foi para `15.5.28` junto. Lição: **ler a faixa de versões afetadas do
+aviso**, e não só a lista de pacotes que a ferramenta imprimiu. Relatório é
+ponto de partida, não inventário completo.
+
+### Evidência
+
+- Antes: 10 achados HIGH/CRITICAL, gate com `exit-code 1`.
+- Depois: `trivy fs --severity HIGH,CRITICAL` retorna **0**, gate com exit 0.
+- Sem regressão: **66 testes passando** e os **4 pacotes compilando**, com as
+  versões novas. Uma atualização de dependência que quebra o build não é
+  correção, é troca de problema.
 
 ## Etapa 5 — Imagem no GHCR
 
@@ -344,7 +391,11 @@ lê-lo.
    valer depois de subir para a primeira linha do arquivo, porque é lá que a
    regra marca. Vale conferir a linha exata do relatório antes de escrever a
    supressão.
-8. **Achado em commit antigo não sai corrigindo o arquivo.** A varredura cobre
+8. **O relatório da ferramenta não é o inventário completo do risco.** O Trivy
+   apontou só a versão do Next do jogo; o site rodava uma versão diferente, que
+   o mesmo aviso também cobria, e não apareceu. Quem lê só a lista impressa
+   corrige metade.
+9. **Achado em commit antigo não sai corrigindo o arquivo.** A varredura cobre
    todo o histórico, então um literal que já foi enviado continua sendo
    encontrado mesmo depois de o arquivo mudar. Ou se reescreve o histórico, ou
    se suprime o fingerprint com justificativa — e, para falso positivo, a
