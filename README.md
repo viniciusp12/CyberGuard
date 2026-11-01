@@ -13,7 +13,7 @@ com a Leroy Merlin. São duas frentes que se completam:
 | Integrante | RM |
 |---|---|
 | Vinícius Pinheiro Olivetti | 98255 |
-| Eduardo José Araujo dos Santos | 564584 |
+| Eduardo José Araujo Santos | 564584 |
 | Pedro Frommer Furlani | 564137 |
 
 ## No ar
