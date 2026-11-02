@@ -325,6 +325,82 @@ jobs:
             trivy-image.json
           if-no-files-found: warn
 
+  # Bonus - SARIF na aba Security (secao 8 do enunciado)
+  #
+  # A Etapa 2 ja gera semgrep.sarif, mas publicar o arquivo como artifact NAO
+  # popula a aba Security: para isso precisa da action de upload, que e o que
+  # de fato vale o bonus.
+  #
+  # Job separado de proposito. O Semgrep da Etapa 2 roda dentro do conteiner
+  # semgrep/semgrep, e a action de upload e JavaScript; chama-la de la poria um
+  # risco novo no caminho critico da esteira. Aqui, com continue-on-error, uma
+  # falha deste job nao derruba a execucao - isto e bonus, nao requisito.
+  #
+  # Roda com if: always() porque achado de SAST interessa mais quando a etapa
+  # barrou do que quando passou.
+  sarif-security:
+    name: "★ Bonus: SARIF na aba Security"
+    needs: sast
+    if: always() && needs.sast.result != 'skipped' && needs.sast.result != 'cancelled'
+    runs-on: ubuntu-24.04
+    continue-on-error: true
+    permissions:
+      contents: read
+      # Unica permissao extra deste job, e nenhum outro a tem.
+      security-events: write
+    steps:
+      - name: Baixar o SARIF que a Etapa 2 publicou
+        uses: actions/download-artifact@v4
+        with:
+          name: relatorio-02-semgrep
+
+      - name: Publicar na aba Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+  # Bonus - SBOM da imagem (secao 8 do enunciado)
+  #
+  # Inventario do que a imagem contem, em CycloneDX. Serve para responder "este
+  # pacote esta na nossa imagem?" quando sair uma CVE nova, sem reescanear nem
+  # adivinhar.
+  #
+  # O artifact fica fora do padrao relatorio-* de proposito: o Resumo da Esteira
+  # baixa so relatorio-*, e isto nao e uma das 8 etapas.
+  sbom:
+    name: "★ Bonus: SBOM da imagem"
+    needs: docker-build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    continue-on-error: true
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Gerar o SBOM da imagem publicada
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: image
+          # Mesma tag da Etapa 5: o SBOM descreve o que foi de fato publicado.
+          image-ref: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: cyclonedx
+          output: sbom-imagem.cdx.json
+          exit-code: "0"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bonus-sbom
+          path: sbom-imagem.cdx.json
+          if-no-files-found: warn
+
   # ─── Etapa 7 ──────────────────────────────────────────────────────────────
   dast-staging:
     name: 7 · Homologação + DAST (OWASP ZAP)

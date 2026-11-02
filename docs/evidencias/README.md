@@ -5,8 +5,8 @@ são os referenciados no README e na documentação.
 
 | Arquivo | O que deve mostrar |
 |---|---|
-| `resumo-da-esteira.png` | A aba *Summary* da execução #14, com as 8 etapas verdes |
-| `esteira-completa.png` | A lista de jobs da execução #14, toda verde |
+| `resumo-da-esteira.png` | A aba *Summary* da execução #19, com as 8 etapas verdes |
+| `esteira-completa.png` | A lista de jobs da execução #19, toda verde |
 | `quality-gate-bloqueando.png` | A execução #1 ou #8, barrada por um gate |
 | `aprovacao-producao.png` | A tela de aprovação do environment `producao` |
 | `imagem-no-ghcr.png` | A imagem publicada, em *Packages* do repositório |

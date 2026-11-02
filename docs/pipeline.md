@@ -216,6 +216,55 @@ do que um resumo parcial mais cedo.
 
 ---
 
+## Bônus: dois jobs fora das 8 etapas
+
+A seção 8 do enunciado oferece bônus. Dois estão implementados, e os dois ficam
+**fora da cadeia sequencial**, com `continue-on-error: true`: se um deles
+quebrar, a esteira continua verde. Bônus que derruba requisito não é bônus.
+
+### ★ SARIF na aba Security
+
+**Depende de:** Etapa 2 · **Permissão extra:** `security-events: write`
+
+A Etapa 2 já gerava `semgrep.sarif` e o publicava como artifact — mas artifact
+não popula a aba *Security*. São coisas diferentes: só a action de upload
+registra os achados no code scanning do repositório.
+
+O upload é um job próprio, e não um step da Etapa 2, por um motivo concreto: o
+Semgrep roda dentro do contêiner `semgrep/semgrep`, e a action de upload é
+JavaScript. Chamá-la de dentro daquele contêiner poria um risco novo no caminho
+crítico da esteira para ganhar bônus — troca ruim.
+
+Roda com `if: always()`, porque achado de SAST interessa mais quando a etapa
+barrou do que quando passou. E `security-events: write` existe **só aqui**:
+nenhum outro job do workflow tem essa permissão.
+
+### ★ SBOM da imagem
+
+**Depende de:** Etapa 5 · **Formato:** CycloneDX · **Artifact:** `bonus-sbom`
+
+Inventário do que a imagem contém, gerado pelo Trivy sobre a **mesma tag** que a
+Etapa 5 publicou — o SBOM descreve o que de fato foi para o registro, não uma
+aproximação.
+
+Serve para responder "este pacote está na nossa imagem?" quando sair uma CVE
+nova, sem reescanear e sem adivinhar. Depois do que a Etapa 6 mostrou — 10
+falhas HIGH vindas de um npm que ninguém declarou — ter o inventário do que
+entrou de carona deixou de ser luxo.
+
+O artifact se chama `bonus-sbom`, fora do padrão `relatorio-*`, de propósito: o
+Resumo da Esteira baixa só `relatorio-*`, e isto não é uma das oito etapas.
+
+### Os três que ficaram de fora
+
+| Bônus | Por que não |
+|---|---|
+| ZAP Full Scan | O Baseline é o exigido e já roda. O Full Scan leva muito mais tempo e levanta uma leva de alertas novos que não dava para triar com honestidade antes da entrega — e supressão em massa para "deixar verde" é exatamente o que o enunciado penaliza. |
+| Assinatura com Cosign | Exige `id-token: write` e uma decisão sobre onde a chave vive. Vale, mas é controle de cadeia de suprimentos de verdade, não item de checklist — entra inteiro ou não entra. |
+| OIDC no deploy | A Vercel suporta, mas trocaria o mecanismo de credencial da única etapa que publica em produção. Risco grande perto da entrega, ganho pequeno. Fica registrado como melhoria conhecida. |
+
+---
+
 ## Versões fixas
 
 Toda ferramenta e toda action estão presas a uma versão. Tag móvel muda de
