@@ -206,6 +206,17 @@ jobs:
   docker-build:
     name: 5 · Imagem no GHCR
     needs: sca
+    # Só em push na main.
+    #
+    # Num pull_request vindo de fork o GITHUB_TOKEN é somente leitura por
+    # decisão do GitHub — é o que impede um PR de fora publicar imagem ou
+    # fazer deploy em nome do projeto. Logo, `packages: write` não vale ali e
+    # esta etapa falharia sempre, por motivo que não é defeito do código.
+    #
+    # As etapas 6, 7 e 8 dependem desta, então pulam junto. O PR continua
+    # passando pelas Etapas 1 a 4, que são as que validam o que ele trouxe:
+    # segredo, código inseguro, build, testes e dependência vulnerável.
+    if: github.event_name == 'push'
     runs-on: ubuntu-24.04
     permissions:
       contents: read
