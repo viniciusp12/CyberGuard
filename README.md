@@ -156,19 +156,19 @@ push (main)
 
 | # | Etapa | Ferramenta | Objetivo | Barra quando | Relatório |
 |---|---|---|---|---|---|
-| 1 | Segredos | Gitleaks 8.21.2 | Credencial no código ou no histórico | qualquer segredo | [`relatorio-01-gitleaks`](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847/artifacts/13111110751) |
-| 2 | SAST | Semgrep 1.95.0 | Padrão inseguro no código | qualquer achado | [`relatorio-02-semgrep`](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847/artifacts/13110268823) |
-| 3 | Build | pnpm + turbo | Build reprodutível, testes, artefato | build ou teste falha | [`relatorio-03-build`](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847/artifacts/13110687776) |
-| 4 | SCA | Trivy fs | CVE nas dependências | HIGH/CRITICAL | [`relatorio-04-trivy-sca`](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847/artifacts/13110054407) |
-| 5 | Imagem | Docker + GHCR | Publicar imagem pelo SHA | build ou push falha | [`relatorio-05-docker-build`](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847/artifacts/13111380006) |
-| 6 | Scan da imagem | Trivy image | CVE na imagem publicada | HIGH/CRITICAL com correção | [`relatorio-06-trivy-image`](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847/artifacts/13111096676) |
-| 7 | DAST | OWASP ZAP | Falha visível só rodando | informativo | [`relatorio-07-homologacao-zap`](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847/artifacts/13110244610) |
-| 8 | Produção | GitHub Environments | Deploy após aprovação humana | aprovação negada | [`relatorio-08-producao`](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847/artifacts/13111201218) |
-| ★ | Resumo | jq + Job Summary | Consolida tudo | roda sempre | [`resumo-da-esteira`](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847/artifacts/13111291945) |
+| 1 | Segredos | Gitleaks 8.21.2 | Credencial no código ou no histórico | qualquer segredo | [`relatorio-01-gitleaks`](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482/artifacts/13156027046) |
+| 2 | SAST | Semgrep 1.95.0 | Padrão inseguro no código | qualquer achado | [`relatorio-02-semgrep`](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482/artifacts/13155428851) |
+| 3 | Build | pnpm + turbo | Build reprodutível, testes, artefato | build ou teste falha | [`relatorio-03-build`](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482/artifacts/13156411733) |
+| 4 | SCA | Trivy fs | CVE nas dependências | HIGH/CRITICAL | [`relatorio-04-trivy-sca`](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482/artifacts/13155549285) |
+| 5 | Imagem | Docker + GHCR | Publicar imagem pelo SHA | build ou push falha | [`relatorio-05-docker-build`](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482/artifacts/13155319941) |
+| 6 | Scan da imagem | Trivy image | CVE na imagem publicada | HIGH/CRITICAL com correção | [`relatorio-06-trivy-image`](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482/artifacts/13156382519) |
+| 7 | DAST | OWASP ZAP | Falha visível só rodando | informativo | [`relatorio-07-homologacao-zap`](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482/artifacts/13156073262) |
+| 8 | Produção | GitHub Environments | Deploy após aprovação humana | aprovação negada | [`relatorio-08-producao`](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482/artifacts/13158180229) |
+| ★ | Resumo | jq + Job Summary | Consolida tudo | roda sempre | [`resumo-da-esteira`](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482/artifacts/13157712195) |
 
-Os links acima vão para os relatórios da **execução #19** (commit `c82f786`),
-a execução completa documentada abaixo — [ver a execução inteira](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847).
-Os artifacts dela ficam disponíveis até **31/01/2027**. Toda execução publica os
+Os links acima vão para os relatórios da **execução #20** (commit `ed2ed89`),
+a execução completa documentada abaixo — [ver a execução inteira](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482).
+Os artifacts de cada execução ficam disponíveis por **90 dias**. Toda execução publica os
 seus, inclusive quando falha: a lista completa está em
 [Actions](https://github.com/viniciusp12/CyberGuard/actions/workflows/devsecops.yml).
 
@@ -210,16 +210,16 @@ detalhe de cada CVE está em [`docs/observacoes.md`](docs/observacoes.md), Etapa
 
 ![Resumo da Esteira](docs/evidencias/resumo-da-esteira.png)
 
-*Aba Summary da execução #19 — as 8 etapas e o resumo, todos verdes.*
+*Aba Summary da execução #20 — as 8 etapas, o resumo e os dois bônus, todos verdes.*
 
 ### Registro da aprovação humana
 
 | Campo | Valor |
 |---|---|
-| Execução | [#19](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847) — commit `c82f786` |
+| Execução | [#20](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482) — commit `ed2ed89` |
 | Aprovado por | **@viniciusp12** (único revisor exigido pelo environment `producao`) |
-| Data | 01/11/2026, 22h54 |
-| Duração | 8 min 43 s de execução; 12 min 30 s no total, contando a espera da aprovação |
+| Data | 02/11/2026, 12h37 |
+| Duração | 9 min 54 s de execução; 19 min no total, contando a espera da aprovação |
 | Com base em | Relatórios das etapas 1 a 7: 0 segredos, 0 achados de SAST pendentes, 66 testes passando, 0 HIGH/CRITICAL em dependências e na imagem, e 0 FAIL no ZAP |
 
 O environment `producao` exige revisor. O job fica parado até alguém revisar os
