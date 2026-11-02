@@ -5,8 +5,8 @@ onde foi tirado, para que qualquer afirmação aqui possa ser conferida na orige
 
 | Arquivo | Execução | O que mostra |
 |---|---|---|
-| `resumo-da-esteira.png` | [#20](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482) | A tabela *Resumo da Esteira* de uma execução completa e bem-sucedida — o print obrigatório da §6.1 |
-| `esteira-completa.png` | [#20](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482) | Os 11 jobs verdes: as 8 etapas, o resumo e os dois bônus |
+| `resumo-da-esteira.png` | [#19](https://github.com/viniciusp12/CyberGuard/actions/runs/41374909847) | A tabela *Resumo da Esteira* de uma execução completa e bem-sucedida, as 8 etapas com `success` — o print obrigatório da §6.1 |
+| `esteira-completa.png` | [#20](https://github.com/viniciusp12/CyberGuard/actions/runs/41473376482) | Os 11 jobs verdes da execução seguinte: as 8 etapas, o resumo e os dois bônus |
 | `quality-gate-bloqueando.png` | [#1](https://github.com/viniciusp12/CyberGuard/actions/runs/40921373537) | A Etapa 1 barrando com 1 segredo encontrado, as 7 etapas seguintes puladas, e o Resumo registrando `failure` + `skipped` |
 | `aprovacao-producao.png` | [#15](https://github.com/viniciusp12/CyberGuard/actions/runs/41087646741) | O environment `producao` esperando revisão, com o botão *Review deployments* |
 | `imagem-no-ghcr.png` | — | A imagem publicada no GHCR: pública, com uma tag por commit e nenhuma `latest` |
